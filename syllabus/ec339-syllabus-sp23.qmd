@@ -1,0 +1,254 @@
+---
+title: "**EC 339: Applied Econometrics**"
+subtitle: "Spring 2023 -- Course Syllabus"
+author: "Economics Department | Skidmore College"
+format:
+  pdf: 
+    pdf-engine: pdflatex
+    documentclass: article
+    toc: false
+    number-sections: false
+    geometry:
+      - top=35mm
+      - bottom=35mm
+      - left=25mm
+      - right=25mm
+      - heightrounded
+    colorlinks: true
+    linestretch: "1"
+    # fontfamily: libertine
+    header-includes: |
+      \usepackage{fontawesome}
+      \usepackage[T1]{fontenc}
+      \usepackage{newpxtext,eulerpx}
+---
+
+------------------------------------------------------------------------
+
+
+\vspace{.4cm}
+
+\begin{tabular}{ll|l} 
+	\textbf{When:} & \multicolumn{2}{l}{MoWe 2:30--3:50 PM} \\
+	\textbf{Where:} & \multicolumn{2}{l}{CIS 101A (\href{https://www.skidmore.edu/directions/maps.php}{\texttt{map}})} \\
+	\textbf{Who:} & \, \faMortarBoard \,  Marcio Santetti, Ph.D. (\textit{he/him}) & \, \faEnvelopeO \, \href{mailto:msantetti@skidmore.edu}{\texttt{msantetti@skidmore.edu}} \\
+	& \, \faHourglassHalf \, MoWe 12:30--2:00 PM$^*$ & \, \faUniversity \, Filene 207 \\
+	\textbf{Web:} & \, \faPencil \, \href{https://github.com/marciosantetti/ec339-sp23}{\texttt{Course GitHub Repository}} \\
+\end{tabular}
+
+$^*$ _Or by appointment, via Zoom._
+
+
+------------------------------------------------------------------------
+
+
+# Overview
+
+As its name already suggests, this course combines Economics and Statistics in an applied way. This means that students will be able to combine several Economics concepts with empirical methods, using real-world data to conduct diverse practices and analyses.
+
+In order to do that, students need a solid foundation of Econometrics. This is what this course offers. Students will be able to learn the fundamental details of empirical analysis, as well as being able to criticize their own, as well as models found in the related literature. Lastly, this course will be of high value for upper-level courses, as well as for your Senior Seminar experience.
+
+Lectures will be taught in the lab. However, you are welcome (and encouraged) to bring your own device. Usually, Monday sessions will be theoretical, and Wednesdays will be dedicated to *hands-on* applications of the content using real data and the statistical software.
+
+# Course Content Organization
+
+Lecture notes and problem sets will be posted on the Course's [`GitHub repository`](https://github.com/marciosantetti/ec339-sp23). Additional readings, quizzes, answer keys, and data files will be uploaded to `theSpring`. Students will also use `theSpring` to submit all assignments.
+
+# Outcomes
+
+At the completion of the course, you will be able to:
+
+1. Use descriptive and estimation techniques to understand real economic phenomena;
+
+2. Work with `Stata` to prepare and perform econometric exercises with real and artificial data sets;
+
+3. Collect, treat, analyze, and present economic data in an informative and concise way;
+
+4. Have a general overview on the most popular and applied statistical techniques that aim to explain economic phenomena.
+
+
+# Main References
+
+This course has no required textbook. My suggested references are listed below. You may choose any of these books if you want a physical copy for reference. Regardless of your choice, I strongly recommend owning an Econometrics textbook to follow the course content and prepare for upcoming semesters.
+
+### Suggested Textbooks
+
+* A. H. Studenmund, *Using Econometrics: A practical guide*, 6th edition, Pearson, 2011.
+
+* J. M. Wooldridge, *Introductory Econometrics: A modern approach*, 7th edition, Cengage, 2020.
+
+* D. N. Gujarati, *Basic Econometrics*, 4th edition, McGraw-Hill, 2004.
+
+* J. H. Stock and M. W. Watson, *Introduction to Econometrics*, Pearson, 2015.
+
+# Software Requirements
+
+`Stata` is our software for the course. It is available in our classroom and on all public Windows computers on campus. Students at Skidmore may also use `Stata` in their personal computers. This [`link`](https://leds.domains.skidmore.edu/useful-info/computing-software/) contains all information. 
+
+
+
+# Assignments, Exams, & Grading
+
+- **Assignments** (20\%): Every week, students are required to complete an *online quiz* (True/False, multiple-choice questions), comprehending each weekly content. **Each weekly quiz is due the beginning of Monday lectures** (2:30 PM). Students will also be required to complete 5 *Problem Sets*, that will comprehend, in general, 2-3 weeks of content. Students will be asked to answer theoretical and applied problems,  strongly based off of lecture notes and, of course, lectures themselves. 
+
+- **Exams**: This course will have a *Midterm* (20\%, date TBD) and a *Final* (comprehensive, 30\%) exam. Each exam will follow a similar structure as the Problem Sets'. 
+
+- **Applied Research Project** (30\%): The idea of the applied project is to provide a *hands-on* experience for students, in which they are responsible for formulating a research question, looking for the data (cross-section or time-series), and performing the appropriate econometric treatments and techniques, so, by the end of it, that question can be answered. The project must be between 8 and 10 pages, double-spaced, with the required econometric outputs and bibliography (these last two do not count for the paper's length). All necessary assistance will be provided by the instructor upon students' request. Moreover, students will have access to a template, as well as several projects shared by students from previous semesters, serving as useful references. Feel free to work either in pairs or individually. You must submit your project until the Final Exam day's starting time.
+
+\newpage
+
+Attendance and late policies:
+  
+  * Attendance and participation: Your grade will fall one letter grade if you miss more than five lectures. By missing any additional classes, you will lose a partial letter grade. 
+  
+  * Coming to class late will count as half of an absence.
+  
+  * Late assignment submissions will have a grade deduction of at least 50%, increasing with the amount of time the student turns in their assignment.
+
+***Important note***: For *any* assignment, if an answer contains a direct "Copy+Paste" from the lecture notes, or if it is copied from someone else's work, **no credit will be given**. Read more in the Skidmore [`Honor Code`](https://www.skidmore.edu/adofsaa/documents/Academic-Integrity-Handbook.pdf), pages 8--12.
+
+
+
+
+
+# Letter Grade Distribution
+
+***Performance***                                   ***Letter Grade***
+-------------------------------        -----------------------------------------------
+Excellent, superior performance                 A (90--100\%)
+Good performance                                B (80--90\%)
+Standard performance                            C (70--80\%)
+Substandard performance                         D (60--70\%)
+Unsatisfactory performance                      F (0--60\%)
+* *Plus/minus where applicable*.
+----------- -------------------        -----------------------------------------------
+
+# Important Dates
+
+* **Jan 26**: "Add" deadline
+* **Mar 11--19**: Spring Vacation
+* **Apr 13**: Course withdrawal deadline
+* **??**: Midterm Exam (in class)
+* **May 2**: Last day of classes
+* ***??***: Final Exam, at our classroom; Applied Research Project due date.
+
+
+# Class Policies
+
+You can expect me to:
+
+* Grade and provide feedback on assignments and exams within one week from the due date;
+
+* Reply to emails/messages within 24 hours during the week and within 48 hours on weekends and holidays;
+
+  * *I try to relax and have fun on weekends. You should, too.*
+  
+* Hold weekly office hours, where students can ask every question and talk about any issues/concerns relative to our course.
+
+* Ignore emails/requests asking for any change in your grades by the end of the semester.
+
+\newpage
+
+I expect students to:
+
+* Come to class on time;
+
+* Take the exams on the scheduled dates. No make-up exams will be allowed;
+
+* Respectfully participate in in-class discussions and activities;
+
+* Immediately notify me in the event of an emergency that prevents you from doing an exam or completing the course;
+
+* Ask questions if any expectations or assignments are unclear.
+
+
+# Classroom Procedures -- COVID-19
+
+Skidmore College is committed to the health and safety of all members of our community
+and has implemented protocols based on recommendations from the CDC, New York State
+Department of Health, and Saratoga County Department of Health. During periods of **high**
+transmission, we must all wear masks in the classroom. During periods of **low/moderate**
+transmission, the College is not requiring vaccinated individuals to wear a mask indoors.
+You are, of course, allowed to wear a mask if you so choose, and if anyone would like to ask
+that we all wear a mask at all times in our classroom, please speak with me outside of class,
+or contact me via email.
+
+That noted, **I strongly recommend/encourage you to wear a mask in class**, regardless of your vaccination status.
+
+In case you test positive for COVID-19, the *priority* is for you to recover well, stay safe, and protect our course and college community. As you will not be able to attend class, please ask your classmates to share notes and impressions with you, as I will not stream lectures via Zoom nor teach the same lecture twice. After you grab the materials from your missed class(es), I am happy to see you during my office hours or going over any potential questions/concerns via Zoom. Once again, my *priority* is for you to recover and stay safe; you will be able to catch up with the content with no major problems!
+
+# Academic Integrity
+
+An effective learning experience depends upon the ability of members of the academic community to trust one another and to trust the integrity of work that is submitted for academic credit. Such an atmosphere of mutual trust fosters the free exchange of ideas and enables all members of the community to achieve their highest potential.
+
+In all academic work, the ideas and contributions of others must be appropriately acknowledged and work that is presented as original must be, in fact, original. Using an AI-content generator (such as `ChatGPT`) to complete coursework without proper attribution or authorization is a form of academic dishonesty. If you are unsure about whether something may be plagiarism or academic dishonesty, please contact the instructor to discuss the issue. 
+
+
+\newpage
+
+# Tentative Course Schedule
+
+* **Week 1**: Course introduction; Stats & `Stata` refresher.
+
+* **Week 2**: Simple Linear Regression.
+
+* **Week 3**: Multiple Regression.
+
+* **Week 4**: The Classical Linear Regression Model (CLRM).
+
+* **Week 5**: Econometric Inference.
+
+* **Week 6**: More on Functional Forms.
+
+* **Week 7**: Violations of CLRM Assumptions I: Omitted Variables Bias (OVB).
+
+* **Week 8**: Spring Vacation.
+
+* **Week 9**: Midterm Exam.
+
+* **Week 10**: Violations of CLRM Assumptions II: Multicollinearity.
+
+* **Week 11**: Violations of CLRM Assumptions III: Serial Correlation.
+
+* **Week 12**: Violations of CLRM Assumptions IV: Heteroskedasticity.
+
+* **Week 13**: Binary Dependent Variable Models.
+
+* **Week 14**: Course Wrap-up and Review.
+
+
+# Important Note
+
+This syllabus is meant to serve as an outline and guide for our course. Please note that I may modify it with reasonable notice to you. I may also modify the Course Schedule to accommodate the needs of our course.
+
+
+
+
+# Institutional Policies and Procedures
+
+## Honor Code
+
+You are expected to fully abide by the Skidmore [`Honor Code`](https://www.skidmore.edu/adofsaa/documents/Academic-Integrity-Handbook.pdf).
+
+
+## Academic Accommodation
+
+"If you are a student with a disability and believe you will need academic accommodation, you must formally request accommodation from Meg Hegener, Coordinator of Student Access Services (`mhegener@skidmore.edu`). You will also need to provide documentation which verifies the existence of a disability and supports your request. For further information, please call 580-8150 to contact Student Academic Services in Starbuck Center."
+
+## Title IX
+
+Skidmore College considers sexual and gender-based misconduct to be one of the most serious violations of the values and standards of the College. Unwelcome sexual contact of any form is a violation of students’ personal integrity and their right to a safe environment and therefore violates Skidmore’s values. Sexual and gender-based misconduct is also prohibited by federal and state regulations. Skidmore College faculty are committed to supporting our students and upholding gender equity laws as outlined by Title IX. If a student chooses to confide in a member of Skidmore’s faculty or staff regarding an issue of sexual or gender-based misconduct, that faculty or staff member is obligated to tell Skidmore’s Title IX Coordinator or Title IX Deputy Coordinator. The Title IX Coordinator or Deputy Coordinator will assist the student in connecting with all possible resources for support and options for reporting both on and off campus. Identities and details will be shared only with those who need to know to support the student and to address the situation through the college’s processes. If the student wishes to confide in a confidential resource, the Counseling Center Staff, Health Services, and Victim Advocates (anonymous) are all options available.
+
+More information can be found at the Sexual and Gender-Based Misconduct website or by contacting the Title IX Coordinator, Joel Aure (`jaure@skidmore.edu`), 580-5708, or Deputy Coordinator for Student Affairs, Gabriela Melillo (`gmelillo@skidmore.edu`), 580-5022.
+
+## Conscientious Religious Observance Policy
+
+If religious observances cause absence from class, campus employment, athletic practice, and/or game days or necessitates accommodations, students should notify their faculty, coaches, or supervisors prior to the date(s) of their absence. New York State policy and Skidmore College policy mandates that students be allowed to make up academic work and/or campus employment requirements without penalty. These accommodations should not reduce the overall expectations of a course nor unduly burden the student requesting accommodation. Faculty must permit students to take a makeup examination without any penalty if they have to miss an examination due to religious observances. Similarly, faculty must permit students to submit missed assignments by an agreed upon due date, without penalty.
+
+Although not required, the College highly recommends that students submit written notification of the pending religious observances at the start of the semester or at least one week before the date.. As an option, students may use this [`form`](https://www.skidmore.edu/religious-life/calendar.php). Distributing the written notification during the first week of classes, campus employment, or the start of the athletic season gives students, faculty, coaches, or supervisors time to prepare for the absence.
+
+If a student, supervisor, coach, or faculty member feels the policy is being violated, they should contact the Dean of Faculty Office at 518-580-5705 (Palamountain 416), the Dean of Students Office at 518-580-5760 (Case Center 313), or Human Resources at 518-580-5800 (Barrett Center first floor).
+
+## Diversity and Inclusion
+
+Skidmore College is committed to fostering a diverse and inclusive community in which members develop their abilities to live in a complex and interconnected world. Consistent with our educational mission, we recognize ourselves as a community that respects individual identities based on varying sociocultural characteristics such as race, ethnicity, gender identity and expression, sexual orientation, national origin, first language, religious and spiritual tradition, age, ability, socioeconomic status and learning style. We strive to create a socially just world that honors the dignity and worth of each individual, and we seek to build a community centered on mutual respect and openness to ideas—one in which individuals value cultural and intellectual diversity and share the responsibility for creating a welcoming, safe and inclusive environment. We recognize that our community is most inclusive when all members participate to their full capacity in the spirited and sometimes challenging conversations that are at the center of the college's educational mission.
