@@ -33,7 +33,7 @@ format:
 	\textbf{Where:} & \multicolumn{2}{l}{CIS 101A (\href{https://www.skidmore.edu/directions/maps.php}{\texttt{map}})} \\
 	\textbf{Who:} & \, \faMortarBoard \,  Marcio Santetti, Ph.D. (\textit{he/him}) & \, \faEnvelopeO \, \href{mailto:msantetti@skidmore.edu}{\texttt{msantetti@skidmore.edu}} \\
 	& \, \faHourglassHalf \, MoWe 12:30--2:00 PM$^*$ & \, \faUniversity \, Filene 207 \\
-	\textbf{Web:} & \, \faPencil \, \href{https://github.com/marciosantetti/ec339-sp23}{\texttt{Course GitHub Repository}} \\
+	\textbf{Web:} & \, \faPencil \, \href{https://github.com/marciosantetti/ec339-sp23/blob/main/README.md}{\texttt{Course GitHub Repository}} \\
 \end{tabular}
 
 $^*$ _Or by appointment, via Zoom._
@@ -52,7 +52,7 @@ Lectures will be taught in the lab. However, you are welcome (and encouraged) to
 
 # Course Content Organization
 
-Lecture notes and problem sets will be posted on the Course's [`GitHub repository`](https://github.com/marciosantetti/ec339-sp23). Additional readings, quizzes, answer keys, and data files will be uploaded to `theSpring`. Students will also use `theSpring` to submit all assignments.
+Lecture notes and problem sets will be posted on the Course's [`GitHub repository`](https://github.com/marciosantetti/ec339-sp23/blob/main/README.md). Students are strongly recommended to bookmark this page, as it will be constantly updated throughout the semester. Additional readings, quizzes, answer keys, and data files will be uploaded to `theSpring`. Students will also use `theSpring` to submit all assignments.
 
 # Outcomes
 
@@ -145,7 +145,7 @@ You can expect me to:
   
 * Hold weekly office hours, where students can ask every question and talk about any issues/concerns relative to our course.
 
-* Ignore emails/requests asking for any change in your grades by the end of the semester.
+* Ignore emails/requests asking for any change in grades by the end of the semester.
 
 \newpage
 
