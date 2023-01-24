@@ -1,0 +1,32 @@
+star5_small.def
+
+  aide        mathscore   readscore   regular     small       tchexper    totalscore             
+  
+  Obs:   1200 observations
+
+This is a smaller version of star.dat which has 5786 observations and more variables.
+
+aide            =1 if regular class with aide, otherwise 0
+mathscore       math score
+readscore       reading score
+regular         =1 if regular class, otherwise 0
+small           =1 if small class, otherwise 0
+tchexper        teacher years of experience (some missing values)
+totalscore      combined math and reading score
+
+           
+Data source: http://www.heros-inc.org/star.htm 
+
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+        aide |      1200    .3541667    .4784594          0          1
+   mathscore |      1200    485.8733    48.54611        339        626
+   readscore |      1200    435.7767    30.28156        358        627
+     regular |      1200    .3433333    .4750196          0          1
+       small |      1200       .3025    .4595321          0          1
+-------------+--------------------------------------------------------
+    tchexper |      1194    9.126466    5.713464          0         27
+  totalscore |      1200      921.65    73.47678        727       1253
+
+             

@@ -1,0 +1,400 @@
+---
+title: ".b[Course Logistics]"
+subtitle: ".b[.green[EC 339]]"
+author: "Marcio Santetti"
+date: "Spring 2023"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
+    # self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: inverse, middle
+
+```{r Setup, include = F}
+options(htmltools.dir.version = FALSE)
+library(pacman)
+p_load(broom, latex2exp, ggplot2, ggthemes, ggforce, viridis, dplyr, magrittr, knitr, parallel, xaringanExtra, tidyverse, sjPlot, showtext, mathjaxr, ggforce, furrr, kableExtra, wooldridge, hrbrthemes, scales, ggeasy, patchwork)
+
+
+
+
+# Knitr options
+opts_chunk$set(
+  comment = "#>",
+  fig.align = "center",
+  fig.height = 7,
+  fig.width = 10.5,
+  warning = F,
+  message = F,
+  dpi=300
+)
+
+theme_set(theme_ipsum_rc())
+```
+
+```{R, colors, include = F}
+# Define pink color
+red_pink <- "#e64173"
+turquoise <- "#20B2AA"
+orange <- "#FFA500"
+red <- "#E02C05"
+blue <- "#2b59c3"
+green <- "#0FDA6D"
+grey_light <- "grey70"
+grey_mid <- "grey50"
+grey_dark <- "grey20"
+purple <- "#6A5ACD"
+```
+
+# Motivation
+
+
+---
+
+
+# Why is this course important for you?
+
+
+Being able to make .hi[sense] of (economic) data is one of the most important .hi[skills] you may develop in your Major field.
+
+--
+
+  - .hi-orange[Job market] (.mono[Stata/R/Python] are highly valued!)
+  - Further .hi[academic] studies
+  
+--
+
+<br>
+  
+When you can estimate with your own fingers (.hi-orange[???]) and see with your own eyes a .hi[downward-sloping demand curve], for example
+
+--
+
+  - .hi-orange[Empowerment]
+  - A more comprehensive learning
+
+  
+---
+
+# Is this course hard?
+
+--
+
+What does an Economist always have as a .hi[standard answer]?
+
+--
+
+  - It .hi-orange[depends]!
+  
+--
+
+<br><br>
+
+Learning Econometrics is quite a .hi[journey]
+
+--
+
+<br>
+
+  - But well worth it!
+  - Will not be exhausted with this course
+  - Here, a nicer challenge (theory and practice)
+  - The instructor is here to _.hi[help]_ you
+  
+
+
+---
+
+# Is this course hard?
+
+- In summary:
+
+--
+
+  - Take this course _.hi[seriously]_
+  - Come to class .hi-orange[in time] and with an .hi[open mind]
+  - Ask .hi-orange[questions]
+  - Do the .hi[assignments]
+  - .hi-orange[Exams] will reflect what assignments (esp. _Problem Sets_) have asked you
+  
+--
+
+<br>
+
+- About .mono[Stata]
+
+--
+
+  - It may take some .hi[time] to feel comfortable with it
+  - But after a few weeks, it will become a .hi-orange[good friend]
+  - Feed it well and it will be fine!
+
+
+---
+
+# Some practical tips
+
+<br><br>
+
+
+A friend's .hi-orange[advice]:
+
+--
+
+- Create a .hi[folder] in your computer for this course.
+
+--
+  
+  - .hi[Please].
+  
+--
+
+- We will use .hi-orange[hundreds] of different files throughout the semester.
+
+  - .hi[Organization] is key!
+  - Even better: create folders for .hi-orange[each week]. It will make your life easier.
+  
+
+
+---
+layout: false
+class: inverse, middle
+
+# The nature of Econometrics
+
+---
+
+
+# Defining Econometrics
+
+<br><br>
+
+Literally interpreted, Econometrics means “__.hi[economic measurement]__.”
+
+
+
+---
+
+# The methodology of Econometrics
+
+
+The .hi["classical" workflow] of an econometrician goes along the following lines:
+
+1\. Statement of .hi-orange[theory] or hypothesis;
+
+2\. Specification of the .hi[mathematical model] of the theory;
+
+3\. Specification of the statistical, or .hi-orange[econometric model];
+
+4\. Obtaining the .hi[data];
+
+5\. Estimation of the .hi-orange[parameters] of the econometric model;
+
+6\. .hi[Hypothesis testing];
+
+7\. .hi-orange[Forecasting] or prediction;
+
+8\. Using the model for control or .hi[policy] purposes.
+
+
+
+---
+layout: false
+class: inverse, middle
+
+
+# A practical example
+
+---
+
+
+# Engel's Law
+
+<br>
+
+As one's income .hi[rises], what happens to the .hi-orange[proportion] of income spent on food?
+
+<br>
+
+--
+
+  - In other words, how does the .hi[income elasticity] of demand for food behave with respect to food?
+
+--
+
+<br><br>
+
+Ernst Engel (1821&mdash;1896) argued that food expenditures grow .hi-orange[less] than people's increases in income, _in percentage terms_.
+
+---
+
+
+
+# Mathematical model
+
+<br><br><br>
+
+$$
+Foodexp_i = b_0 + b_1Income_i
+$$
+
+
+---
+
+
+# Econometric model
+
+<br><br>
+
+
+$$
+Foodexp_i = \beta_0 + \beta_1Income_i + u_i
+$$
+--
+
+<br>
+
+In _.hi[elasticity]_ terms:
+
+
+$$
+log(Foodexp_i) = \beta_0 + \beta_1log(Income_i) + u_i
+$$
+
+--
+
+<br>
+
+Engel's _.hi-orange[hypothesis]_: $0 < \beta_1 < 1$
+
+
+---
+
+
+# Obtaining data
+
+<br><br>
+
+[`Koenker and Bassett (1982)`](https://www.jstor.org/stable/1912528?seq=1#metadata_info_tab_contents) collected data on food expenditure and income for 235 Belgian working class households.
+
+```{r, echo=FALSE, message=FALSE}
+library(quantreg)
+data(engel)
+```
+
+
+
+---
+
+
+
+# Fitting a linear model
+
+
+```{r, echo=FALSE, dev='svg', fig.height=6}
+engel %>% as_tibble() %>% 
+  ggplot(aes(x = log(income), y = log(foodexp))) +
+  geom_point(color = "#006661", alpha = 0.8, size = 2.3) +
+  labs(x = "Income (log)", y = "Food expenditure (log)") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+```
+
+---
+
+
+
+# Fitting a linear model (cont.)
+
+
+```{r, echo=FALSE, dev='svg', fig.height = 6}
+engel %>% as_tibble() %>% 
+  ggplot(aes(x = log(income), y = log(foodexp))) +
+  geom_point(color = "#006661", alpha = 0.4, size = 2.3) +
+  geom_smooth(method = "lm", se=FALSE, color = "#787878") +
+  labs(x = "Income (log)", y = "Food expenditure (log)") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+```
+
+---
+
+
+# Parameter estimation
+
+<br><br>
+
+
+```{r, echo=FALSE}
+model <- lm(log(foodexp) ~ log(income), data=engel)
+
+```
+
+
+$$ \widehat{log(Foodexp_i)^*} =  0.55 + 0.86\log(Income_i) $$
+
+
+.footnote[
+*: the "^" symbol means .hi[estimated].
+]
+
+---
+
+# Econometric inference
+
+
+<br><br><br>
+
+
+```{r, eval=TRUE, tidy = TRUE, cache=FALSE, results="asis", message=F, warning=F, echo=FALSE}
+
+tab_model(model)
+
+```
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# The role of the computer
+
+---
+
+
+# The role of the computer
+
+
+<br><br>
+
+> "Regression analysis, the bread-and-butter tool of econometrics, these days
+is _.hi[unthinkable]_ without the computer and some access to statistical software"
+
+<br>
+
+.right[(Gujarati, 2004, p. 13, emphasis added).]
+
+
+
+
+---
+layout: false
+class: inverse, middle
+
+# Next time: Simple Linear Regression
+
+---
+exclude: true
+
+
+
+
+

@@ -103,7 +103,7 @@ Attendance and late policies:
   
   * Coming to class late will count as half of an absence.
   
-  * Late assignment submissions will have a grade deduction of at least 50%, increasing with the amount of time the student turns in their assignment.
+  * Late assignment submissions will have a grade deduction of at least 50%, increasing with the amount of time it takes the student to turn in their assignment.
 
 ***Important note***: For *any* assignment, if an answer contains a direct "Copy+Paste" from the lecture notes, or if it is copied from someone else's work, **no credit will be given**. Read more in the Skidmore [`Honor Code`](https://www.skidmore.edu/adofsaa/documents/Academic-Integrity-Handbook.pdf), pages 8--12.
 
@@ -153,13 +153,15 @@ I expect students to:
 
 * Come to class on time;
 
+* Keep phones away through the duration of class; computers are welcome, but refrain
+from using them for anything but activities related to the class.
+
 * Take the exams on the scheduled dates. No make-up exams will be allowed;
 
 * Respectfully participate in in-class discussions and activities;
 
 * Immediately notify me in the event of an emergency that prevents you from doing an exam or completing the course;
 
-* Ask questions if any expectations or assignments are unclear.
 
 
 # Classroom Procedures -- COVID-19
