@@ -18,7 +18,7 @@ Handout files created using [Quarto](https://quarto.org/).
 
 **Lecture 1: Course Logistics**
 
-  - Slides: [`html`]() | [`pdf`]()
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/000-logistics/000-course-logistics.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/000-logistics/000-course-logistics.pdf)
 
 **Lecture 2: Stats/Stata refresher**
 
