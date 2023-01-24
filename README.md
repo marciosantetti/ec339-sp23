@@ -6,7 +6,7 @@ Welcome to EC 339: Applied Econometrics!<br>
 
 ## Course Syllabi
 
-- [EC 339&mdash;001 Syllabus]()
+- [EC 339&mdash;001 Syllabus](https://raw.githack.com/marciosantetti/ec339-sp23/main/syllabus/ec339-syllabus-sp23.pdf)
 
 
 ## Lecture notes/slides
@@ -16,21 +16,20 @@ Handout files created using [Quarto](https://quarto.org/).
 
 <br>
 
-**Lecture 1: What is Econometrics?**
+**Lecture 1: Course Logistics**
 
   - Slides: [`html`]() | [`pdf`]()
 
 **Lecture 2: Stats/Stata refresher**
 
-  - Data file: [`cdc_data.csv`]() | To download, see `theSpring` module
+  - [`Video lecture`](https://youtu.be/BRwqm6RdL0I)
+  - Data file: [`cdc_data.csv`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/000-logistics/cdc_data.csv) | To download, see `theSpring` module
   - Stata do-file: [`000-stats-refresher.do`]() | To download, see `theSpring` module
 
 
  **Lecture 3: Simple Linear Regression**
  
-  - Handout: [`pdf`]()
-  - Slides: [`html`]() | [`pdf`]()
-  - Data files: [`star5_small.csv`]() & [`data description`](https://raw.githack.com/marciosantetti/ec339-f22/main/lectures/001-simple-regression/star5_small%20copy.txt) | [`food.csv`]() | To download, see `theSpring` module
+  - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/simple-regression.pdf)
   
 ## Assignments
 
@@ -48,7 +47,7 @@ All quizzes will be posted on `theSpring`.
 
  Students must submit their Applied Research Projects until the **Final Exam day**. 
 
-  - [Template and Handout coming soon.
+  - *Template and Handout coming soon.*
   
  Projects from previous semesters will be posted on `theSpring`.
  
