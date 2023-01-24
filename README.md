@@ -1,4 +1,4 @@
-# EC 339: Applied Econometrics, Fall 2022
+# EC 339: Applied Econometrics, Spring 2023
 
 Welcome to EC 339: Applied Econometrics!<br>
 *Fall 2022 - Marcio Santetti - [Economics Department](https://www.skidmore.edu/economics/), [Skidmore College](https://www.skidmore.edu/)*
@@ -6,7 +6,7 @@ Welcome to EC 339: Applied Econometrics!<br>
 
 ## Course Syllabi
 
-- [EC 339&mdash;001 Syllabus](https://raw.githack.com/marciosantetti/ec339-f22/main/syllabus/ec339-syllabus-f22.pdf)
+- [EC 339&mdash;001 Syllabus]()
 
 
 ## Lecture notes/slides
