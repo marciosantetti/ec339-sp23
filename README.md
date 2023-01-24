@@ -47,7 +47,7 @@ All quizzes will be posted on `theSpring`.
 
  Students must submit their Applied Research Projects until the **Final Exam day**. 
 
-  - [Template and Handout coming soon.
+  - *Template and Handout coming soon.*
   
  Projects from previous semesters will be posted on `theSpring`.
  
