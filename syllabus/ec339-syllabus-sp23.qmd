@@ -30,7 +30,7 @@ format:
 
 \begin{tabular}{ll|l} 
 	\textbf{When:} & \multicolumn{2}{l}{MoWe 2:30--3:50 PM} \\
-	\textbf{Where:} & \multicolumn{2}{l}{CIS 101A (\href{https://www.skidmore.edu/directions/maps.php}{\texttt{map}})} \\
+	\textbf{Where:} & \multicolumn{2}{l}{CIS 311 (\href{https://www.skidmore.edu/directions/maps.php}{\texttt{map}})} \\
 	\textbf{Who:} & \, \faMortarBoard \,  Marcio Santetti, Ph.D. (\textit{he/him}) & \, \faEnvelopeO \, \href{mailto:msantetti@skidmore.edu}{\texttt{msantetti@skidmore.edu}} \\
 	& \, \faHourglassHalf \, MoWe 12:30--2:00 PM$^*$ & \, \faUniversity \, Filene 207 \\
 	\textbf{Web:} & \, \faPencil \, \href{https://github.com/marciosantetti/ec339-sp23/blob/main/README.md}{\texttt{Course GitHub Repository}} \\
@@ -128,9 +128,9 @@ Unsatisfactory performance                      F (0--60\%)
 * **Jan 26**: "Add" deadline
 * **Mar 11--19**: Spring Vacation
 * **Apr 13**: Course withdrawal deadline
-* **??**: Midterm Exam (in class)
+* **TBD**: Midterm Exam (in class)
 * **May 2**: Last day of classes
-* ***??***: Final Exam, at our classroom; Applied Research Project due date.
+* **May 9, 6--9 PM**: Final Exam, at our classroom; Applied Research Project due date.
 
 
 # Class Policies
