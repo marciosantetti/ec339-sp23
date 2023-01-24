@@ -22,6 +22,7 @@ Handout files created using [Quarto](https://quarto.org/).
 
 **Lecture 2: Stats/Stata refresher**
 
+  - [`Video lecture`](https://youtu.be/BRwqm6RdL0I)
   - Data file: [`cdc_data.csv`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/000-logistics/cdc_data.csv) | To download, see `theSpring` module
   - Stata do-file: [`000-stats-refresher.do`]() | To download, see `theSpring` module
 
