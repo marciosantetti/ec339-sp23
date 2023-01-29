@@ -30,6 +30,7 @@ Handout files created using [Quarto](https://quarto.org/).
  **Lecture 3: Simple Linear Regression**
  
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/simple-regression.pdf)
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.pdf)
   
 ## Assignments
 
