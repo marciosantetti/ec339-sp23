@@ -31,6 +31,8 @@ Handout files created using [Quarto](https://quarto.org/).
  
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/simple-regression.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.pdf)
+  - Stata do-file: [`001-simple-regression.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/001-simple-regression/001-simple-regression.do) | To download, see `theSpring` module
+    - Data files available to download on `theSpring`.
   
 ## Assignments
 
