@@ -1,0 +1,611 @@
+---
+title: ".b[Multiple Linear Regression]"
+subtitle: ".b[.green[EC 339]]"
+author: "Marcio Santetti"
+date: "Fall 2022"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
+    # self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: inverse, middle
+
+```{r Setup, include = F}
+options(htmltools.dir.version = FALSE)
+library(pacman)
+p_load(broom, latex2exp, ggplot2, ggthemes, ggforce, viridis, dplyr, magrittr, knitr, parallel, xaringanExtra, tidyverse, sjPlot, mathjaxr, ggforce, furrr, kableExtra, wooldridge, hrbrthemes, scales, ggeasy, patchwork, MetBrewer, stargazer, gapminder)
+
+
+
+
+# Knitr options
+opts_chunk$set(
+  comment = "#>",
+  fig.align = "center",
+  fig.height = 7,
+  fig.width = 10.5,
+  warning = F,
+  message = F,
+  dpi=300
+)
+
+theme_set(theme_ipsum_rc())
+```
+
+```{R, colors, include = F}
+# Define pink color
+red_pink <- "#e64173"
+turquoise <- "#20B2AA"
+orange <- "#FFA500"
+red <- "#E02C05"
+blue <- "#2b59c3"
+green <- "#0FDA6D"
+grey_light <- "grey70"
+grey_mid <- "grey50"
+grey_dark <- "grey20"
+purple <- "#6A5ACD"
+```
+
+
+# Motivation
+
+---
+
+# Beyond simple regression
+
+<br>
+
+Simple regression models may not be .b[sufficient] to describe the relationships we are interested in.
+
+--
+
+<br>
+
+A few reasons:
+
+--
+
+  - Avoiding .b[bias] due to *omitted variables*;
+  
+  - More consistency with .b[economic theory];
+  
+  - Usually, relationships we study are a product of .b[several different events].
+
+---
+
+# Multiple regression models
+
+In .b[standard] notation:
+
+
+
+$$ 
+\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} +  \beta_2x_{2i} + \beta_3x_{3i} + ... + \beta_kx_{ki} + u_i \hspace{.7cm}\ \\ 
+\forall \ i = 1, 2, 3,..., n 
+\end{align}
+$$
+--
+
+<br>
+
+- From last week...
+
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + u_i
+\end{align}
+$$
+
+--
+
+- And now...
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + u_i
+\end{align}
+$$
+
+--
+
+<br>
+
+.small[.b[Important:] even if we are only interested in the effect of *educ* on *wage*, the model above is more consistent with theoretical priors.]
+
+
+---
+
+# An example
+
+
+.center[
+```{r, echo=FALSE, message=F}
+data("wage1")
+wage1 <- wage1 %>% 
+  as_tibble()
+
+
+wage_reg1 <- lm(wage ~ educ, data=wage1)
+
+wage_reg1 %>% 
+  stargazer::stargazer(type = "text")
+
+```
+]
+
+
+---
+
+# An example
+
+.smaller[.center[
+```{r, echo=FALSE, message=F}
+
+
+wage_reg2 <- lm(wage ~ educ + exper + tenure + female, data=wage1)
+
+wage_reg2 %>% 
+  stargazer::stargazer(type = "text", no.space = TRUE)
+
+```
+]]    
+---
+
+layout: false
+class: inverse, middle
+
+# Interpreting multiple coefficients
+
+
+---
+
+# The *ceteris paribus* assumption
+
+When .b[interpreting] multiple regression models, we .b[isolate] the effect of one independent variable on the
+dependent variable.
+
+--
+
+Therefore, the estimated .b[slope parameters] $(\hat{\beta}_1,...,\hat{\beta}_k)$ inform the change in $y$ resulting from a one-unit change in $x_i$, .it[holding all other independent variables constant].
+
+--
+
+.it[Mathematically] speaking...
+
+<br>
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + u_i
+\end{align}
+$$
+
+$$
+\begin{align}
+\dfrac{\partial wage_i}{\partial educ_i} = \beta_1
+\end{align}
+$$
+$$
+\begin{align}
+\dfrac{\partial wage_i}{\partial exper_i} = \beta_2
+\end{align}
+$$
+
+---
+layout: false
+class: inverse, middle
+
+# Goodness-of-fit
+
+---
+# Goodness-of-fit
+
+As more variables are added our model, *R*<sup>2</sup> increases in a .b[mechanical] fashion.
+
+--
+
+  - .b[Problem!]
+  
+<br>
+  
+--
+
+```{r, echo = FALSE}
+wage_reg1 %>% 
+  glance() %>% 
+  select(r.squared) %>% 
+  kable(col.names = "Simple regression wage model", digits = 2)
+```
+
+<br>
+
+```{r, echo = FALSE}
+wage_reg2 %>% 
+  glance() %>% 
+  select(r.squared) %>% 
+  kable(col.names = "Multiple regression wage model", digits = 2)
+```
+
+---
+
+# Goodness-of-fit
+
+<br><br>
+
+- Let us add a `construc` indicator variable, including it into our previous model.
+
+<br>
+
+  - `construc == 1` if working in the construction sector;
+  - `construc == 0` otherwise.
+
+--
+
+<br><br>
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + \beta_5construc_i + u_i
+\end{align}
+$$
+
+---
+
+# Goodness-of-fit
+
+.smaller[.center[
+```{r, echo=FALSE}
+wage_reg3 <- lm(wage ~ educ + exper + tenure + female + construc, 
+                data=wage1) 
+
+
+wage_reg3 %>% 
+  stargazer(type="text", no.space = TRUE)
+
+```
+]]
+
+
+---
+
+# Goodness-of-fit
+
+Before, the *R*<sup>2</sup> was .b[.364]! Why?
+
+--
+
+Let us have a closer look at its .b[formula]:
+
+$$
+\begin{align}
+R^2 = 1 - \dfrac{RSS}{TSS} = 1- \dfrac{\sum_{i=1}^{n}\hat{u}_i^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}
+\end{align}
+$$
+
+--
+
+- The .b[denominator] will remain the same, but the .b[numerator] will, at most, remain the same.
+
+--
+
+- .b[Solution]: the .it[adjusted] *R*<sup>2</sup>, <SPAN STYLE="text-decoration:overline">*R*</SPAN><sup>2</sup>:
+
+$$
+\begin{align}
+\bar{R}^2 =  1 - \dfrac{\sum_{i=1}^{n}\hat{u}_i^2/(n-k-1)}{\sum_{i=1}^{n}(y_i - \bar{y})^2/(n-1)}
+\end{align}
+$$
+
+--
+
+- $k=$ # independent variables;
+- $(n-k-1) =$ # degrees-of-freedom.
+
+---
+
+
+# Goodness-of-fit
+
+<br>
+
+Multiple regression model .b[without] *construc*:
+
+```{r, echo = FALSE}
+wage_reg2 %>% 
+  glance() %>% 
+  select(r.squared, adj.r.squared) %>% 
+  kable(col.names = c("R-squared", "Adjusted R-squared"), digits = 5)
+```
+
+<br>
+
+Multiple regression model .b[with] *construc*:
+
+```{r, echo = FALSE}
+wage_reg3 %>% 
+  glance() %>% 
+  select(r.squared, adj.r.squared) %>% 
+  kable(col.names = c("R-squared", "Adjusted R-squared"), digits = 5)
+```
+
+--
+
+.right[What happened?]
+
+---
+
+layout: false
+class: inverse, middle
+
+# Functional forms
+
+
+---
+
+# Nonlinear relationships
+
+.smaller[Many times, the relationships we are interested in .b[do not] follow a linear pattern.]
+
+
+```{R, include = F}
+reg_lin <- lm(lifeExp ~ gdpPercap, gapminder)
+a_lin <- reg_lin$coefficients[1]
+b_lin <- reg_lin$coefficients[2]
+r2_lin <- summary(reg_lin)$r.squared
+```
+
+
+
+
+```{R, echo = F, dev = "svg", fig.height = 5}
+gapminder %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(alpha = 0.5) +
+  scale_x_continuous("GDP per capita ($)", label = scales::comma) +
+  geom_smooth(method = "lm", size = 1, color = "#7e7c7a", se = F) +
+  labs(y = "Life expectancy", title="GDP per capita vs. Life expectancy") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+```
+
+
+---
+
+# A level-level model
+
+<br>
+
+```{r, echo = FALSE}
+reg_lin <- lm(lifeExp ~ gdpPercap, data = gapminder)
+reg_lin %>% tidy() %>% kable(digits = 6)
+```
+
+--
+
+<br>
+
+- .b[Interpretation:]
+
+- A 10,000-dollar increase in GDP per capita _.b[increases]_ life expectancy by 7.65 years.
+
+---
+
+# Nonlinear relationships
+
+```{R, include = F}
+reg_log_lin <- lm(log(lifeExp) ~ gdpPercap, data = gapminder)
+a_log_lin <- reg_log_lin$coefficients[1]
+b_log_lin <- reg_log_lin$coefficients[2]
+r2_log_lin <- summary(reg_log_lin)$r.squared
+```
+
+```{R, echo = F, dev = "svg", fig.height = 5.5}
+gapminder %>% 
+  ggplot(aes(x = gdpPercap, y = log(lifeExp))) +
+  geom_point(alpha = 0.5) +
+  scale_x_continuous("GDP per capita ($)", label = scales::comma) +
+  labs(y = "Life expectancy (log)", title="GDP per capita vs. Life expectancy") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+```
+
+---
+
+# A log-level model
+
+<br>
+
+```{r, echo = FALSE}
+reg_log_lin <- lm(log(lifeExp) ~ gdpPercap, data = gapminder)
+reg_log_lin %>% tidy() %>% kable()
+```
+
+--
+
+<br>
+
+- .b[Interpretation:]
+
+  - A one-unit increase in the explanatory variable increases the dependent variable by approximately $\beta_1 \times 100$ percent, on average.
+
+  - A 1,000-dollar increase in GDP per capita _.b[increases]_ life expectancy by 1.29%.
+
+
+---
+# Nonlinear relationships
+
+```{R, include = F}
+reg_log <- lm(log(lifeExp) ~ log(gdpPercap), gapminder)
+a_log <- reg_log$coefficients[1]
+b_log <- reg_log$coefficients[2]
+r2_log <- summary(reg_log)$r.squared
+```
+
+
+```{R, echo = F, dev = "svg", fig.height = 5.75}
+
+gapminder %>% 
+  ggplot(aes(x = log(gdpPercap), y = log(lifeExp))) +
+  geom_point(alpha = 0.5) +
+  scale_x_continuous("GDP per capita (log)", label = scales::comma) +
+  labs(y = "Life expectancy (log)", title="GDP per capita vs. Life expectancy") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+```
+
+
+---
+
+#  A log-log model
+
+<br>
+
+```{r, echo = FALSE}
+reg_log <- lm(log(lifeExp) ~ log(gdpPercap), data = gapminder)
+reg_log %>% tidy() %>% kable()
+```
+
+--
+
+<br>
+
+
+- .b[Interpretation:]
+
+  - A one-percent increase in the independent variable results in a $\beta_1$ percent change in the dependent variable, on average.
+
+  - A 1 % increase in GDP per capita _.b[increases]_ life expectancy by 0.147 %.
+
+---
+# Nonlinear relationships
+
+```{R, include = F}
+reg_lin_log <- lm(lifeExp ~ log(gdpPercap), gapminder)
+a_lin_log <- reg_lin_log$coefficients[1]
+b_lin_log <- reg_lin_log$coefficients[2]
+r2_lin_log <- summary(reg_lin_log)$r.squared
+```
+
+```{R, echo = F, dev = "svg", fig.height = 5.75}
+
+gapminder %>% 
+  ggplot(aes(x = log(gdpPercap), y = lifeExp)) +
+  geom_point(alpha = 0.5) +
+  scale_x_continuous("GDP per capita (log)", label = scales::comma) +
+  labs(y = "Life expectancy", title="GDP per capita vs. Life expectancy") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+```
+
+---
+
+# A level-log model
+
+<br>
+
+```{r, echo = FALSE}
+reg_lin_log <- lm(lifeExp ~ log(gdpPercap), data = gapminder)
+reg_lin_log %>% tidy() %>% kable()
+```
+
+--
+
+<br>
+
+
+- .b[Interpretation:]
+
+  - A one-percent change in the independent variable leads to a $\beta_1 \div 100$ change in the dependent variable, on average.
+
+  - A 1 % increase in GDP per capita _.b[increases]_ life expectancy by 0.0841 years.
+
+
+---
+
+# Quick summary
+
+<br>
+
+.center[**A nice interpretation reference**<sup>*</sup>].footnote[ by Kyle Raze]
+
+```{r, echo = F}
+cont_interp <- tibble(
+  model = c("Level-level <br> \\(y_i = \\beta_0 + \\beta_1 x_i + u_i\\)",
+             "Log-level <br> \\(\\log(y_i) = \\beta_0 + \\beta_1 x_i + u_i\\)",
+             "Log-log <br> \\(\\log(y_i) = \\beta_0 + \\beta_1 \\log(x_i) + u_i\\)",
+             "Level-log <br> \\(y_i = \\beta_0 + \\beta_1 \\log(x_i) + u_i\\)"),
+  interp = c("\\(\\Delta y = \\beta_1 \\cdot \\Delta x\\) <br> A one-unit increase in \\(x\\) leads to a <br> \\(\\beta_1\\)-unit increase in \\(y\\)",
+             "\\(\\%\\Delta y = 100 \\cdot \\beta_1 \\cdot \\Delta x\\) <br> A one-unit increase in \\(x\\) leads to a <br> \\(\\beta_1 \\cdot 100\\)-percent increase in \\(y\\)",
+             "\\(\\%\\Delta y = \\beta_1 \\cdot \\%\\Delta x\\) <br> A one-percent increase in \\(x\\) leads to a <br> \\(\\beta_1\\)-percent increase in \\(Y\\)",
+             "\\(\\Delta y = (\\beta_1 \\div 100) \\cdot \\%\\Delta x\\) <br> A one-percent increase in \\(x\\) leads to a <br> \\(\\beta_1 \\div 100\\)-unit increase in \\(y\\)")
+) %>% 
+  kable(
+  escape = F,
+  col.names = c("Model's functional form", " How to interpret \\(\\beta_1\\)?"),
+  align = c("l", "l")
+) %>% 
+  column_spec(1, color = "black", bold = T, italic = T, extra_css = "vertical-align:top;") %>% 
+  column_spec(2, color = "black", italic = T)
+cont_interp
+```
+
+---
+
+# The meaning of linear regression
+
+
+If we are able to use these nonlinear functional forms, what does *linear* regression mean after all?
+
+--
+
+  - As long as the model remains .b[linear in parameters],  it will be linear.
+
+  - This means that we cannot .b[mess around] with our $\beta$ coefficients!
+
+--
+
+<br>
+
+- **Examples**:
+
+$$
+\begin{align}
+log(wage_i) = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + u_i
+\end{align}
+$$
+--
+
+$$
+\begin{align}
+log(wage_i) = \beta_0 + log(\beta_1)educ_i + \beta_2exper_i + \beta_3^2tenure_i + \beta_4gender_i + u_i
+\end{align}
+$$
+
+--
+
+<br>
+
+- Which one is .b[not] linear in parameters?
+
+---
+
+
+
+layout: false
+class: inverse, middle
+
+# Next time: Multiple Regression in practice
+
+
+---
+exclude: true

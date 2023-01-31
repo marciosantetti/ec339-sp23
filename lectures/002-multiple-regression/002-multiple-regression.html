@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>.b[Multiple Linear Regression]</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcio Santetti" />
+    <script src="002-multiple-regression_files/header-attrs/header-attrs.js"></script>
+    <link href="002-multiple-regression_files/remark-css/default.css" rel="stylesheet" />
+    <link href="002-multiple-regression_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="002-multiple-regression_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <script src="002-multiple-regression_files/kePrint/kePrint.js"></script>
+    <link href="002-multiple-regression_files/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skid-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# .b[Multiple Linear Regression]
+]
+.subtitle[
+## .b[.green[EC 339]]
+]
+.author[
+### Marcio Santetti
+]
+.date[
+### Fall 2022
+]
+
+---
+
+class: inverse, middle
+
+
+
+
+
+
+# Motivation
+
+---
+
+# Beyond simple regression
+
+&lt;br&gt;
+
+Simple regression models may not be .b[sufficient] to describe the relationships we are interested in.
+
+--
+
+&lt;br&gt;
+
+A few reasons:
+
+--
+
+  - Avoiding .b[bias] due to *omitted variables*;
+  
+  - More consistency with .b[economic theory];
+  
+  - Usually, relationships we study are a product of .b[several different events].
+
+---
+
+# Multiple regression models
+
+In .b[standard] notation:
+
+
+
+$$ 
+`\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} +  \beta_2x_{2i} + \beta_3x_{3i} + ... + \beta_kx_{ki} + u_i \hspace{.7cm}\ \\ 
+\forall \ i = 1, 2, 3,..., n 
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+- From last week...
+
+
+$$
+`\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + u_i
+\end{align}`
+$$
+
+--
+
+- And now...
+
+$$
+`\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + u_i
+\end{align}`
+$$
+
+--
+
+&lt;br&gt;
+
+.small[.b[Important:] even if we are only interested in the effect of *educ* on *wage*, the model above is more consistent with theoretical priors.]
+
+
+---
+
+# An example
+
+
+.center[
+
+```
+#&gt; 
+#&gt; ===============================================
+#&gt;                         Dependent variable:    
+#&gt;                     ---------------------------
+#&gt;                                wage            
+#&gt; -----------------------------------------------
+#&gt; educ                         0.541***          
+#&gt;                               (0.053)          
+#&gt;                                                
+#&gt; Constant                      -0.905           
+#&gt;                               (0.685)          
+#&gt;                                                
+#&gt; -----------------------------------------------
+#&gt; Observations                    526            
+#&gt; R2                             0.165           
+#&gt; Adjusted R2                    0.163           
+#&gt; Residual Std. Error      3.378 (df = 524)      
+#&gt; F Statistic          103.363*** (df = 1; 524)  
+#&gt; ===============================================
+#&gt; Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+```
+]
+
+
+---
+
+# An example
+
+.smaller[.center[
+
+```
+#&gt; 
+#&gt; ===============================================
+#&gt;                         Dependent variable:    
+#&gt;                     ---------------------------
+#&gt;                                wage            
+#&gt; -----------------------------------------------
+#&gt; educ                         0.572***          
+#&gt;                               (0.049)          
+#&gt; exper                         0.025**          
+#&gt;                               (0.012)          
+#&gt; tenure                       0.141***          
+#&gt;                               (0.021)          
+#&gt; female                       -1.811***         
+#&gt;                               (0.265)          
+#&gt; Constant                     -1.568**          
+#&gt;                               (0.725)          
+#&gt; -----------------------------------------------
+#&gt; Observations                    526            
+#&gt; R2                             0.364           
+#&gt; Adjusted R2                    0.359           
+#&gt; Residual Std. Error      2.958 (df = 521)      
+#&gt; F Statistic           74.398*** (df = 4; 521)  
+#&gt; ===============================================
+#&gt; Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+```
+]]    
+---
+
+layout: false
+class: inverse, middle
+
+# Interpreting multiple coefficients
+
+
+---
+
+# The *ceteris paribus* assumption
+
+When .b[interpreting] multiple regression models, we .b[isolate] the effect of one independent variable on the
+dependent variable.
+
+--
+
+Therefore, the estimated .b[slope parameters] `\((\hat{\beta}_1,...,\hat{\beta}_k)\)` inform the change in `\(y\)` resulting from a one-unit change in `\(x_i\)`, .it[holding all other independent variables constant].
+
+--
+
+.it[Mathematically] speaking...
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + u_i
+\end{align}`
+$$
+
+$$
+`\begin{align}
+\dfrac{\partial wage_i}{\partial educ_i} = \beta_1
+\end{align}`
+$$
+$$
+`\begin{align}
+\dfrac{\partial wage_i}{\partial exper_i} = \beta_2
+\end{align}`
+$$
+
+---
+layout: false
+class: inverse, middle
+
+# Goodness-of-fit
+
+---
+# Goodness-of-fit
+
+As more variables are added our model, *R*&lt;sup&gt;2&lt;/sup&gt; increases in a .b[mechanical] fashion.
+
+--
+
+  - .b[Problem!]
+  
+&lt;br&gt;
+  
+--
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Simple regression wage model &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.16 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;br&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Multiple regression wage model &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.36 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goodness-of-fit
+
+&lt;br&gt;&lt;br&gt;
+
+- Let us add a `construc` indicator variable, including it into our previous model.
+
+&lt;br&gt;
+
+  - `construc == 1` if working in the construction sector;
+  - `construc == 0` otherwise.
+
+--
+
+&lt;br&gt;&lt;br&gt;
+
+$$
+`\begin{align}
+wage_i = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + \beta_5construc_i + u_i
+\end{align}`
+$$
+
+---
+
+# Goodness-of-fit
+
+.smaller[.center[
+
+```
+#&gt; 
+#&gt; ===============================================
+#&gt;                         Dependent variable:    
+#&gt;                     ---------------------------
+#&gt;                                wage            
+#&gt; -----------------------------------------------
+#&gt; educ                         0.577***          
+#&gt;                               (0.050)          
+#&gt; exper                         0.026**          
+#&gt;                               (0.012)          
+#&gt; tenure                       0.141***          
+#&gt;                               (0.021)          
+#&gt; female                       -1.788***         
+#&gt;                               (0.266)          
+#&gt; construc                       0.563           
+#&gt;                               (0.626)          
+#&gt; Constant                     -1.685**          
+#&gt;                               (0.736)          
+#&gt; -----------------------------------------------
+#&gt; Observations                    526            
+#&gt; R2                             0.365           
+#&gt; Adjusted R2                    0.358           
+#&gt; Residual Std. Error      2.958 (df = 520)      
+#&gt; F Statistic           59.658*** (df = 5; 520)  
+#&gt; ===============================================
+#&gt; Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+```
+]]
+
+
+---
+
+# Goodness-of-fit
+
+Before, the *R*&lt;sup&gt;2&lt;/sup&gt; was .b[.364]! Why?
+
+--
+
+Let us have a closer look at its .b[formula]:
+
+$$
+`\begin{align}
+R^2 = 1 - \dfrac{RSS}{TSS} = 1- \dfrac{\sum_{i=1}^{n}\hat{u}_i^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}
+\end{align}`
+$$
+
+--
+
+- The .b[denominator] will remain the same, but the .b[numerator] will, at most, remain the same.
+
+--
+
+- .b[Solution]: the .it[adjusted] *R*&lt;sup&gt;2&lt;/sup&gt;, &lt;SPAN STYLE="text-decoration:overline"&gt;*R*&lt;/SPAN&gt;&lt;sup&gt;2&lt;/sup&gt;:
+
+$$
+`\begin{align}
+\bar{R}^2 =  1 - \dfrac{\sum_{i=1}^{n}\hat{u}_i^2/(n-k-1)}{\sum_{i=1}^{n}(y_i - \bar{y})^2/(n-1)}
+\end{align}`
+$$
+
+--
+
+- `\(k=\)` # independent variables;
+- `\((n-k-1) =\)` # degrees-of-freedom.
+
+---
+
+
+# Goodness-of-fit
+
+&lt;br&gt;
+
+Multiple regression model .b[without] *construc*:
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; R-squared &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Adjusted R-squared &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.36354 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.35865 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;br&gt;
+
+Multiple regression model .b[with] *construc*:
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; R-squared &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Adjusted R-squared &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.36453 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.35842 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+--
+
+.right[What happened?]
+
+---
+
+layout: false
+class: inverse, middle
+
+# Functional forms
+
+
+---
+
+# Nonlinear relationships
+
+.smaller[Many times, the relationships we are interested in .b[do not] follow a linear pattern.]
+
+
+
+
+
+
+
+&lt;img src="002-multiple-regression_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# A level-level model
+
+&lt;br&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.955561 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.314995 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 171.29025 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gdpPercap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000765 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000026 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29.65766 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+--
+
+&lt;br&gt;
+
+- .b[Interpretation:]
+
+- A 10,000-dollar increase in GDP per capita _.b[increases]_ life expectancy by 7.65 years.
+
+---
+
+# Nonlinear relationships
+
+
+
+&lt;img src="002-multiple-regression_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A log-level model
+
+&lt;br&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.9666387 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0058346 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 679.85339 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gdpPercap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000129 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27.03958 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+--
+
+&lt;br&gt;
+
+- .b[Interpretation:]
+
+  - A one-unit increase in the explanatory variable increases the dependent variable by approximately `\(\beta_1 \times 100\)` percent, on average.
+
+  - A 1,000-dollar increase in GDP per capita _.b[increases]_ life expectancy by 1.29%.
+
+
+---
+# Nonlinear relationships
+
+
+
+
+&lt;img src="002-multiple-regression_files/figure-html/unnamed-chunk-15-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+#  A log-log model
+
+&lt;br&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.864177 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0232827 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 123.01718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; log(gdpPercap) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.146549 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0028213 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.94452 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+--
+
+&lt;br&gt;
+
+
+- .b[Interpretation:]
+
+  - A one-percent increase in the independent variable results in a `\(\beta_1\)` percent change in the dependent variable, on average.
+
+  - A 1 % increase in GDP per capita _.b[increases]_ life expectancy by 0.147 %.
+
+---
+# Nonlinear relationships
+
+
+
+&lt;img src="002-multiple-regression_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A level-log model
+
+&lt;br&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.100889 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.227674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -7.413117 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; log(gdpPercap) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.405085 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.148762 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.500206 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+--
+
+&lt;br&gt;
+
+
+- .b[Interpretation:]
+
+  - A one-percent change in the independent variable leads to a `\(\beta_1 \div 100\)` change in the dependent variable, on average.
+
+  - A 1 % increase in GDP per capita _.b[increases]_ life expectancy by 0.0841 years.
+
+
+---
+
+# Quick summary
+
+&lt;br&gt;
+
+.center[**A nice interpretation reference**&lt;sup&gt;*&lt;/sup&gt;].footnote[ by Kyle Raze]
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Model's functional form &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt;  How to interpret \(\beta_1\)? &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;font-style: italic;color: black !important;vertical-align:top;"&gt; Level-level &lt;br&gt; \(y_i = \beta_0 + \beta_1 x_i + u_i\) &lt;/td&gt;
+   &lt;td style="text-align:left;font-style: italic;color: black !important;"&gt; \(\Delta y = \beta_1 \cdot \Delta x\) &lt;br&gt; A one-unit increase in \(x\) leads to a &lt;br&gt; \(\beta_1\)-unit increase in \(y\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;font-style: italic;color: black !important;vertical-align:top;"&gt; Log-level &lt;br&gt; \(\log(y_i) = \beta_0 + \beta_1 x_i + u_i\) &lt;/td&gt;
+   &lt;td style="text-align:left;font-style: italic;color: black !important;"&gt; \(\%\Delta y = 100 \cdot \beta_1 \cdot \Delta x\) &lt;br&gt; A one-unit increase in \(x\) leads to a &lt;br&gt; \(\beta_1 \cdot 100\)-percent increase in \(y\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;font-style: italic;color: black !important;vertical-align:top;"&gt; Log-log &lt;br&gt; \(\log(y_i) = \beta_0 + \beta_1 \log(x_i) + u_i\) &lt;/td&gt;
+   &lt;td style="text-align:left;font-style: italic;color: black !important;"&gt; \(\%\Delta y = \beta_1 \cdot \%\Delta x\) &lt;br&gt; A one-percent increase in \(x\) leads to a &lt;br&gt; \(\beta_1\)-percent increase in \(Y\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;font-style: italic;color: black !important;vertical-align:top;"&gt; Level-log &lt;br&gt; \(y_i = \beta_0 + \beta_1 \log(x_i) + u_i\) &lt;/td&gt;
+   &lt;td style="text-align:left;font-style: italic;color: black !important;"&gt; \(\Delta y = (\beta_1 \div 100) \cdot \%\Delta x\) &lt;br&gt; A one-percent increase in \(x\) leads to a &lt;br&gt; \(\beta_1 \div 100\)-unit increase in \(y\) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# The meaning of linear regression
+
+
+If we are able to use these nonlinear functional forms, what does *linear* regression mean after all?
+
+--
+
+  - As long as the model remains .b[linear in parameters],  it will be linear.
+
+  - This means that we cannot .b[mess around] with our `\(\beta\)` coefficients!
+
+--
+
+&lt;br&gt;
+
+- **Examples**:
+
+$$
+`\begin{align}
+log(wage_i) = \beta_0 + \beta_1educ_i + \beta_2exper_i + \beta_3tenure_i + \beta_4gender_i + u_i
+\end{align}`
+$$
+--
+
+$$
+`\begin{align}
+log(wage_i) = \beta_0 + log(\beta_1)educ_i + \beta_2exper_i + \beta_3^2tenure_i + \beta_4gender_i + u_i
+\end{align}`
+$$
+
+--
+
+&lt;br&gt;
+
+- Which one is .b[not] linear in parameters?
+
+---
+
+
+
+layout: false
+class: inverse, middle
+
+# Next time: Multiple Regression in practice
+
+
+---
+exclude: true
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
