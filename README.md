@@ -4,7 +4,7 @@ Welcome to EC 339: Applied Econometrics!<br>
 *Spring 2023 - Marcio Santetti - [Economics Department](https://www.skidmore.edu/economics/), [Skidmore College](https://www.skidmore.edu/)*
 
 
-## Course Syllabi
+## Course Syllabus
 
 - [EC 339&mdash;001 Syllabus](https://raw.githack.com/marciosantetti/ec339-sp23/main/syllabus/ec339-syllabus-sp23.pdf)
 
@@ -30,6 +30,9 @@ Handout files created using [Quarto](https://quarto.org/).
  **Lecture 3: Simple Linear Regression**
  
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/simple-regression.pdf)
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.pdf)
+  - Stata do-file: [`001-simple-regression.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/001-simple-regression/001-simple-regression.do) | To download, see `theSpring` module
+    - Data files available to download on `theSpring`.
   
 ## Assignments
 
