@@ -37,6 +37,7 @@ Handout files created using [Quarto](https://quarto.org/).
 **Week 3: Multiple Linear Regression**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/002-multiple-regression/multiple-regression.pdf)
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/002-multiple-regression/002-multiple-regression.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/002-multiple-regression/002-multiple-regression.pdf)
   
 ## Assignments
 
