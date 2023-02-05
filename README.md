@@ -16,23 +16,27 @@ Handout files created using [Quarto](https://quarto.org/).
 
 <br>
 
-**Lecture 1: Course Logistics**
+**Week 1: Course Logistics**
 
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/000-logistics/000-course-logistics.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/000-logistics/000-course-logistics.pdf)
 
-**Lecture 2: Stats/Stata refresher**
+**Week 1: Stats/Stata refresher**
 
   - [`Video lecture`](https://youtu.be/BRwqm6RdL0I)
   - Data file: [`cdc_data.csv`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/000-logistics/cdc_data.csv) | To download, see `theSpring` module
   - Stata do-file: [`000-stats-refresher.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/000-logistics/000-stats-refresher.do) | To download, see `theSpring` module
 
 
- **Lecture 3: Simple Linear Regression**
+ **Week 2: Simple Linear Regression**
  
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/simple-regression.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.pdf)
   - Stata do-file: [`001-simple-regression.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/001-simple-regression/001-simple-regression.do) | To download, see `theSpring` module
     - Data files available to download on `theSpring`.
+
+**Week 3: Multiple Linear Regression**
+
+  - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/002-multiple-regression/multiple-regression.pdf)
   
 ## Assignments
 
