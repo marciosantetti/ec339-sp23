@@ -8,7 +8,7 @@
 
 
 *------------------------------------------------------*
-* MULTIPLE LINEAR REGRESSION IN PRACTICE		       *
+* MULTIPLE LINEAR REGRESSION IN PRACTICE               *
 *------------------------------------------------------*
 
 
@@ -33,7 +33,7 @@
 * statistical assumptions," Econometrica, 55, 765-800.
 
 
-* The "mroz.csv" file is available in the course GitHub repository and on theSpring,
+* The "mroz.csv" file is available on theSpring,
 * as well as a .txt file describing its variables.
 
 
@@ -41,7 +41,7 @@
 * After you have imported it, you may save it to a .dta format.
 
 
-save mroz.dta
+save mroz
 
 
 
@@ -82,7 +82,7 @@ keep if (exper > 0)
 * We can save this "filtered" data set:
 
 
-save mroz_filtered.dta
+save mroz_filtered
 
 
 ** Family income vs. husband's education:
@@ -106,6 +106,18 @@ reg faminc kidsl6 hours exper heduc hwage
 
 
 * Your answer:
+
+
+
+
+** Furthermore, let us interpret the goodness-of-fit measures (R2 and adjusted R2):
+
+* Your answer:
+
+
+
+** The same assumptions about the error term (its expected value and covariance with independent variables)
+** remain the same as for the simple regression model we have studied before.
 
 
 *------------------------------------------
@@ -140,6 +152,7 @@ reg lfaminc kidsl6 hours exper heduc hwage
 
 
 *--- Now, let us put both faminc and hwage in log-scale:
+
 
 gen lhwage = log(hwage)
 

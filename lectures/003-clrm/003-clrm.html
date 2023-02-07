@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>.b[The Classical Linear Regression Model]</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcio Santetti" />
+    <script src="003-clrm_files/header-attrs/header-attrs.js"></script>
+    <link href="003-clrm_files/remark-css/default.css" rel="stylesheet" />
+    <link href="003-clrm_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="003-clrm_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skid-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# .b[The Classical Linear Regression Model]
+]
+.subtitle[
+## .b[.green[EC 339]]
+]
+.author[
+### Marcio Santetti
+]
+.date[
+### Fall 2022
+]
+
+---
+
+class: inverse, middle
+
+
+
+
+
+# Motivation
+
+
+
+
+---
+
+# OLS works, but it needs assumptions
+
+&lt;br&gt;&lt;br&gt;
+
+- The goal when using OLS is to obtain .b[unbiased], .b[efficient], and .b[consistent] estimators.
+
+--
+
+- Moreover, we want to be able to do .b[hypothesis testing].
+
+--
+
+- All these properties are made possible through .b[7 assumptions].
+
+--
+
+- This set of assumptions is known as the .b[Classical Linear Regression Model] (CLRM).
+
+
+---
+class: inverse, middle
+
+# The Classical Assumptions
+
+
+---
+
+# The set of Classical Assumptions
+
+&lt;br&gt;
+
+**1**. The regression model is .b[linear], .b[correctly specified], and has an .b[additive] stochastic error
+term.
+
+--
+
+**2**. The stochastic error term `\((u_i)\)` has a .b[zero] population mean.
+
+--
+
+**3**. All explanatory variables `\((x_i)\)` are .b[uncorrelated] with the error term.
+
+--
+
+**4**. Observations of the error term are .b[uncorrelated] with each other.
+
+--
+
+**5**. The error term has a .b[constant variance].
+
+--
+
+**6**. No explanatory variable is a .b[perfect linear function] of any other explanatory variable.
+
+--
+
+**7**. The error term is .b[normally distributed].
+
+---
+
+# Assumption 1
+
+&gt; "*The regression model is .b[linear], .b[correctly specified], and has an .b[additive] stochastic error
+term.*"
+
+--
+
+  - .it[Linear] means linear in .b[parameters] `\((\beta_i)\)`;
+  
+  - .it[Correctly specified] means that it has the correct .b[functional form] and .b[no] omitted variables.
+  
+  - And an .b[additive] error term implies .b[no] other form in which `\(u_i\)` appears in a model.
+  
+--
+
+&lt;br&gt;
+
+- **Examples**:
+
+$$
+`\begin{align}
+y_i = \beta_0 \beta_1x_{1i} + \beta_2x_{2i} + u_i
+\end{align}`
+$$
+$$
+`\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i}u_i
+\end{align}`
+$$
+$$
+`\begin{align}
+y_i = \beta_0 + log(\beta_1)x_{1i} + \beta_2x_{2i} + u_i
+\end{align}`
+$$
+
+---
+
+# Assumption 1
+
+One of the main reasons for a .it[violation] of CLRM Assumption I is an .b[incorrectly specified] model.
+
+--
+
+- This may happen due to
+
+  - Incorrect .b[functional form] (data visualization matters!);
+
+  - .b[Omitted] variables (leading to omitted variables bias).
+  
+--
+
+
+&lt;br&gt;
+
+
+A regression's error term may sometimes be a .b[black box].
+
+--
+
+  - Recall that any potentially omitted variable(s) lie(s) there!
+
+--
+
+Therefore, our models must have a .b[theoretical] motivation.
+
+
+---
+
+# What is bias?
+
+
+An estimator is .b[biased] if its expected value is different from the *true* population parameter.
+
+--
+
+When considering our slope coefficients `\((\hat{\beta}_i)\)`, we expect that they, on average, are close to the .b["true"] population parameter, `\(\beta_{pop}\)`.
+
+.pull-left[
+
+**Unbiased:** `\(\mathop{\mathbb{E}}\left[ \hat{\beta}_{OLS} \right] = \beta_{pop}\)`
+
+&lt;img src="003-clrm_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+**Biased:** `\(\mathop{\mathbb{E}}\left[ \hat{\beta}_{OLS} \right] \neq \beta_{pop}\)`
+
+&lt;img src="003-clrm_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# Assumption 2
+
+&gt; *"The stochastic error term `\((u_i)\)` has a .b[zero] population mean."*
+
+--
+
+&lt;br&gt;
+
+  - Values of the stochastic error term are defined by .b[pure chance].
+  
+  - It follows a probability .b[distribution] centered around zero.
+  
+  - Also known as the .b[exogeneity] assumption.
+  
+--
+
+&lt;br&gt;
+
+From standard Microeconomic theory, recall:
+
+  - Factors that influence the .b[demand] for a given good:
+  
+    - Price of the good itself, price of substitutes, preferences...
+  
+---
+
+# Assumption 2
+
+&lt;br&gt;
+
+&gt; *"The stochastic error term `\((u_i)\)` has a .b[zero] population mean."*
+
+
+&lt;br&gt;&lt;br&gt;
+
+
+In practice, what is the difference between `\(\mathbb{E}[u \ | \ x] = 0\)` and `\(\mathbb{E}[u \ | \ x] \neq 0\)`?
+
+---
+
+# Assumption 3
+
+&gt; *"All explanatory variables `\((x_i)\)` are .b[uncorrelated] with the error term."*
+
+--
+
+&lt;br&gt;&lt;br&gt;
+
+  - Observed values of the independent variable are determined .b[independently] of the values contained in the error term
+  
+  - `\(Cor(x_i, u_i) \neq 0 \implies\)` .b[violation] of CLRM Assumption III.
+  
+  - A possible reason: a variable correlated with some `\(x_i\)` being .b[omitted] from the model.
+
+
+---
+
+# Assumption 4
+
+&lt;br&gt;&lt;br&gt;
+
+&gt; *"Observations of the error term are .b[uncorrelated] with each other."*
+
+--
+
+&lt;br&gt;
+
+  - Also known as .b[autocorrelation].
+  
+  - Common in .b[time-series] data.
+  
+  - Occurs when the model's disturbances are correlated .b[over time], i.e., `\(Cor(u_t, u_j) \neq 0\)` for `\(t \neq j\)`.
+
+
+
+---
+
+# Assumption 4
+
+Behavior of `\(u_t\)` over time (positive serial correlation)
+
+&lt;img src="003-clrm_files/figure-html/positive auto u-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Assumption 4
+
+Behavior of `\(u_t\)` over time (negative serial correlation)
+
+&lt;img src="003-clrm_files/figure-html/negative auto u-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+# Assumption 5
+
+&gt; *"The error term has a .b[constant variance]."*
+
+--
+
+&lt;br&gt;
+
+  - Also known as the .b[homoskedasticity] assumption.
+  
+  - If violated, we have .b[heteroskedasticity].
+  
+  - Extremely .b[common] in cross-section data sets (also in financial time-series data)
+  
+--
+
+&lt;br&gt;
+
+- This assumption implies that the error term has the .b[same variance] for each value of the independent variable.
+
+  - `\(Var(u|x) = \sigma^2\)`
+  
+
+---
+
+# Assumption 5
+
+- .b[Homoskedastic] residuals:
+
+&lt;img src="003-clrm_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# Assumption 5
+
+- .b[Heteroskedastic] residuals:
+
+
+
+
+&lt;img src="003-clrm_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Assumption 6
+
+&gt; *"No explanatory variable is a .b[perfect linear function] of any other explanatory variable."*
+
+--
+
+&lt;br&gt;&lt;br&gt;
+
+  - Also known as the .b[no perfect multicollinearity] assumption.
+  
+  - Only completely .b[violated] if an independent variable `\(x_i\)` is a .b[deterministic] function of another variable `\(x_j\)`, for `\(i \neq j\)`
+  
+--
+
+&lt;br&gt;
+
+Examples:
+
+  - `\(x_3 = x_1 - 1,000\)`
+
+  - `\(x_2 = 50 + x_1\)`
+  
+
+---
+
+
+# Assumption 7
+
+&lt;br&gt;&lt;br&gt;
+
+
+&gt; *"The error term is .b[normally distributed]."*
+
+--
+
+&lt;br&gt;&lt;br&gt;
+
+  - Summarized by `\(u_i \sim{\mathcal{N}(0,  \sigma^2)}\)`.
+  
+--
+
+&lt;br&gt;
+
+OLS .b[still works] without this assumption!
+
+--
+
+But crucial for .b[hypothesis testing and inference].
+
+---
+
+
+layout: false
+class: inverse, middle
+
+# The Gauss-Markov theorem
+
+
+---
+
+# The Gauss-Markov theorem
+
+&lt;br&gt;&lt;br&gt;
+
+From CLRM Assumptions .b[I through VI], we guarantee that OLS is .hi-blue[BLUE].
+
+--
+
+&lt;br&gt;&lt;br&gt;
+
+We will learn how to deal with the most common .b[violations] of CLRM Assumption after the Midterm exam.
+
+
+
+
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: CLRM in practice
+
+
+---
+exclude: true
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
