@@ -1,9 +1,9 @@
 *-----------------------------------------------------------------------*
-*												                        *
-*												                        *
-*                     EC 339: APPLIED ECONOMETRICS                      *    
-*												                        *
-*  Prof. Santetti									                    *
+*																		
+*																		
+*                     EC 339: APPLIED ECONOMETRICS                            
+*																		
+*  Prof. Santetti														
 *-----------------------------------------------------------------------*
 
 
@@ -30,65 +30,25 @@
 ** and contains an additive error term.
 
 
-**  We will study this assumption through artificial data.
 
-** Let us create some random numbers. The first step is to set a common "seed" for reproducibility:
+* Stata (and any other statistical software already takes care of the first and
+* third points of this assumption. The hard part, however, is having
+* a wel-specified model).
 
-
-clear
-
-
-set seed 1233
+use chicken_demand
 
 
-quietly drop _all
-
-set obs 100
-
-gen double x1_true = 30 + 2 * runiform(20, 60)
-
-gen double x2_true = 10/x1_true + x1_true * rnormal(0, 1)
-
-gen double y_true = 45 + 2 * x1_true + 4*x2_true + rnormal(0, 1)
+* make sure to check out the "chicken_demand.txt" file with all variable descriptions.
 
 
+* Let us estimate a model for the demand for chicken, according to economic theory:
 
-* Then, some visuals:
-
-
-twoway (scatter y_true x1_true), name(p1)
-
-twoway (scatter y_true x2_true), name(p2)
+reg q p y pb
 
 
-* Combining both graphs in the same plotting space:
+** Is this model well specified?
 
-
-graph combine p1 p2
-
-
-** Estimating a model for "y_true" without "x1_true":
-
-
-reg y_true x2_true
-
-
-* Does the estimation match the "true" model?
-
-
-
-
-
-** Now, estimating the model with all relevant variables:
-
-
-reg y_true x1_true x2_true
-
-
-
-* What is the difference now?
-
-
+** Your answer:
 
 
 **------------------------------------------------------------------------
@@ -97,39 +57,17 @@ reg y_true x1_true x2_true
 **--- Assumption 2: the error term has a zero population mean.
 
 
-set seed 200
-set obs 500
+* We can use the previous regression's residual term:
 
-gen double x = 50 - runiform(-50, 50)
-
-gen double y = 100 + 2*x + rnormal(0,1)
+predict resid_chicken, residuals
 
 
-** Visuals:
+mean resid_chicken
 
 
-twoway (scatter y x)
+* Is this assumption verified?
 
-twoway (scatter y x) (lfit y x)
-
-
-** And the model:
-
-reg y x
-
-
-** Storing the residuals:
-
-
-
-predict a2_resid, residuals
-
-
-** And computing the mean:\
-
-
-tabstat a2_resid, statistics(n mean)
-
+* Your answer:
 
 **------------------------------------------------------------------------
 
@@ -137,14 +75,13 @@ tabstat a2_resid, statistics(n mean)
 **--- Assumption 3: All explanatory variables are uncorrelated with the error term.
 
 
-** We can use the same artificial data from the last Assumption:\
+correlate resid_chicken p y pb
 
 
 
-correlate a2_resid x
+* Is this assumption verified?
 
-
-** Is the assumption satisfied?
+* Your answer:
 
 
 **------------------------------------------------------------------------
@@ -153,25 +90,13 @@ correlate a2_resid x
 **--- Assumption 4: Observations of the error term are uncorrelated with each other.
 
 
-** For this example, let us use some real-world data:
-** More info at: https://rdrr.io/cran/wooldridge/man/fertil3.html
+
+twoway (scatter resid_chicken year) (line resid_chicken year)
 
 
-clear
+* Is this assumption verified?
 
-
-use fertil3
-
-
-
-reg gfr pe ww2 pill 
-
-predict a5_resid, residuals
-
-twoway (scatter a5_resid year) (line a5_resid year)
-
-
-** How does the residual term look?
+* Your answer:
 
 
 **------------------------------------------------------------------------
@@ -180,106 +105,58 @@ twoway (scatter a5_resid year) (line a5_resid year)
 **--- Assumption 5: the error term has a constant variance (homoskedasticity assumption)
 
 
+** Now, we use a different data set:
 
-set obs 200
-
-egen z = seq()
-
-
-** Notice that the [egen] function was used, instead of [gen]. This link may be helpful:
-** https://stackoverflow.com/questions/12993607/whats-the-difference-between-gen-and-egen-in-stata-12
+clear
 
 
+use food
 
-set seed 100
+gen lfood_exp = log(food_exp)
+gen lincome = log(income)
 
 
-
-gen w = 50 + rnormal(0, 0.1*z)
+reg food_exp income
 
 
 
-twoway (scatter w z)
+predict resid_food, residuals
 
 
+twoway (scatter resid_food income), yline(0)
 
 
-reg w z
+* What is happening to the variance of the residual term as one's income increases?
 
 
-predict a55_resid, residuals
-
-egen obs5 = seq()
-
-twoway (scatter a55_resid obs5), yline(0)
-
-
-** How do the residuals look?
+* Your answer:
 
 
 **------------------------------------------------------------------------
-
 
 
 **--- Assumption 6: No explanatory variable is a perfect linear function
 ** of any other explanatory variable (no multicollinearity assumption).
 
 
-
 clear
 
-set seed 123
-
-set obs 100
-
-
-gen double x1 = runiform(0, 100)
-
-gen double x2 = 0.25*x1
-
-gen double y_multi = 0.5*x1 + 0.5*x2 + rnormal(0,1)
+use chicken_demand
 
 
 
+correlate p y pb
 
-reg y_multi x1 x2
 
+* Is this assumption verified?
 
-** What is happening?
-
+* Your answer:
 
 
 **------------------------------------------------------------------------
 
 
 **--- Assumption 7: the error term is normally distributed.
-
-
-* Let us use the data from Assumption 5:
-
-
-clear
-
-set obs 200
-
-egen z = seq()
-
-set seed 100
-
-gen w = 50 + rnormal(0, 0.1*z)
-
-
-
-
-
-reg w z
-
-predict a55_resid, residuals
-
-
-** Visuals:
-
-histogram a55_resid, kdensity
 
 
 ** The Shapiro-Wilk test for normality is a common statistical test that we can
@@ -291,8 +168,9 @@ histogram a55_resid, kdensity
 * Ha: H0 is not true.
 
 
-swilk a55_resid
+swilk resid_chicken
 
 
+* Is this assumption verified?
 
-* What do we conclude?
+* Your answer:
