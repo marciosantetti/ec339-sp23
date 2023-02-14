@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>.b[Linear Regression: Inference]</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcio Santetti" />
+    <script src="004-inference_files/header-attrs/header-attrs.js"></script>
+    <link href="004-inference_files/remark-css/default.css" rel="stylesheet" />
+    <link href="004-inference_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="004-inference_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skid-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# .b[Linear Regression: Inference]
+]
+.subtitle[
+## .b[.green[EC 339]]
+]
+.author[
+### Marcio Santetti
+]
+.date[
+### Fall 2022
+]
+
+---
+
+class: inverse, middle
+
+
+
+
+
+# Motivation
+
+
+
+---
+
+
+# A critique
+
+&lt;br&gt;
+
+Here, we are dealing with the so-called .hi[frequentist] approach to Statistics/Econometrics.
+
+--
+
+It assumes that there exists an underlying .hi-orange[true population parameter] in nature.
+
+--
+
+Therefore, while this .hi[population parameter] value is fixed in nature, .hi-orange[samples] are variable.
+
+--
+
+And .hi[using samples] is the best we can do. 
+
+--
+
+  - But this is .hi[not] the only approach!
+
+---
+
+# There are more ways to think Inference
+
+- .hi[Bayesian] inference is a completely different animal!
+
+.right[&lt;img src="stat_ret.jpg" style="width: 25%" /&gt;]
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Confidence Intervals
+
+
+---
+
+# Confidence intervals
+
+&lt;br&gt;&lt;br&gt;
+
+In practical terms, a regression returns a .hi[point estimate] of our desired parameter(s).
+
+--
+
+Supposedly, it .hi-orange[represents], to the best of our efforts, the "true" population parameter.
+
+--
+
+But wouldn't it be better if we could have a .hi[range] of values for `\(\beta_i\)`?
+
+--
+
+Given a .hi[confidence level] `\((1-\alpha)\)`, we can easily construct a .hi-orange[confidence interval] for `\(\beta_i\)`.
+
+---
+
+# Confidence intervals
+
+From .hi[Stats], we know:
+
+--
+
+$$ \text{CI} = \bar{x} \pm t_c \cdot \sigma $$
+--
+
+$$  \text{CI} = \bar{x} \pm t_c \cdot \frac{s}{\sqrt{n}}   $$
+--
+
+
+And now:
+
+$$
+`\begin{aligned}
+\text{CI} = \hat{\beta}_k \pm t_c \cdot SE(\hat{\beta}_k)
+\end{aligned}`
+$$
+--
+
+where `\(t_c = t_{1-\alpha/2, \ n-k-1}\)`. 
+
+&lt;br&gt;
+
+It denotes the `\(1-\alpha/2\)` .hi[quantile] of a *t* distribution, with n-k-1 .hi[degrees-of-freedom].
+
+---
+
+# Confidence intervals
+
+- The .hi-orange[standard error] (SE) of an estimate:
+
+`$$\mathop{\text{SE}} \left( \hat{\beta}_2 \right) = \sqrt{ \frac{s^2_u}{\sum_{i=1}^n (x_i - \bar{x})^2} }.$$`
+--
+
+where `\(s^2_u = \dfrac{\sum_i \hat{u}_i^2}{n - k - 1}\)` is the variance of `\(u_i\)`.
+
+--
+
+&lt;br&gt;&lt;br&gt;
+
+The standard error of an estimate is nothing but its .hi[standard deviation].
+
+
+
+
+---
+
+# Confidence intervals
+
+
+- .hi[Informal interpretation:]
+
+  - The confidence interval is a region in which we are able to place some .hi[trust] for containing the parameter of interest.
+
+--
+
+- .hi-orange[Formal interpretation:]
+
+  - With .hi-orange[repeated sampling] from the population, we can construct confidence intervals for each of these samples. Then `\((1-\alpha) \cdot100\)` percent of our intervals (*e.g.,* 95%) will contain the population parameter _.hi[somewhere in this interval]_.
+
+---
+
+# Confidence intervals - An example
+
+.center[
+
+
+
+```
+#&gt; 
+#&gt; ===============================================
+#&gt;                         Dependent variable:    
+#&gt;                     ---------------------------
+#&gt;                               lsalary          
+#&gt; -----------------------------------------------
+#&gt; age                           -0.001           
+#&gt;                               (0.005)          
+#&gt; lsales                       0.225***          
+#&gt;                               (0.028)          
+#&gt; Constant                     5.005***          
+#&gt;                               (0.303)          
+#&gt; -----------------------------------------------
+#&gt; Observations                    177            
+#&gt; R2                             0.281           
+#&gt; Adjusted R2                    0.273           
+#&gt; Residual Std. Error      0.517 (df = 174)      
+#&gt; F Statistic           34.004*** (df = 2; 174)  
+#&gt; ===============================================
+#&gt; Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+```
+
+]
+
+
+---
+
+# Confidence intervals - An example
+
+&lt;br&gt;
+
+From the previous regression output, we have:
+
+  - `\(\hat{\beta}_{lsales_{i}}\)`: 0.225
+  
+  - `\(SE(\hat{\beta}_{lsales_{i}})\)`: 0.0277
+  
+
+
+&lt;br&gt;
+
+In addition, the sample size (*n*) is 177.
+
+
+---
+
+# Confidence intervals - An example
+
+- Then, we can calculate a 95% confidence interval for `\(\beta_{lsales_{i}}\)`:
+
+$$ 
+`\begin{align}
+\text{CI} =  \hat{\beta}_{lsales_{i}} \pm t_c \cdot SE(\hat{\beta}_{lsales_{i}})
+\end{align}`
+$$
+--
+
+$$
+`\begin{align}
+\text{CI} = 0.225 \ \pm \ t_{1-0.05/2, \ 177 - 2 - 1} \ \cdot \ 0.0277 
+\end{align}`
+$$
+
+--
+
+$$
+`\begin{align}
+\text{CI} = 0.225 \ \pm \ t_{1-0.05/2, \ 174} \ \cdot \ 0.0277 
+\end{align}`
+$$
+
+--
+
+&lt;br&gt;
+
+- `\(t_{1-0.05/2, \ 174} =\)` `-1.973691`
+
+
+- The interval is `[0.17, 0.28]`.
+
+---
+
+# Confidence intervals - An example
+
+&lt;img src="004-inference_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+
+With .hi-orange[repeated sampling] from the population, 95% of our intervals will contain the population parameter _.hi[somewhere in this [0.17, 0.28] interval]_.
+
+
+
+---
+
+# Confidence intervals - An example
+
+&lt;img src="004-inference_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+
+- If we estimate a 99% confidence interval, we have:
+
+$$
+`\begin{align}
+\text{CI} = 0.225 \ \pm \ t_{1-0.01/2, \ 174} \ \cdot \ 0.0277 
+\end{align}`
+$$
+
+- `\(t_{1-0.01/2, \ 174} =\)` `2.604379`
+- The interval is `[0.15, 0.29]`.
+
+---
+
+layout: false
+class: inverse, middle
+
+# Hypothesis Testing
+
+---
+
+# Hypothesis testing
+
+- When doing *hypothesis testing*, our aim is to determine whether there is enough .hi[statistical evidence] to reject a hypothesized value or range of values.
+
+--
+
+- In Econometrics, we usually run .hi-orange[two-sided (tailed)] tests about *regression parameters*.
+
+  - `\(H_0: \beta_i = 0\)`
+  - `\(H_a: \beta_i \neq 0\)`   
+
+&lt;br&gt;
+
+- The above testing procedure is a test of .hi[statistical significance].
+
+  - If we .hi-orange[do not reject] `\(H_0\)`, the coefficient is not statistically significant.
+  - If we .hi[reject] `\(H_0\)`, we have enough evidence to support the coefficient's  statistical significance.
+
+
+---
+
+# Hypothesis testing
+
+In .mono[R]...
+
+
+```r
+wage_model &lt;- lm(wage ~ educ + exper + tenure, data = wage2)
+wage_model %&gt;% 
+  tidy()
+```
+
+```
+#&gt; # A tibble: 4 × 5
+#&gt;   term        estimate std.error statistic  p.value
+#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 (Intercept)  -276.      107.       -2.59 9.78e- 3
+#&gt; 2 educ           74.4       6.29     11.8  3.28e-30
+#&gt; 3 exper          14.9       3.25      4.58 5.33e- 6
+#&gt; 4 tenure          8.26      2.50      3.31 9.83e- 4
+```
+
+---
+
+# Hypothesis testing
+
+
+In .mono[Stata]...
+
+&lt;img src="stata.png" style="width: 120%" /&gt;
+
+
+---
+
+# Hypothesis testing
+
+- Where does the `11.8` *t* value come from?
+
+$$
+`\begin{align}
+t = \dfrac{\hat{\beta}_k - \beta_{H_0}}{SE(\hat{\beta}_k)} = \dfrac{74.4 - 0}{6.29} = 11.8283
+\end{align}`
+$$
+
+&lt;br&gt;&lt;br&gt;
+
+--
+
+- Where does the `4.58` *t* value come from?
+
+$$
+`\begin{align}
+t = \dfrac{\hat{\beta}_k - \beta_{H_0}}{SE(\hat{\beta}_k)} = \dfrac{14.9 - 0}{3.25} = 4.584615
+\end{align}`
+$$
+
+
+---
+
+# Hypothesis testing
+
+
+What are we supposed to do with these test statistics?
+
+.pull-left[
+- t.sub[educ] = `11.8`
+- t.sub[exper] = `4.58`
+- t.sub[tenure] = `3.31`
+]
+
+.pull-right[
+- t.sub[critical value] = t.sub[.05/2, 931] = `1.962515`
+]
+
+&lt;img src="004-inference_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Hypothesis testing
+
+### Interpretation
+
+&lt;br&gt;
+
+At 5% of significance, we have enough evidence to .hi[reject the null hypothesis] that `educ` is not statistically significant.
+
+At 5% of significance, we have enough evidence to .hi[reject the null hypothesis] that `exper` is not statistically significant.
+
+At 5% of significance, we have enough evidence to .hi[reject the null hypothesis] that `tenure` is not statistically significant.
+
+--
+
+Therefore, all coefficients are (individually) .hi-orange[statistically significant].
+
+---
+
+# Hypothesis testing
+
+## The F-test 
+
+Sometimes, a coefficient on a .hi[specific variable] may not be *statistically significant*.
+
+However, it may be of use in the .hi-orange[model's context].
+
+Thus, a test of .hi[joint] significance is appropriate to evaluate whether .hi[all slope coefficients] are *jointly* significant within the model.
+
+--
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+F = \dfrac{R^2_{\text{unr}} - R^2_{\text{rest}}}{1 - R^2_{\text{unr}}}\cdot \dfrac{(n-k-1)}{q} 
+\end{align}`
+$$
+
+
+
+
+
+
+---
+
+# The F-test
+
+Still with our .hi[wage] model: 
+
+Suppose we want to test whether `educ` and `exper` are .hi-orange[jointly] significant.
+
+--
+
+For the purpose of this test, our previous model is the .hi[unrestricted] (full) model.
+
+--
+
+Then, we estimate a .hi-orange[restricted] model, excluding `educ` and `exper`.
+
+
+  - Its R-squared is .b[0.0165]; while the unrestricted's is .b[0.146].
+  
+--
+
+&lt;br&gt;
+
+We have imposed .hi[2] restrictions to the full model. Thus, *q=2*.
+
+--
+
+And the .hi-orange[sample size] is *n=935*, which gives *n-k-1 = 931* for the full model.
+
+
+---
+
+# The F-test
+
+
+$$
+`\begin{align}
+F = \dfrac{R^2_{\text{unr}} - R^2_{\text{rest}}}{1 - R^2_{\text{unr}}}\cdot \dfrac{(n-k-1)}{q}  \\ \\ = \dfrac{0.146 - 0.0165}{1 - 0.146} \cdot \dfrac{935-3-1}{2} = 70.588
+\end{align}`
+$$
+--
+
+- 70.588 is the .hi[test statistic] for the F-test
+
+--
+
+- Then, we compare the above value with the .hi-orange[critical values] given by the F-distribution table.
+
+--
+
+- Right-tail critical value:
+
+  - `\(F_{1-.05/2, \ 2, \ 931}=\)` 3.703535
+  - Thus, we .hi[reject the null hypothesis], meaning that we have enough evidence to infer that `educ` and `exper` are .hi-orange[jointly significant] in this model.
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: Inference in practice
+
+
+---
+exclude: true
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

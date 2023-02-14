@@ -46,7 +46,7 @@ use chicken_demand
 reg q p y pb
 
 
-** Is this model well specified?
+** Is this model well specified? i.e., having correct functional form and no omitted variables.
 
 ** Your answer:
 
@@ -112,8 +112,7 @@ clear
 
 use food
 
-gen lfood_exp = log(food_exp)
-gen lincome = log(income)
+
 
 
 reg food_exp income
