@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 ### Marcio Santetti
 ]
 .date[
-### Fall 2022
+### Spring 2023
 ]
 
 ---
@@ -54,23 +54,20 @@ It assumes that there exists an underlying .hi-orange[true population parameter]
 
 --
 
+&lt;br&gt;&lt;br&gt;
+
 Therefore, while this .hi[population parameter] value is fixed in nature, .hi-orange[samples] are variable.
 
 --
 
 And .hi[using samples] is the best we can do. 
 
---
-
-  - But this is .hi[not] the only approach!
 
 ---
 
-# There are more ways to think Inference
+# Where does this come from?
 
-- .hi[Bayesian] inference is a completely different animal!
-
-.right[&lt;img src="stat_ret.jpg" style="width: 25%" /&gt;]
+&lt;img src="004-inference_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -129,13 +126,13 @@ where `\(t_c = t_{1-\alpha/2, \ n-k-1}\)`.
 
 &lt;br&gt;
 
-It denotes the `\(1-\alpha/2\)` .hi[quantile] of a *t* distribution, with n-k-1 .hi[degrees-of-freedom].
+It denotes the `\(1-\alpha/2\)` .hi[quantile] of a *t* distribution, with *n-k-1* .hi[degrees-of-freedom].
 
 ---
 
 # Confidence intervals
 
-- The .hi-orange[standard error] (SE) of an estimate:
+- The .hi-orange[standard error] (.hi-orange[*SE*]) of an estimate:
 
 `$$\mathop{\text{SE}} \left( \hat{\beta}_2 \right) = \sqrt{ \frac{s^2_u}{\sum_{i=1}^n (x_i - \bar{x})^2} }.$$`
 --
@@ -259,7 +256,7 @@ $$
 
 # Confidence intervals - An example
 
-&lt;img src="004-inference_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="004-inference_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
 
 With .hi-orange[repeated sampling] from the population, 95% of our intervals will contain the population parameter _.hi[somewhere in this [0.17, 0.28] interval]_.
 
@@ -269,7 +266,7 @@ With .hi-orange[repeated sampling] from the population, 95% of our intervals wil
 
 # Confidence intervals - An example
 
-&lt;img src="004-inference_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="004-inference_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
 
 - If we estimate a 99% confidence interval, we have:
 
@@ -310,28 +307,6 @@ class: inverse, middle
   - If we .hi[reject] `\(H_0\)`, we have enough evidence to support the coefficient's  statistical significance.
 
 
----
-
-# Hypothesis testing
-
-In .mono[R]...
-
-
-```r
-wage_model &lt;- lm(wage ~ educ + exper + tenure, data = wage2)
-wage_model %&gt;% 
-  tidy()
-```
-
-```
-#&gt; # A tibble: 4 × 5
-#&gt;   term        estimate std.error statistic  p.value
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 (Intercept)  -276.      107.       -2.59 9.78e- 3
-#&gt; 2 educ           74.4       6.29     11.8  3.28e-30
-#&gt; 3 exper          14.9       3.25      4.58 5.33e- 6
-#&gt; 4 tenure          8.26      2.50      3.31 9.83e- 4
-```
 
 ---
 
@@ -340,7 +315,7 @@ wage_model %&gt;%
 
 In .mono[Stata]...
 
-&lt;img src="stata.png" style="width: 120%" /&gt;
+&lt;img src="stata.png" style="width: 130%" /&gt;
 
 
 ---

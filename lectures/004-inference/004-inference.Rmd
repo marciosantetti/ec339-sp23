@@ -2,7 +2,7 @@
 title: ".b[Linear Regression: Inference]"
 subtitle: ".b[.green[EC 339]]"
 author: "Marcio Santetti"
-date: "Fall 2022"
+date: "Spring 2023"
 output:
   xaringan::moon_reader:
     css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
@@ -58,23 +58,41 @@ It assumes that there exists an underlying .hi-orange[true population parameter]
 
 --
 
+<br><br>
+
 Therefore, while this .hi[population parameter] value is fixed in nature, .hi-orange[samples] are variable.
 
 --
 
 And .hi[using samples] is the best we can do. 
 
---
-
-  - But this is .hi[not] the only approach!
 
 ---
 
-# There are more ways to think Inference
+# Where does this come from?
 
-- .hi[Bayesian] inference is a completely different animal!
+```{r, echo = F, dev = "svg", fig.height = 5.5}
 
-.right[<img src="stat_ret.jpg" style="width: 25%" />]
+min2 <- -3.5
+max2 <- 3.5
+
+c_values <- c(-1.9736, 0, 1.9736)
+
+
+c_value <- 1.9736
+
+labss <- as.character(c_values)
+
+lab1 <- as.character(c_value)
+
+
+ggplot(data.frame(x = c(min2, max2)), aes(x = x)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1), geom = "area", fill = "#8b9dc3", alpha = 0.35) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1), size = 1.2, alpha = 0.8) +
+  labs(x = "parameter space", y = "") +
+  easy_x_axis_title_size(13)
+
+```
 
 
 ---
@@ -133,13 +151,13 @@ where $t_c = t_{1-\alpha/2, \ n-k-1}$.
 
 <br>
 
-It denotes the $1-\alpha/2$ .hi[quantile] of a *t* distribution, with n-k-1 .hi[degrees-of-freedom].
+It denotes the $1-\alpha/2$ .hi[quantile] of a *t* distribution, with *n-k-1* .hi[degrees-of-freedom].
 
 ---
 
 # Confidence intervals
 
-- The .hi-orange[standard error] (SE) of an estimate:
+- The .hi-orange[standard error] (.hi-orange[*SE*]) of an estimate:
 
 $$\mathop{\text{SE}} \left( \hat{\beta}_2 \right) = \sqrt{ \frac{s^2_u}{\sum_{i=1}^n (x_i - \bar{x})^2} }.$$
 --
@@ -354,17 +372,6 @@ class: inverse, middle
   - If we .hi[reject] $H_0$, we have enough evidence to support the coefficient's  statistical significance.
 
 
----
-
-# Hypothesis testing
-
-In .mono[R]...
-
-```{r, echo=TRUE}
-wage_model <- lm(wage ~ educ + exper + tenure, data = wage2)
-wage_model %>% 
-  tidy()
-```
 
 ---
 
@@ -373,7 +380,7 @@ wage_model %>%
 
 In .mono[Stata]...
 
-<img src="stata.png" style="width: 120%" />
+<img src="stata.png" style="width: 130%" />
 
 
 ---
