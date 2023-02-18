@@ -51,6 +51,7 @@ Handout files created using [Quarto](https://quarto.org/).
 **Week 5: Econometric Inference**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/004-inference/inference.pdf)
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/004-inference/004-inference.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/004-inference/004-inference.pdf)
     
 
 ## Assignments
