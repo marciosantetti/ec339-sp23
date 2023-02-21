@@ -1,9 +1,9 @@
 *-----------------------------------------------------------------------*
-*												                        *
-*												                        *
-*                     EC 339: APPLIED ECONOMETRICS                      *    
-*												                        *
-*  Prof. Santetti									                    *
+*																		
+*																		
+*                     EC 339: APPLIED ECONOMETRICS                            
+*																		
+*  Prof. Santetti														
 *-----------------------------------------------------------------------*
 
 
@@ -56,7 +56,7 @@ reg sleep totwrk age yrsmarr
 * Let us calculate a t-test for the coefficient on "totwrk":
 
 *-- H0: beta_totwrk = 0;      (the coefficient is not statistically significant)
-*-- Ha: beta_totwrk != 0      (a two-sided/two-tailed test)
+*-- Ha: beta_totwrk /= 0      (a two-sided/two-tailed test)
 
 
 
@@ -73,7 +73,7 @@ display _b[totwrk]  / _se[totwrk]
 * the "invttail" function does that for us, so there is no need to use tables.
 
 
-* For the upper tail value, using alpha/2:
+* For the upper tail value, using alpha/2 (in this case, 5%):
 
 
 display invttail(706 - 3 - 1, 0.05/2)  
@@ -202,6 +202,9 @@ display 2 * Ftail(3, 702,  28.61)
 
 
 **------------------------------------------------------------------------
+
+
+reg sleep totwrk age yrsmarr
 
 
 ** Suppose that, from our sleep model, we would like to test the following hypotheses:

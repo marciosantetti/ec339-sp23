@@ -1,0 +1,905 @@
+---
+title: ".b[More on functional forms]"
+subtitle: ".b[.green[EC 339]]"
+author: "Marcio Santetti"
+date: "Fall 2022"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
+    # self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: inverse, middle
+
+```{r Setup, include = F}
+options(htmltools.dir.version = FALSE)
+library(pacman)
+p_load(broom, latex2exp, ggplot2, ggthemes, ggforce, viridis, dplyr, magrittr, knitr, parallel, xaringanExtra, tidyverse, sjPlot, mathjaxr, ggforce, furrr, kableExtra, wooldridge, hrbrthemes, scales, ggeasy, patchwork, MetBrewer, stargazer, gapminder)
+
+
+
+
+# Knitr options
+opts_chunk$set(
+  comment = "#>",
+  fig.align = "center",
+  fig.height = 7,
+  fig.width = 10.5,
+  warning = F,
+  message = F,
+  dpi=300
+)
+
+theme_set(theme_ipsum_rc())
+```
+
+```{R, colors, include = F}
+# Define pink color
+red_pink <- "#e64173"
+turquoise <- "#20B2AA"
+orange <- "#FFA500"
+red <- "#E02C05"
+blue <- "#2b59c3"
+green <- "#0FDA6D"
+grey_light <- "grey70"
+grey_mid <- "grey50"
+grey_dark <- "grey20"
+purple <- "#6A5ACD"
+met_slate <- "#23373b" 
+```
+
+
+
+# Motivation
+
+---
+
+# New functional forms
+
+<br>
+
+There is more to OLS than .hi[linear-in-variables] models or .hi-orange[log-transformed] models.
+
+--
+
+<br>
+
+But do these models .hi[preserve] OLS _Classical Assumptions_?
+
+--
+
+  - They do!
+  
+  - But under what conditions?
+  
+--
+
+<br>
+
+As long as the model remains .hi[linear in parameters], everything is fine.
+
+
+---
+
+# New functional forms
+
+<br><br>
+
+
+**1**. Regression through the __origin__
+
+
+**2**. Regression with __quadratic__ terms
+
+
+**3**. __Inverse__ forms
+
+
+**4**. __Interaction__ terms
+
+
+**5**. __Binary__ (*dummy*) variables
+
+---
+
+layout: false
+class: inverse, middle
+
+# Regression through the origin
+
+
+---
+
+# Regression through the origin
+
+<br><br>
+
+It is used whenever we need to impose the .hi[restriction] that, when $x=0$, the expected value of $y$ is also zero.
+
+--
+
+<br>
+
+It should be applied .hi[only] when theory recommends to do so.
+
+<br>
+
+--
+
+$$
+\begin{align}
+y_i = \beta_1x_{1i} + u_i
+\end{align}
+$$
+
+
+
+---
+
+# Regression through the origin
+
+$$
+\begin{align}
+Cons_i = \beta_1Inc_i + u_i
+\end{align}
+$$
+
+--
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, dev='svg', fig.height=5}
+
+data("saving")
+
+saving %>% 
+  filter(cons > 0) %>% 
+  ggplot(aes(x=inc, y=cons)) + 
+  geom_point(alpha=0.8, color="#8b9dc3", size = 2) + 
+  geom_smooth(method="lm", se=FALSE, formula = "y ~ 0 + x", color="#f15025") +
+  labs(x="Income ($)", y="Consumption ($)", title="Income vs. Consumption") +
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13) +
+  scale_y_continuous(labels = comma) +
+  scale_x_continuous(labels = comma)
+
+```
+
+
+
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Using quadratic terms
+
+---
+
+# Using quadratic terms
+
+<br><br>
+
+Many times, the effect of a variable $x_i$ on $y$ also depends on the .hi[level] of that independent variable.
+
+--
+
+We can also apply quadratic terms when the effect of $x_i$ on $y$ .hi[changes] after a given threshold.
+
+--
+
+<br>
+
+$$
+\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2(x_{1i})^2 + \cdot \cdot \cdot + \beta_kx_{ki} + u_i
+\end{align}
+$$
+
+
+---
+
+# Using quadratic terms
+
+```{R, echo = F}
+# Set seed
+set.seed(699)
+# Sample size
+n <- 1e3
+# Generate data
+quad_df <- tibble(
+  x = runif(n, 0, 10),
+  y = 13 + 42*x - 5*x^2 + rnorm(n, sd = 25)
+)
+# regression
+quad_reg <- lm(y ~ x + I(x^2), data = quad_df) 
+b1 <- quad_reg$coefficients[2]
+b2 <- quad_reg$coefficients[3]
+# Plot
+p1 <- ggplot(data = quad_df, aes(x = x, y = y)) +
+geom_point(size = 3, color = "#cc79a7", alpha = 0.5) +
+xlab("x") +
+ylab("y") +
+easy_y_axis_title_size(13) +
+easy_x_axis_title_size(13)
+```
+
+
+```{R, quad plot2, echo = F, dev = "svg", fig.height = 5.5}
+# Set seed
+set.seed(699)
+# Sample size
+n <- 1e3
+# Generate data
+quad_df <- tibble(
+  x = runif(n, 0, 10),
+  y = 12 + 22*x + 4*x^2 + rnorm(n, sd = 23)
+)
+# regression
+quad_reg <- lm(y ~ x + I(x^2), data = quad_df) 
+b1 <- quad_reg$coefficients[2]
+b2 <- quad_reg$coefficients[3]
+# Plot
+p2 <- ggplot(data = quad_df, aes(x = x, y = y)) +
+geom_point(size = 3, color = "#8b9dc3", alpha = 0.3) +
+xlab("x") +
+ylab("y") +
+easy_y_axis_title_size(13) +
+easy_x_axis_title_size(13)
+
+p1 / p2
+```
+
+
+---
+
+# Using quadratic terms
+
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1exper_{i} + \beta_2exper_{i}^2 +  u_i
+\end{align}
+$$
+
+
+
+```{r, echo = F, dev = "svg", fig.height = 5}
+data('wage1')
+
+wage1 %>% ggplot(aes(x=exper, y=wage)) + geom_point(alpha=0.9, color=turquoise, size = 2) +
+  labs(x='Experience', y='Hourly Wages ($)', title = 'Hourly wages vs. years of experience') +
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13)
+
+
+
+```
+
+---
+
+# Using quadratic terms
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1exper_{i} + \beta_2exper_{i}^2 +  u_i
+\end{align}
+$$
+
+
+
+```{r, echo = F, dev = "svg", fig.height = 5}
+data('wage1')
+
+wage1 %>% ggplot(aes(x=exper, y=wage)) + geom_point(alpha=0.9, color=turquoise, size = 2) + 
+  geom_smooth(method = 'lm', formula = y ~ x + I(x^2), se = F, linetype = 1, color = "#f15025", size = 1) +
+  labs(x='Experience', y='Hourly Wages ($)', title = 'Hourly wages vs. years of experience') +
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13)
+
+
+
+```
+
+---
+
+# Using quadratic terms
+
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_{i} + \beta_2educ_{i}^2 +  u_i
+\end{align}
+$$
+
+```{r, echo = F, dev = "svg", fig.height = 5}
+data('wage1')
+
+wage1 %>% ggplot(aes(x=educ, y=wage)) + geom_point(alpha=0.9, color=turquoise, size = 2) + 
+  labs(x='Education', y='Hourly Wages', title = 'Hourly wages vs. years of schooling') +
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13)
+
+
+
+```
+
+---
+
+# Using quadratic terms
+
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_{i} + \beta_2educ_{i}^2 +  u_i
+\end{align}
+$$
+
+```{r, echo = F, dev = "svg", fig.height = 5}
+data('wage1')
+
+wage1 %>% ggplot(aes(x=educ, y=wage)) + geom_point(alpha=0.9, color=turquoise, size = 2) + 
+  geom_smooth(method = 'lm', formula = y ~ x + I(x^2), se = F, linetype = 1, color = "#f15025", size = 1) +
+  labs(x='Education', y='Hourly Wages', title = 'Hourly wages vs. years of schooling') +
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13)
+
+
+
+```
+
+---
+
+# Using quadratic terms
+
+.hi[Interpretation]
+
+$$
+\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{1i}^2 +  u_i
+\end{align}
+$$
+--
+
+<br>
+
+$$
+\begin{align}
+\dfrac{\partial \ y}{\partial \ x_1} = \beta_1 + 2 \ \cdot \ \beta_2 \ \cdot \  x_1
+\end{align}
+$$
+
+<br><br>
+
+--
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_{i} + \beta_2educ_{i}^2 +  u_i
+\end{align}
+$$
+
+--
+
+<br>
+
+
+$$
+\begin{align}
+\dfrac{\partial \ wage}{\partial \ educ} = \beta_1 + 2 \ \cdot \ \beta_2 \ \cdot \  educ
+\end{align}
+$$
+
+---
+
+
+
+layout: false
+class: inverse, middle
+
+# Inverse forms
+
+
+---
+
+# Inverse forms
+
+<br><br>
+
+Inverse forms are used whenever the effect of an independent variable on $y_i$ is expected to approach .hi[zero]
+as its value approaches .hi-orange[infinity].
+
+--
+
+<br>
+
+As always, but especially important to this category, .hi[economic theory] should *strongly recommend* the use of such functional form.
+
+---
+
+# Inverse forms
+
+$$
+\begin{align}
+qchicken_i = \beta_0 + \beta_1\dfrac{1}{pchicken_{i}} +  u_i
+\end{align}
+$$
+
+```{r, echo = F, dev = "svg", fig.height = 5}
+chick <- read_csv('chicken_demand.csv')
+
+chick %>% ggplot(aes(x=p, y=q)) + geom_point(alpha=1/2) + 
+  labs(x='Price of chicken (per pound)', y='Per capita chicken consumption', title = 'Chicken consumption vs. price of chicken') + 
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13)
+
+
+
+
+```
+
+
+---
+
+# Inverse forms
+
+$$
+\begin{align}
+qchicken_i = \beta_0 + \beta_1\dfrac{1}{pchicken_{i}} +  u_i
+\end{align}
+$$
+
+
+```{r, echo = F, dev = "svg", fig.height = 5}
+
+
+chick %>% ggplot(aes(x=p, y=q)) + geom_point(alpha=1/2) + 
+  geom_smooth(method = 'lm', formula = y ~ I(1/x), se = F, linetype = 1, color = red_pink, size = 1) +
+  labs(x='Price of chicken (per pound)', y='Per capita chicken consumption', title = 'Chicken consumption vs. price of chicken') + 
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13)
+
+
+
+
+```
+
+
+---
+
+# Inverse forms
+
+.hi[Interpretation]
+
+$$
+\begin{align}
+y_i = \beta_0 + \beta_1\dfrac{1}{x_{1i}} +  u_i
+\end{align}
+$$
+
+--
+
+$$
+\begin{align}
+\dfrac{\partial \ y}{\partial \ x_1} = \dfrac{-\beta_1}{x_1^2}
+\end{align}
+$$
+
+--
+
+<br><br>
+
+$$
+\begin{align}
+qchicken_i = \beta_0 + \beta_1\dfrac{1}{pchicken_{i}} +  u_i
+\end{align}
+$$
+
+--
+
+$$
+\begin{align}
+\dfrac{\partial \ qchicken}{\partial \ pchicken} = \frac{-\beta_1}{pchicken^2}
+\end{align}
+$$
+
+---
+
+
+layout: false
+class: inverse, middle
+
+# Interaction terms
+
+
+
+
+---
+
+# Interaction terms
+
+
+Whenever the effect of one variable on $y$ depends on the .hi[level of another variable], the best .hi-orange[modeling strategy] is to use _interaction terms_.
+
+--
+
+<br>
+
+For example, do we believe that an individual's .hi[wage] depends on their .hi-orange[education]? 
+
+--
+
+  - If so, is this effect the .hi[same] or .hi-orange[different] for two individuals with, e.g., a _college_ degree, but with different years of experience on the job market?
+  
+--
+
+<br>
+
+- Then, we represent a model by
+
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_{i} + \beta_2exper_{i} + \beta_3 educ_i \cdot exper_i +  u_i
+\end{align}
+$$
+---
+
+# Interaction terms
+
+<br>
+
+In more general terms, regression estimates $(\hat{\beta}_i)$ describe .hi[average effects].
+
+--
+
+Some of these average effects may "hide" .hi[heterogeneous effects] that differ by .hi-orange[group] or by the .hi[level of another variable].
+
+--
+
+<br>
+
+Interaction terms help us in modeling such .hi-orange[heterogeneous] effects.
+
+
+--
+
+  - For instance, it is plausible to consider that returns on education will differ by .it[gender], .it[race], .it[region], etc.
+
+
+
+---
+
+# Interaction terms
+
+.hi[Interpretation]
+
+
+$$
+\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{1i}x_{2i} +  u_i
+\end{align}
+$$
+--
+
+$$
+\begin{align}
+\dfrac{\partial \ y}{\partial \ x_1} = \beta_1 + \beta_3 \ \cdot \ x_2
+\end{align}
+$$
+--
+
+<br><br>
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_{i} + \beta_2exper_{i} + \beta_3 educ_i \cdot exper_i +  u_i
+\end{align}
+$$
+--
+$$
+\begin{align}
+\dfrac{\partial \ wage}{\partial \ exper} = \beta_2 + \beta_3 \ \cdot \ educ
+\end{align}
+$$
+
+
+---
+
+
+layout: false
+class: inverse, middle
+
+# Binary variables
+
+---
+
+# Binary variables
+
+<br>
+
+Categorical variables are used to translate .hi[qualitative information] into .hi-orange[numbers].
+
+--
+
+  - For instance, .it[race], .it[gender], .it[being employed or not], .it[enrolled in EC 339 or not], etc.
+  
+--
+
+The .hi[easiest] way to work with qualitative information is by using .hi-orange[binary (*dummy*)] variables.
+
+--
+
+<br>
+
+For example,
+
+
+$$
+\begin{align}
+y_i = \beta_0 + \beta_1D_{i} +  u_i
+\end{align}
+$$
+
+<br>
+
+where $D_i=1$ if the criterion is fulfilled, and $D_i=0$ otherwise.
+
+---
+
+# Binary variables
+
+When .hi[interpreting] regression coefficients associated with *dummy* variables, the .it[intercept]'s interpretation changes slightly.
+
+--
+
+Moreover, the .hi-orange[slope] coefficient on $D_i$ is not interpreted in the same way we are used to.
+
+--
+
+<br>
+
+Consider:
+
+$$
+\begin{align}
+interviews_i = \beta_0 + \beta_1graduate_{i} +  u_i
+\end{align}
+$$
+
+<br>
+
+where 
+  
+  - $interviews_i$ is the number of interviews a candidate is called for in a given period;
+  - $graduate_i$ equals 1 if she has graduated from college, and 0 otherwise.
+  
+---
+
+# Binary variables
+
+$$
+\begin{align}
+interviews_i = \beta_0 + \beta_1graduate_{i} +  u_i
+\end{align}
+$$
+
+<br>
+
+For this model,
+
+  - $\beta_0$ is the expected number of interviews  when $graduate_i=0$ (non-graduates);
+  - $\beta_1$ is the expected .hi[difference] in interview calls between graduates and non-graduates;
+  - And $\beta_0 + \beta_1$ is the expected number of interviews for graduates (when $graduate_i=1$).
+  
+--
+
+<br>
+
+- In this case, .it[non-graduates] are the .hi[reference group].
+
+---
+
+# Binary variables
+
+$$
+\begin{align}
+interviews_i = \beta_0 + \beta_1graduate_{i} +  u_i
+\end{align}
+$$
+
+<br>
+
+The model above is an example of an .hi-orange[intercept] *dummy* variable.
+
+--
+  
+  - We only have different .hi[intercepts] when comparing two groups, but .hi-orange[slopes] are the same.
+  
+--
+
+<br><br>
+
+In order to allow for different .hi[slopes], we appeal to interaction terms involving categorical variables
+
+  - i.e., .hi-orange[slope] *dummy* variables.
+
+---
+
+# Log-Level Model 
+
+.note[Important!] If you have a .hi[log-linear] model with a .it[binary] variable, the interpretation of the coefficient on that variable .hi-orange[changes].
+
+--
+
+Example:
+
+$$ \log(y_i) = \beta_0 + \beta_1 D_i + u_i $$
+
+with $D$ being a *dummy* variable.
+
+<br><br>    
+
+Interpretation of $\beta_1$:
+
+- When $D=1$, $y$ will increase by $100 \times \left( e^{\beta_1}-1 \right)$ percent.
+- When $D=0$, $y$ will decrease by $100 \times \left( e^{-\beta_1}-1 \right)$ percent.
+
+---
+# Log-Level Example
+
+```{R, include = F}
+library(wooldridge)
+data("sleep75")
+sleep75 <- as_tibble(sleep75)
+
+reg <- lm(log(sleep) ~ inlf, data=sleep75)
+b1 <- reg$coefficients[2]
+```
+
+Binary explanatory variable: `inlf`
+
+- `inlf == 1` if the $i^{th}$ individual is in the labor force.
+- `inlf == 0` if the $i^{th}$ individual is not in the labor force.
+
+
+$$
+\begin{aligned}
+\widehat{log(sleep_i)} = 8.08 - 0.00365 \ inlf_i
+\end{aligned}
+$$
+
+<br>
+
+- How do we interpret the coefficient on `inlf`?
+
+--
+
+  - Labor force participants sleep `36.65%` less than non-participants.
+
+--
+
+  - Individuals that are not in the labor force sleep `36.92%`% more than participants.
+
+---
+
+
+# Slope *dummy* variables
+
+
+```{r, echo = F, dev = "svg", fig.height = 5.5, message=FALSE}
+cps <- read_csv('cps5_small.csv')
+
+
+cps %>% 
+  mutate(gender = as_factor(female)) %>% 
+  ggplot(aes(x = educ, y = wage)) +
+  geom_point(aes(color = gender, shape = gender), size = 2.5, alpha = 0.6) +
+  scale_color_manual(values = c("0" = "#f15025", "1" = "#318ce7")) +
+  easy_move_legend(to = "bottom") +
+  labs(x='Years of schooling', 
+       y='Hourly earnings', title='Hourly wages vs. years of education (by gender)',
+       subtitle='Female=1, Non-female=0') +
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13) + 
+  easy_add_legend_title("Gender")
+  
+```
+
+
+---
+
+# Slope *dummy* variables
+
+```{r, echo = F, dev = "svg", fig.height = 5.5, message=FALSE}
+cps <- read_csv('cps5_small.csv')
+
+
+cps %>% 
+  mutate(gender = as_factor(female)) %>% 
+  ggplot(aes(x = educ, y = wage)) +
+  geom_point(aes(color = gender, shape = gender), size = 2.5, alpha = 0.6) +
+  geom_smooth(aes(color=gender), method='lm', se=FALSE) + 
+  scale_color_manual(values = c("0" = "#f15025", "1" = "#318ce7")) +
+  easy_move_legend(to = "bottom") +
+  labs(x='Years of schooling', 
+       y='Hourly earnings', title='Hourly wages vs. years of education (by gender)',
+       subtitle='Female=1, Non-female=0') +
+  easy_y_axis_title_size(13) +
+  easy_x_axis_title_size(13) + 
+  easy_add_legend_title("Gender")
+ 
+```
+
+---
+
+# Slope *dummy* variables
+
+.hi[Interpretation]
+
+$$
+\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2D_{i} + \beta_3D_ix_{1i} +  u_i
+\end{align}
+$$
+--
+
+$$
+\begin{align}
+\dfrac{\partial \ y}{\partial \ x_1} = \beta_1 + \beta_3 \ \cdot \ D
+\end{align}
+$$
+--
+
+$$
+\begin{align}
+\dfrac{\partial \ y}{\partial \ D} = \beta_2 + \beta_3 \ \cdot \ x_1
+\end{align}
+$$
+
+<br>
+
+$$
+\begin{align}
+wage_i = \beta_0 + \beta_1educ_{i} + \beta_2female_{i} + \beta_3 educ_i \cdot female_i +  u_i
+\end{align}
+$$
+
+--
+
+$$
+\begin{align}
+\dfrac{\partial \ wage}{\partial \ educ} = \beta_1 + \beta_3 \ \cdot \ female
+\end{align}
+$$
+--
+
+$$
+\begin{align}
+\dfrac{\partial \ wage}{\partial \ female} = \beta_2 + \beta_3 \ \cdot \ educ
+\end{align}
+$$
+
+
+
+
+
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: Functional forms in practice
+
+
+---
+exclude: true
