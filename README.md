@@ -32,26 +32,32 @@ Handout files created using [Quarto](https://quarto.org/).
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/simple-regression.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/001-simple-regression/001-simple-regression.pdf)
   - Stata do-file: [`001-simple-regression.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/001-simple-regression/001-simple-regression.do) | To download, see `theSpring` module
-    - Data files available to download on `theSpring`.
+    - Data files available for download on `theSpring`.
 
 **Week 3: Multiple Linear Regression**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/002-multiple-regression/multiple-regression.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/002-multiple-regression/002-multiple-regression.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/002-multiple-regression/002-multiple-regression.pdf)
   - Stata do-file: [`002-multiple-regression.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/002-multiple-regression/002-multiple-regression.do) | To download, see `theSpring` module
-    - Data files available to download on `theSpring`.
+    - Data files available for download on `theSpring`.
     
 **Week 4: The Classical Linear Regression Model (CLRM)**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/003-clrm/classical-model.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/003-clrm/003-clrm.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/003-clrm/003-clrm.pdf)
   - Stata do-file: [`003-clrm.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/003-clrm/003-clrm.do) | To download, see `theSpring` module
-    - Data files available to download on `theSpring`.
+    - Data files available for download on `theSpring`.
     
 **Week 5: Econometric Inference**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/004-inference/inference.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/004-inference/004-inference.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/004-inference/004-inference.pdf)
+  - Stata do-file: [`004-inference.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/004-inference/004-inference.do) | To download, see `theSpring` module
+    - Data files available for download on `theSpring`.
+
+**Week 6: More functional forms**
+
+  - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/005-functional-forms/more-functional-forms.pdf)
     
 
 ## Assignments
