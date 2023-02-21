@@ -80,7 +80,8 @@ All quizzes will be posted on `theSpring`.
 
  Students must submit their Applied Research Projects until the **Final Exam day**. 
 
-  - *Template and Handout coming soon.*
+  - [`Project Template`](https://raw.githack.com/marciosantetti/ec339-sp23/main/research-project/research-proj-template.pdf)
+  - [`Handout`](https://raw.githack.com/marciosantetti/ec339-sp23/main/research-project/research-proj-handout.pdf)
   
- Projects from previous semesters will be posted on `theSpring`.
+ Projects from previous semesters are posted on `theSpring`.
  
