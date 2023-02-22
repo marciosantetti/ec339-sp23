@@ -69,7 +69,7 @@ Handout files created using [Quarto](https://quarto.org/).
 
   - Data files and submission on `theSpring`.
   
-- [`Problem Set 2`](https://raw.githack.com/marciosantetti/ec339-sp23/main/problem-sets/ps2-sp23.pdf)
+- [`Problem Set 2`](https://raw.githack.com/marciosantetti/ec339-sp23/main/problem-sets/ps2-sp23.pdf) (due 03/08, before class)
 
   - Data files and submission on `theSpring`.
 
