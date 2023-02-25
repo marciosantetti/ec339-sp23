@@ -68,6 +68,10 @@ Handout files created using [Quarto](https://quarto.org/).
 - [`Problem Set 1`](https://raw.githack.com/marciosantetti/ec339-sp23/main/problem-sets/ps1-sp23.pdf) (due 02/22, before class)
 
   - Data files and submission on `theSpring`.
+  
+- [`Problem Set 2`](https://raw.githack.com/marciosantetti/ec339-sp23/main/problem-sets/ps2-sp23.pdf) (due 03/08, before class)
+
+  - Data files and submission on `theSpring`.
 
 
 ### Quizzes
@@ -80,7 +84,8 @@ All quizzes will be posted on `theSpring`.
 
  Students must submit their Applied Research Projects until the **Final Exam day**. 
 
-  - *Template and Handout coming soon.*
+  - [`Project Template`](https://raw.githack.com/marciosantetti/ec339-sp23/main/research-project/research-proj-template.pdf)
+  - [`Handout`](https://raw.githack.com/marciosantetti/ec339-sp23/main/research-project/research-proj-handout.pdf)
   
- Projects from previous semesters will be posted on `theSpring`.
+ Projects from previous semesters are posted on `theSpring`.
  
