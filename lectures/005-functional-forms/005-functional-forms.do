@@ -1,9 +1,9 @@
 *-----------------------------------------------------------------------*
-*												                        *
-*												                        *
-*                     EC 339: APPLIED ECONOMETRICS                      *    
-*												                        *
-*  Prof. Santetti									                    *
+*																		
+*																		
+*                     EC 339: APPLIED ECONOMETRICS                            
+*																		
+*  Prof. Santetti														
 *-----------------------------------------------------------------------*
 
 
@@ -31,18 +31,18 @@
 
 **--------------------------------------------------------------------------------------------------------
 
+
+
 clear
 
 use sleep75
 
 
 
-
-
 **--------------------------------------------------------------------------------------------------------
 
 
-**--- Regression through the origin
+**--- Regression through the origin:
 
 
 ** One may suppose that, if an individual works 0 minutes per week, they will make no earnings at all.
@@ -79,7 +79,7 @@ twoway (scatter earns74 totwrk) (line fitted totwrk)
 **--------------------------------------------------------------------------------------------------------
 
 
-**--- Interaction terms:
+**--- Inverse forms:
 
 
 clear
@@ -172,10 +172,6 @@ reg lwage female educ exper tenure educ_tenure
 
 
 ** Let's work on this together.
-
-
-
-
 
 
 

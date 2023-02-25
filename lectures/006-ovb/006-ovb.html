@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>.b[Omitted Variables Bias (OVB)]</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcio Santetti" />
+    <script src="006-ovb_files/header-attrs/header-attrs.js"></script>
+    <link href="006-ovb_files/remark-css/default.css" rel="stylesheet" />
+    <link href="006-ovb_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="006-ovb_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skid-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# .b[Omitted Variables Bias (OVB)]
+]
+.subtitle[
+## .b[.green[EC 339]]
+]
+.author[
+### Marcio Santetti
+]
+.date[
+### Fall 2022
+]
+
+---
+
+class: inverse, middle
+
+
+
+
+
+
+
+# Motivation
+
+---
+
+# Well-specified models
+
+Recall .hi[CLRM Assumption I]: 
+
+  &gt; "*The regression model is .green[linear], .green[correctly specified], and has an .green[additive] stochastic error
+term*."
+
+--
+
+&lt;br&gt;
+
+The .green[hardest] part regarding this assumption is to have a .hi[well-specified model].
+
+--
+
+Suppose we have the following model:
+
+$$
+`\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i} + u_i
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+  - How can we .green[evaluate] whether this is a well-specified model?
+  - Does it have the appropriate .green[functional form]?
+  - Is this model in accordance with .green[economic theory]?
+  
+  
+---
+
+# Well-specified models
+
+In fact, we can .green[never know for sure] if we have the most appropriate model.
+
+--
+
+.hi[Theory] is always (and will always be) the best guide.
+
+--
+
+&lt;br&gt;
+
+In addition, we must always .hi[visualize] our data, knowing it better in order to define the model's .green[functional form].
+
+--
+
+&lt;br&gt;
+
+  -  __A different functional form may also be an omitted variable!__
+
+  - For instance, if the .green['true'] model contains a squared term, in case we omit it from our sample regression model, it will be .hi[misspecified].
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# The nature of the problem
+
+
+---
+
+# Recalling bias
+
+An estimator is .hi[biased] if its expected value is different from the *true* population parameter.
+
+--
+
+When considering our slope coefficients `\((\hat{\beta}_i)\)`, we expect that they, on average, are close to the .green["true"] population parameter, `\(\beta_{pop}\)`.
+
+--
+
+.pull-left[
+
+**Unbiased:** `\(\mathop{\mathbb{E}}\left[ \hat{\beta}_{OLS} \right] = \beta_{pop}\)`
+
+&lt;img src="006-ovb_files/figure-html/unbiased pdf-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+**Biased:** `\(\mathop{\mathbb{E}}\left[ \hat{\beta}_{OLS} \right] \neq \beta_{pop}\)`
+
+&lt;img src="006-ovb_files/figure-html/biased pdf-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+
+# Omitting a relevant variable
+
+- Assume we know the .hi[true] population model:
+
+$$
+`\begin{align}
+y_i^{true} = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + u_i   
+\end{align}`
+$$
+
+
+--
+
+&lt;br&gt;
+
+- And we estimate the following model:
+
+
+$$
+`\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + u_i^*  
+\end{align}`
+$$
+
+with 
+
+$$
+`\begin{align}
+u_i^*  = u_i + \beta_2x_{2i} 
+\end{align}`
+$$
+
+--
+
+- Assuming that `\(x_1\)` and `\(x_2\)` (the omitted variable) share some degree of .green[correlation] (which is usually the case), the error term is no longer .hi[independent] of an explanatory variable, as per .green[CLRM Assumption III]. 
+
+
+---
+
+
+# Omitting a relevant variable
+
+&lt;br&gt;
+
+- Consider a simple .green[demand model]:
+
+
+
+
+$$
+\small
+`\begin{align}
+log(qchicken_i) = {} &amp; \beta_0 + \beta_1pchicken_{i} + \beta_2pbeef_{i}  + \beta_3dispinc_{i} + \beta_4log(xchicken_i) + u_i
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+- And we .green[estimate] it:
+
+$$
+\small
+`\begin{align}
+\widehat{log(qchicken_i)} = {} &amp; 2.95 - 0.23 \ pchicken_{i} +  0.18 \ pbeef_{i} + \\ &amp; + 0.000036 \ dispinc_{i} + 
+0.75 \ log(xchicken_i) 
+\end{align}`
+$$
+
+---
+
+# Omitting a relevant variable
+
+- And now we omit `dispinc` from the model:
+
+$$
+\small
+`\begin{align}
+\widehat{log(qchicken_i)} =  3.49 - 0.30 \ pchicken_{i} +  0.25 \ pbeef_{i}  + 
+1.65 \ log(xchicken_i) 
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+- This model's .green[residual] term contains `dispinc`. 
+
+&lt;br&gt;
+
+--
+
+- Let us check out the .green[correlation coefficient] between `dispinc` and other variables:
+
+&lt;br&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; corr_y_pchicken &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; corr_y_pbeef &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; corr_y_x &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; -0.8552982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6940004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Omitting a relevant variable
+
+&lt;br&gt;
+
+
+
+&lt;table&gt;
+&lt;caption&gt;'True' model&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9575599 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0951466 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.084255 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; p &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2342880 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0176617 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -13.265322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; pb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1814819 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0509694 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.560608 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0008732 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; lexpts &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7526487 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1404342 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.359440 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000026 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; y &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000361 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000052 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.986129 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;br&gt;
+
+
+&lt;table&gt;
+&lt;caption&gt;Biased model&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4926329 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0801754 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.562414 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; p &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3045472 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0206204 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -14.769222 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; pb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2551898 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0708221 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.603253 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0007563 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; lexpts &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6504674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0804149 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.524400 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+layout: false
+class: inverse, middle
+
+# Including irrelevant variables
+
+---
+
+# Including irrelevant variables
+
+&lt;br&gt;
+
+- Now assume that the .hi[true] model is:
+
+
+$$
+`\begin{align}
+y_i^{true} = \beta_0 + \beta_1x_{1i} + u_i   
+\end{align}`
+$$
+
+
+--
+
+&lt;br&gt;
+
+- And, instead, we estimate
+
+$$
+`\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + u_i^*   
+\end{align}`
+$$
+
+with 
+
+$$
+`\begin{align}
+u_i^*  = u_i - \beta_2x_{2i} 
+\end{align}`
+$$
+
+---
+
+
+# Including irrelevant variables
+
+&lt;br&gt;
+
+- Suppose we add `popgro`, a variable measuring .green[population growth], to our original model:
+
+
+&lt;br&gt;
+
+
+$$
+`\begin{align}
+\small
+\widehat{log(qchicken_i)} = {} &amp; 2.89 - 0.23 \ pchicken_{i} +  0.19 \ pbeef_{i} + \\ &amp; + 0.000038 \ dispinc_{i} + 
+0.69 \ log(xchicken_i) + \\ &amp; + 0.017 \ popgro_t
+\end{align}`
+$$
+
+---
+
+# Including irrelevant variables
+
+
+
+&lt;table&gt;
+&lt;caption&gt;'True' model&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9575599 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0951466 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.084255 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; p &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2342880 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0176617 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -13.265322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; pb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1814819 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0509694 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.560608 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0008732 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; lexpts &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7526487 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1404342 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.359440 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000026 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; y &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000361 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000052 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.986129 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;br&gt;
+
+
+&lt;table&gt;
+&lt;caption&gt;Model with irrelevant variable&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8951497 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1353082 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.3967020 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; p &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2369439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0211080 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -11.2253171 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; pb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1914541 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0537460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5622008 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0008984 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; lexpts &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6996547 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1722889 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0609386 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0001978 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; y &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000385 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000065 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.9044418 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000005 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; popgro &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0177147 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0300050 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5903904 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5579493 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+layout: false
+class: inverse, middle
+
+# The .mono[RESET] test
+
+
+---
+
+# The .mono[RESET] test
+
+&lt;br&gt;
+
+Knowing for sure whether our models suffer from Omitted Variables Bias (OVB) is .green[hard].
+
+--
+
+However, the .green[.mono[RESET] test for functional form misspecification] can help us.
+
+--
+
+&lt;br&gt;
+
+It consists of running an .hi[F-test] on .hi[functional forms] of the .hi[fitted values] of the dependent variable `\((\hat{y})\)`.
+
+--
+
+These functional forms `\((\hat{y}^2, \hat{y}^3, etc.)\)` serve as _.hi[proxies]_ for potentially omitted variables.
+
+--
+
+&lt;br&gt;
+
+Recall that .green[functional forms] of .green[already included independent variables] can also be omitted variables!
+
+---
+
+# The .mono[RESET] test
+
+### The .hi[recipe] 👩‍🍳 👨‍🍳:
+
+&lt;br&gt;
+
+.pseudocode-small[
+
+1. Estimate the regression model via OLS;
+
+2. Store the regression's fitted values `\((\hat{y}_i)\)`;
+
+3. Use functional forms of `\(\hat{y}_i\)` (squared, cubic terms, etc.) as **independent variables** in a new model;
+
+4. Compare the fits of models from step **1** and **3** through an *F-test*;
+
+5. In case these additional terms are **not** jointly significant, we do not suspect of omitted variables.
+
+6. In case these terms are *jointly significant*, we should consider adding new regressors to the original model.
+
+
+]
+
+---
+
+# The .mono[RESET] test
+
+.pseudocode-small[
+
+Estimate the regression model via OLS
+
+]
+
+$$
+`\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + u_i   
+\end{align}`
+$$
+--
+
+.pseudocode-small[
+
+Store the regression's fitted values `\((\hat{y}_i)\)`
+
+]
+
+$$
+`\begin{align}
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1x_{1i} + \hat{\beta}_2x_{2i}
+\end{align}`
+$$
+
+--
+
+.pseudocode-small[
+
+Use functional forms of `\(\hat{y}_i\)` (squared, cubic terms, etc.) as **independent variables** in a new model
+
+]
+
+$$
+`\begin{align}
+y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3\hat{y}_i^2 + \beta_4\hat{y}_i^3  + u_i
+\end{align}`
+$$
+
+--
+
+.pseudocode-small[
+
+Compare the fits of models from step **1** and **3** through an *F-test*
+
+]
+
+
+- `\(H_0: \hat{\beta}_3 = \hat{\beta}_4  = 0\)`
+- `\(H_a: H_0\)` is not true
+
+
+---
+
+# The .mono[RESET] test
+
+- In case the .hi[null hypothesis] is .hi[rejected], then we have evidence of omitted variables.
+
+--
+
+- In case we .hi[do not reject] `\(H_0\)`, then we can stick with the original model.
+
+
+--
+
+
+In .mono[R]...
+
+
+```r
+resettest(model_true, power = 2:4)
+```
+
+```
+#&gt; 
+#&gt; 	RESET test
+#&gt; 
+#&gt; data:  model_true
+#&gt; RESET = 1.6352, df1 = 3, df2 = 43, p-value = 0.1953
+```
+
+&lt;br&gt;
+
+
+What do we conclude?
+
+
+
+---
+
+# The .mono[RESET] test
+
+&lt;br&gt;
+
+In .mono[Stata]...
+
+
+
+```{}
+estat ovtest
+
+Ramsey RESET test for omitted variables
+Omitted: Powers of fitted values of lq
+
+H0: Model has no omitted variables
+
+F(3, 43) =   1.64
+Prob &gt; F = 0.1953
+
+
+```
+
+&lt;br&gt;
+
+
+What do we conclude?
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: OVB in practice
+
+
+---
+exclude: true
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
