@@ -58,6 +58,7 @@ Handout files created using [Quarto](https://quarto.org/).
 **Week 6: More functional forms**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/005-functional-forms/more-functional-forms.pdf)
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/005-functional-forms/005-functional-forms.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/005-functional-forms/005-functional-forms.pdf)
     
 
 ## Assignments
