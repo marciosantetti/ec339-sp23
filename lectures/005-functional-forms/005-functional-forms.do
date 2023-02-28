@@ -205,7 +205,7 @@ reg lwage female educ female_educ exper expersq tenure tenursq
 
 ** The gender differential for education between men and women is given by the 
 ** coefficient on the slope dummy variable female*educ.
-** Therefore, the difference is of .56% percentage point less for women. However, this 
+** Therefore, the difference is of .56 percentage point less for women. However, this 
 ** coefficient is not statistically significant for this sample.
 
 
