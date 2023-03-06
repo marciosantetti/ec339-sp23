@@ -68,6 +68,10 @@ Handout files created using [Quarto](https://quarto.org/).
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/006-ovb.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/006-ovb.pdf)
   - Stata do-file: [`006-ovb.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/006-ovb/006-ovb.do)
      - Data files available for download on `theSpring`.
+
+**Week 8: Violations of Classical Assumptions II: Multicollinearity**
+
+  - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/multicollinearity.pdf)
   
 ## Assignments
 
