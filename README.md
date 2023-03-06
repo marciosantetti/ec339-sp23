@@ -65,6 +65,7 @@ Handout files created using [Quarto](https://quarto.org/).
 **Week 7: Violations of Classical Assumptions I: Omitted Variables Bias (OVB)**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/ovb.pdf)
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/006-ovb.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/006-ovb.pdf)
 
 ## Assignments
 
