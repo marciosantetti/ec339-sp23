@@ -2,7 +2,7 @@
 title: ".b[Omitted Variables Bias (OVB)]"
 subtitle: ".b[.green[EC 339]]"
 author: "Marcio Santetti"
-date: "Fall 2022"
+date: "Spring 2023"
 output:
   xaringan::moon_reader:
     css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
@@ -526,29 +526,8 @@ Compare the fits of models from step **1** and **3** through an *F-test*
 
 - In case we .hi[do not reject] $H_0$, then we can stick with the original model.
 
-
 --
 
-
-In .mono[R]...
-
-```{r}
-resettest(model_true, power = 2:4)
-
-```
-
-<br>
-
-
-What do we conclude?
-
-
-
----
-
-# The .mono[RESET] test
-
-<br>
 
 In .mono[Stata]...
 

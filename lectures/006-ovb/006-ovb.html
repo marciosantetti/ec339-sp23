@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 ### Marcio Santetti
 ]
 .date[
-### Fall 2022
+### Spring 2023
 ]
 
 ---
@@ -662,37 +662,8 @@ Compare the fits of models from step **1** and **3** through an *F-test*
 
 - In case we .hi[do not reject] `\(H_0\)`, then we can stick with the original model.
 
-
 --
 
-
-In .mono[R]...
-
-
-```r
-resettest(model_true, power = 2:4)
-```
-
-```
-#&gt; 
-#&gt; 	RESET test
-#&gt; 
-#&gt; data:  model_true
-#&gt; RESET = 1.6352, df1 = 3, df2 = 43, p-value = 0.1953
-```
-
-&lt;br&gt;
-
-
-What do we conclude?
-
-
-
----
-
-# The .mono[RESET] test
-
-&lt;br&gt;
 
 In .mono[Stata]...
 

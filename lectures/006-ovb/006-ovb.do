@@ -1,9 +1,9 @@
 *-----------------------------------------------------------------------*
-*												                        *
-*												                        *
-*                     EC 339: APPLIED ECONOMETRICS                      *    
-*												                        *
-*  Prof. Santetti									                    *
+*																		
+*																		
+*                     EC 339: APPLIED ECONOMETRICS                            
+*																		
+*  Prof. Santetti														
 *-----------------------------------------------------------------------*
 
 
@@ -92,18 +92,6 @@ correlate hwage resid_omit resid_true
 
 
 ** What can we say?
-
-
-
-twoway (scatter hwage resid_true), name(p1)
-
-
-twoway (scatter hwage resid_omit), name(p2)
-
-
-graph combine p1 p2
-
-
 
 
 
