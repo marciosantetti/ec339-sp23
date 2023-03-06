@@ -1,0 +1,542 @@
+---
+title: ".b[Multicollinearity]"
+subtitle: ".b[.green[EC 339]]"
+author: "Marcio Santetti"
+date: "Fall 2022"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
+    # self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: inverse, middle
+
+```{r Setup, include = F}
+options(htmltools.dir.version = FALSE)
+library(pacman)
+p_load(broom, latex2exp, ggplot2, ggthemes, ggforce, viridis, dplyr, magrittr, knitr, parallel, xaringanExtra, tidyverse, sjPlot, mathjaxr, ggforce, furrr, kableExtra, wooldridge, hrbrthemes, scales, ggeasy, patchwork, MetBrewer, stargazer, gapminder, lmtest, car)
+
+
+
+
+# Knitr options
+opts_chunk$set(
+  comment = "#>",
+  fig.align = "center",
+  fig.height = 7,
+  fig.width = 8,
+  warning = F,
+  message = F,
+  dpi=300
+)
+
+theme_set(theme_ipsum_rc())
+```
+
+```{R, colors, include = F}
+# Define pink color
+red_pink <- "#e64173"
+turquoise <- "#20B2AA"
+orange <- "#FFA500"
+red <- "#E02C05"
+blue <- "#2b59c3"
+green <- "#0FDA6D"
+grey_light <- "grey70"
+grey_mid <- "grey50"
+grey_dark <- "grey20"
+purple <- "#6A5ACD"
+met_slate <- "#23373b" 
+```
+
+
+
+# Motivation
+
+---
+
+# Linear relationships
+Let us recall .hi[CLRM Assumption VI]:
+
+--
+
+<br>
+
+> *No explanatory variable is a .red[perfect linear function] of any other explanatory variable.*
+  
+--
+
+<br>
+
+This assumption implies a .hi[deterministic] relationship between two independent variables.
+
+$$
+\begin{align}
+x_1 = \alpha_0 + \alpha_1x_3
+\end{align}
+$$
+
+--
+
+However, in practice we should worry more about strong .hi[stochastic] relationships between two independent variables.
+
+$$
+\begin{align}
+x_1 = \alpha_0 + \alpha_1x_3 + \epsilon_i
+\end{align}
+$$
+
+
+---
+
+# Linear relationships
+
+What does a linear relationship between two independent variables mean in practice?
+
+
+- If two variables (say, $x_1$ and $x_3$) move .hi[together], then how can OLS .hi-orange[distinguish] between the effects of these two on $y$?
+
+--
+
+  - It .hi[cannot]!
+  
+--
+
+```{r, echo = F, dev = "svg", fig.height=3}
+
+x2 <- seq(1, 50, 1)
+x1 <- 3 + x2
+
+df1 <- data.frame(x1,x2)
+
+
+ggplot(df1) +
+ aes(x = x2, y = x1) +
+ geom_point(size = 2, colour = purple, fill = purple, shape=24) +
+ labs(x=expression(x[3]), y=expression(x[1])) +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+```
+
+---
+
+layout: false
+class: inverse, middle
+
+# Perfect multicollinearity
+
+---
+
+# Perfect multicollinearity
+
+<br>
+
+CLRM Assumption VI only refers to .hi[perfect] multicollinearity.
+
+--
+
+With its presence, OLS estimation is .hi[indeterminate].
+
+--
+
+  - Why?
+  
+--
+
+How to .red[disentangle] the effect of each independent variable on $y$?
+  
+--
+
+<br>
+
+The _.red[ceteris paribus]_ assumption no longer holds.
+  
+--
+
+- .hi[Good news]: _rare_ to occur in practice.
+
+
+
+---
+
+
+layout: false
+class: inverse, middle
+
+# Imperfect multicollinearity
+
+
+---
+
+# Imperfect multicollinearity
+
+
+Even though CLRM Assumption VI .hi[does not] contemplate this version of multicollinearity, it is an actual problem within OLS estimation.
+
+--
+
+Strong .hi-orange[stochastic] relationships imply strong .hi[correlation coefficients] between two independent variables.
+
+--
+
+
+```{r, echo = F, dev = "svg", fig.height=3}
+
+library(pwt9)
+
+data("pwt9.1")
+
+
+pwt <- pwt9.1 %>% 
+  as_tibble()
+
+
+pwt_select <- pwt %>% 
+  filter(year == 2010) %>% 
+  filter(pop < 1000) %>% 
+  drop_na(emp, pop, ck, ccon)
+
+
+pwt_select %>% 
+  ggplot(aes(x=pop, y=emp)) +
+  geom_point(size = 2, 
+             colour = purple, 
+             fill = purple, 
+             shape=24,
+             alpha = 0.6) +
+  labs(y="Employed persons (millions)", 
+       x="Population (millions)") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+
+```
+
+---
+
+# Imperfect multicollinearity
+
+
+Even though CLRM Assumption VI .hi[does not] contemplate this version of multicollinearity, it is an actual problem within OLS estimation.
+
+
+Strong .hi-orange[stochastic] relationships imply strong .hi[correlation coefficients] between two independent variables.
+
+
+
+```{r, echo = F, dev = "svg", fig.height=3}
+
+pwt_select %>% 
+  ggplot(aes(x=pop, y=emp)) +
+  geom_point(size = 2, 
+             colour = purple, 
+             fill = purple, 
+             shape=24,
+             alpha = 0.6) +
+  geom_smooth(method = "lm", se=FALSE, color = "#d55e00") +
+  labs(y="Employed persons (millions)", 
+       x="Population (millions)") +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+
+```
+
+
+---
+
+
+layout: false
+class: inverse, middle
+
+# Consequences of multicollinearity
+
+---
+
+# Consequences of multicollinearity
+
+<br>
+
+By itself, multicollinearity .hi[does not] cause .hi-orange[bias] to OLS $\beta$ coefficients.
+
+--
+
+However, it affects OLS .hi[standard errors].
+
+--
+
+Recall that standard errors are part of the .hi[t-test formula]:
+
+<br>
+
+$$
+\begin{align}
+t = \dfrac{\hat{\beta}_k}{SE(\hat{\beta}_k)}
+\end{align}
+$$
+--
+
+
+<br>
+
+Therefore, it affects OLS .hi-orange[inference].
+
+
+---
+
+# Consequences of multicollinearity
+
+Visually:
+
+  - Which estimate is *relatively more efficient*?
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, , dev = "svg", fig.height=4.5}
+
+set.seed(123)
+
+x5 <- rnorm(100000, 0, 5)
+x6 <- rnorm(100000, 0, 8)
+
+df4 <- data.frame(x5, x6)
+
+ggplot(df4) +
+ aes(x = x5) +
+ geom_density(adjust = 1L, fill = red_pink, colour='red',  alpha = 0.3) +
+ geom_density(aes(x=x6), adjust = 1L, fill = turquoise, alpha=0.5) +
+ labs(x = expression(paste(beta[i], " = ", beta[j], " = ", beta[true]))) +  
+   geom_vline(xintercept = 0, linetype = "longdash") +
+   annotate("text", x = 20, y = 0.01, label = expression(beta[j])) +
+   annotate("text", x = -5, y = 0.06, label = expression(beta[i])) +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+```
+
+
+
+
+---
+
+
+layout: false
+class: inverse, middle
+
+# Dealing with multicollinearity
+
+---
+
+# Dealing with multicollinearity
+
+Consider the following model:
+
+<br>
+
+$$
+\begin{aligned}
+log(rgdpna_i) = \beta_0 + \beta_1pop_i + \beta_2emp_i + \beta_3ck_i + \beta_4ccon_i + u_i
+\end{aligned}
+$$
+
+<br>
+
+where (for each country *i*):
+
+- `rgdpna`: real GDP (millions 2011 USD)
+- `pop`: population (millions)
+- `emp`: number of employed persons (millions)
+- `ck`: capital services levels (index, USA = 1)
+- `ccon`: real consumption (households and government)
+
+---
+
+# Dealing with multicollinearity
+
+.center[
+.small[
+```{r, echo=FALSE}
+model_1 <- lm(log(rgdpna) ~ pop + emp + ck + ccon, data = pwt_select)
+model_1 %>% 
+  stargazer(type = "text", no.space = TRUE)
+```
+]]
+---
+
+# Dealing with multicollinearity
+
+<br>
+
+A little modification:
+
+<br>
+
+$$
+\begin{aligned}
+log(rgdpna_i) = \beta_0 + \beta_1log(emp_i) + \beta_3ck_i + \beta_4log(ccon_i) + u_i
+\end{aligned}
+$$
+
+
+---
+
+# Dealing with multicollinearity
+
+.center[
+.small[
+```{r, echo=FALSE}
+model_2 <- lm(log(rgdpna) ~ log(emp) + ck + log(ccon), data = pwt_select)
+model_2 %>% 
+  stargazer(type = "text", no.space = TRUE)
+```
+]]
+
+---
+
+# Dealing with multicollinearity
+
+<br>
+
+Checking .hi[correlation] coefficients:
+
+<br>
+
+
+- *Corr(pop<sub>i</sub>, emp<sub>i</sub>) = 0.987*
+
+- *Corr(ccon<sub>i</sub>, emp<sub>i</sub>) = 0.980*
+
+--
+
+<br><br>
+
+- *Corr(log(ccon<sub>i</sub>), emp<sub>i</sub>) = 0.584*
+
+
+---
+
+# Dealing with multicollinearity
+
+A recommended procedure is to always check out the .hi[correlation coefficient] among the chosen independent variables.
+
+--
+
+- In addition, we can calculate .hi-orange[Variance Inflation Factors] (VIFs):
+
+<br>
+
+$$
+\begin{align}
+VIF(\hat{\beta_i})  = \dfrac{1}{(1-R_i^2)}
+\end{align}
+$$
+
+<br>
+
+where $R_i^2$ is the coefficient of determination of the *auxiliary regression* models.
+
+
+--
+
+  - The procedure is to estimate one auxiliary regression model for *each* independent variable.
+  - Then, store the $R^2$ for each regression.
+  - A *VIF* greater than 5 is already sufficient to imply high multicollinearity.
+  
+---
+
+
+# Dealing with multicollinearity
+
+In .mono[R]...
+
+```{r}
+model_1 %>%
+  vif()
+```
+
+```{r}
+model_2 %>% 
+  vif()
+```
+
+<br>
+
+- What do we conclude?
+
+
+---
+
+
+# Dealing with multicollinearity
+
+In .mono[Stata]...
+
+
+```{}
+
+reg lrdgpna pop emp ck ccon
+
+vif
+
+    Variable |       VIF       1/VIF  
+-------------+----------------------
+         emp |     48.52    0.020608
+         pop |     42.69    0.023425
+          ck |     30.44    0.032854
+        ccon |     27.30    0.036626
+-------------+----------------------
+    Mean VIF |     37.24
+
+
+```
+
+<br>
+
+
+- What do we conclude?
+
+---
+
+# Dealing with multicollinearity
+
+In .mono[Stata]...
+
+
+```{}
+
+reg lrdgpna lemp ck lccon
+
+vif
+
+    Variable |       VIF       1/VIF  
+-------------+----------------------
+       lccon |      4.24    0.236040
+        lemp |      3.72    0.268975
+          ck |      1.52    0.659385
+-------------+----------------------
+    Mean VIF |      3.16
+
+
+
+
+```
+
+<br>
+
+
+- What do we conclude?
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: Multicollinearity in practice
+
+
+---
+exclude: true
+
