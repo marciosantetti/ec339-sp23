@@ -72,6 +72,7 @@ Handout files created using [Quarto](https://quarto.org/).
 **Week 8: Violations of Classical Assumptions II: Multicollinearity**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/multicollinearity.pdf)
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/007-multicollinearity.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/007-multicollinearity.pdf)
   
 ## Assignments
 
