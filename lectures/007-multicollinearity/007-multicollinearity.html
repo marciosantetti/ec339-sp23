@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 ### Marcio Santetti
 ]
 .date[
-### Fall 2022
+### Spring 2023
 ]
 
 ---
@@ -387,40 +387,7 @@ where `\(R_i^2\)` is the coefficient of determination of the *auxiliary regressi
 
   - The procedure is to estimate one auxiliary regression model for *each* independent variable.
   - Then, store the `\(R^2\)` for each regression.
-  - A *VIF* greater than 5 is already sifficient to imply high multicollinearity.
-  
----
-
-
-# Dealing with multicollinearity
-
-In .mono[R]...
-
-
-```r
-model_1 %&gt;%
-  vif()
-```
-
-```
-#&gt;      pop      emp       ck     ccon 
-#&gt; 42.68883 48.52425 30.43790 27.30301
-```
-
-
-```r
-model_2 %&gt;% 
-  vif()
-```
-
-```
-#&gt;  log(emp)        ck log(ccon) 
-#&gt;  3.717818  1.516566  4.236570
-```
-
-&lt;br&gt;
-
-- What do we conclude?
+  - A *VIF* greater than 5 is already sufficient to imply high multicollinearity.
 
 
 ---

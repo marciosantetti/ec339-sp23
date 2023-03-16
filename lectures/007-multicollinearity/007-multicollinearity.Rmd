@@ -2,7 +2,7 @@
 title: ".b[Multicollinearity]"
 subtitle: ".b[.green[EC 339]]"
 author: "Marcio Santetti"
-date: "Fall 2022"
+date: "Spring 2023"
 output:
   xaringan::moon_reader:
     css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
@@ -105,7 +105,7 @@ What does a linear relationship between two independent variables mean in practi
   
 --
 
-```{r, echo = F, dev = "svg", fig.height=3}
+```{r, echo = F, dev = "svg", fig.height=3.25}
 
 x2 <- seq(1, 50, 1)
 x1 <- 3 + x2
@@ -184,7 +184,7 @@ Strong .hi-orange[stochastic] relationships imply strong .hi[correlation coeffic
 --
 
 
-```{r, echo = F, dev = "svg", fig.height=3}
+```{r, echo = F, dev = "svg", fig.height=3.5}
 
 library(pwt9)
 
@@ -228,7 +228,7 @@ Strong .hi-orange[stochastic] relationships imply strong .hi[correlation coeffic
 
 
 
-```{r, echo = F, dev = "svg", fig.height=3}
+```{r, echo = F, dev = "svg", fig.height=3.5}
 
 pwt_select %>% 
   ggplot(aes(x=pop, y=emp)) +
@@ -443,27 +443,6 @@ where $R_i^2$ is the coefficient of determination of the *auxiliary regression* 
   - The procedure is to estimate one auxiliary regression model for *each* independent variable.
   - Then, store the $R^2$ for each regression.
   - A *VIF* greater than 5 is already sufficient to imply high multicollinearity.
-  
----
-
-
-# Dealing with multicollinearity
-
-In .mono[R]...
-
-```{r}
-model_1 %>%
-  vif()
-```
-
-```{r}
-model_2 %>% 
-  vif()
-```
-
-<br>
-
-- What do we conclude?
 
 
 ---
