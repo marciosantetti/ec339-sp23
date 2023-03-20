@@ -66,14 +66,17 @@ Handout files created using [Quarto](https://quarto.org/).
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/ovb.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/006-ovb.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/006-ovb/006-ovb.pdf)
-  - Stata do-file: [`006-ovb.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/006-ovb/006-ovb.do)
+  - Stata do-file: [`006-ovb.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/006-ovb/006-ovb.do) | To download, see `theSpring` module
      - Data files available for download on `theSpring`.
 
 **Week 8: Violations of Classical Assumptions II: Multicollinearity**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/multicollinearity.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/007-multicollinearity.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/007-multicollinearity.pdf)
-  
+   - Stata do-file: [`007-multicollinearity.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/007-multicollinearity/007-multicollinearity.do) | To download, see `theSpring` module
+     - Data files available for download on `theSpring`.
+     
+ 
 ## Assignments
 
 
