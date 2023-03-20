@@ -91,7 +91,7 @@ This course has no required textbook. My suggested references are listed below. 
 
 - **Assignments** (20\%): Every week, students are required to complete an *online quiz* (True/False, multiple-choice questions), comprehending each weekly content. **Each weekly quiz is due the beginning of Monday lectures** (2:30 PM). Students will also be required to complete 5 *Problem Sets*, that will comprehend, in general, 2-3 weeks of content. Students will be asked to answer theoretical and applied problems,  strongly based off of lecture notes and, of course, lectures themselves. 
 
-- **Exams**: This course will have a *Midterm* (20\%, date TBD) and a *Final* (comprehensive, 30\%) exam. Each exam will follow a similar structure as the Problem Sets'. 
+- **Exams**: This course will have a *Midterm* (20\%, see date below) and a *Final* (comprehensive, 30\%) exam. Each exam will follow a similar structure as the Problem Sets'. 
 
 - **Applied Research Project** (30\%): The idea of the applied project is to provide a *hands-on* experience for students, in which they are responsible for formulating a research question, looking for the data (cross-section or time-series), and performing the appropriate econometric treatments and techniques, so, by the end of it, that question can be answered. The project must be between 8 and 10 pages, double-spaced, with the required econometric outputs and bibliography (these last two do not count for the paper's length). All necessary assistance will be provided by the instructor upon students' request. Moreover, students will have access to a template, as well as several projects shared by students from previous semesters, serving as useful references. Feel free to work either in pairs or individually. You must submit your project until the Final Exam day's starting time.
 
@@ -127,8 +127,8 @@ Unsatisfactory performance                      F (0--60\%)
 
 * **Jan 26**: "Add" deadline
 * **Mar 11--19**: Spring Vacation
+* **Mar 29**: Midterm Exam (in class)
 * **Apr 13**: Course withdrawal deadline
-* **TBD**: Midterm Exam (in class)
 * **May 2**: Last day of classes
 * **May 9, 6--9 PM**: Final Exam, at our classroom; Applied Research Project due date.
 
