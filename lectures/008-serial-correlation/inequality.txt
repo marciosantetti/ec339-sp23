@@ -1,0 +1,53 @@
+inequality.def
+
+year aus_gdp aus_gwth aus_share aus_tax ca_gdp ca_gwth ca_share ca_tax nz_gdp nz_gwth nz_share nz_tax us_gdp us_gwth us_share us_tax
+
+	obs:  80 annual observations from 1921 to 2000 for the countries Australia, Canada, U.S. and New Zealand
+
+
+aus_gdp         real GDP per capita in AUS (1990 International Geary and Khamis dollars)
+aus_gwth        percentage growth rate in Australia
+aus_share       percentage income share of the top 1 percent of incomes in Australia
+aus_tax         median marginal tax rate pct; top 1 percent of income earners in Australia
+ca_gdp          real GDP per capita in Canada (1990 International Geary and Khamis dollars)
+ca_gwth         percentage growth rate in Canada
+ca_share        percentage income share of the top 1 percent of incomes in Canada
+ca_tax          median marginal tax rate pct; top 1 percent of income earners in Canada
+nz_gdp          real GDP per capita in NZ (in 1990 International Geary and Khamis dollars)
+nz_gwth         percentage growth rate in New Zealand
+nz_share        percentage income share of the top 1 percent of incomes in New Zealand
+nz_tax          median marginal tax rate pct; top 1 percent of income earners in New Zealand
+us_gdp          real GDP per capita in US (1990 International Geary and Khamis dollar)
+us_gwth         percentage growth rate in United States
+us_share        percentage income share of the top 1 percent of incomes in United States
+us_tax          median marginal tax rate pct; top 1 percent of income earners in United States
+
+
+
+Source: Kindly provided by Andrew Leigh on his web site http://andrewleigh.org/research.htm and used in his paper Atkinson, A.B. and A. Leigh (2013), "The Distribution of Top Incomes in Five Anglo-Saxon Countries over the Long Run", Economic Record, 89, 1-17.
+Real GDP per capita is from Angus Maddison, Historical Statistics for the World Economy: 1-2003 AD. Downloaded
+from www.ggdc.net/Maddison/ on 10 May 2007.
+
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        year |         80        40.5     23.2379          1         80
+     aus_gdp |         80    10524.21    4877.564     4353.6    21549.3
+    aus_gwth |         80    1.780216      2.7286  -5.681445    10.3387
+   aus_share |         80      8.1295    2.317336       4.61      14.13
+     aus_tax |         80     37.2775    18.12738        8.2         65
+-------------+---------------------------------------------------------
+      ca_gdp |         80    10787.45    5642.519       3357    22366.2
+     ca_gwth |         80    2.357512    5.040813  -16.77361    16.2394
+    ca_share |         80    11.23628    3.102505      7.602      18.41
+      ca_tax |         80     34.3375    19.13286        1.6         58
+      nz_gdp |         80    9736.601    3588.466     4327.2    16178.5
+-------------+---------------------------------------------------------
+     nz_gwth |         80    1.419682    3.979634  -8.282444   14.01225
+    nz_share |         80     9.44125    3.207204       4.88      15.62
+      nz_tax |         80     39.8075    21.65554        5.6       70.3
+      us_gdp |         80    13687.74    6653.896     4776.9    28403.4
+     us_gwth |         80    2.253705    5.815673  -21.45512   18.71169
+-------------+---------------------------------------------------------
+    us_share |         80       11.79    3.521395       7.74       19.6
+      us_tax |         80    35.35625    16.71718          3         55

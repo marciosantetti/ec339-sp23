@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>.b[Serial Correlation]</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcio Santetti" />
+    <script src="008-serial-correlation_files/header-attrs/header-attrs.js"></script>
+    <link href="008-serial-correlation_files/remark-css/default.css" rel="stylesheet" />
+    <link href="008-serial-correlation_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="008-serial-correlation_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skid-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# .b[Serial Correlation]
+]
+.subtitle[
+## .b[.green[EC 339]]
+]
+.author[
+### Marcio Santetti
+]
+.date[
+### Fall 2022
+]
+
+---
+
+class: inverse, middle
+
+
+
+
+
+
+
+# Motivation
+
+
+
+---
+
+# The road so far
+
+Over the past weeks, we have learned:
+
+--
+
+  - That .it[omitting] relevant variables from a model causes .hi[bias];
+  
+  - That deterministic/strong stochastic .it[linear relationships] between two independent variables harm regression .hi[standard errors], and, therefore, OLS .hi[inference].
+  
+
+--
+
+&lt;br&gt;
+
+This week and the next, we turn our attention to the .hi[residual] term, *u*.
+
+--
+
+  - We begin by investigating what happens when observations within *u* share some sort of .hi[linear relationship].
+  
+  - This problem is .it[extremely common] in time-series data, given that the .hi[order] of observations matters, which is not true for cross-section data.
+  
+  
+  
+
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Pure serial correlation
+
+
+---
+
+# Pure serial correlation
+
+Recall .hi[CLRM Assumption IV]:
+
+&gt; *"Observations of the error term are .it[uncorrelated] with each other."*
+  
+$$
+`\begin{align}
+\mathbb{E}(r_{u_i,uj}) = 0 \hspace{1cm} \text{with } i \neq j    
+\end{align}`
+$$
+
+--
+
+In a .hi[well-specified] model, autocorrelation can be characterized in the following way:
+
+
+$$
+`\begin{align}
+u_t = \rho u_{t-1} + e_t  
+\end{align}`
+$$
+
+&lt;br&gt;
+
+where *&amp;rho;* is known as the _.it[autocorrelation coefficient]_.
+
+As *&amp;rho; &amp;rarr;* |1|, the higher the .it[degree] of serial correlation.
+
+If *&amp;rho; &gt;* |1|, we have an .it[explosive] trajectory.
+
+---
+
+# Pure serial correlation
+
+
+
+&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Impure serial correlation
+
+
+---
+
+# Impure serial correlation
+
+The .hi["impure"] version of serial correlation occurs in .it[misspecified models].
+
+--
+
+Whenever the error term contains a relevant variable that has been omitted from the model, which in turn is .hi[serially correlated] itself, we have a case of impure serial correlation.
+
+--
+
+&lt;br&gt;
+
+- A simple .it[example]: suppose we are interested in a person's wealth over time. In case we omit their .it[credit score] measure, for instance, it will be part of the error term.
+
+  - Do you believe one's credit score .it[today] is dependent on their .it[last year's] credit score?
+  
+  - If you .it[do], then this omitted variable is affecting the error term, thus causing serial correlation, even if the error term, .it[by itself], is not serially correlated.
+  
+---
+
+# Impure serial correlation
+
+Recall what happens when we omit a relevant variable from a model:
+
+--
+
+  - Suppose we have the .it["true"] population model:
+  
+
+$$
+`\begin{align}
+y_t = \beta_0 + \beta_1x_{1t} + \beta_2x_{2t} + u_t  
+\end{align}`
+$$ 
+--
+
+  - And instead we estimate:
+  
+$$
+`\begin{align}
+y_t = \beta_0 + \beta_1x_{1t} + u_t^* 
+\end{align}`
+$$ 
+
+with `\(u_t^* = u_t + \beta_2x_{2t}\)`.
+
+--
+
+&lt;br&gt;
+
+In case `\(x_2\)` is .it[serially correlated], it will affect the residual term, which in turn .it[will be] serially correlated.
+
+---
+
+
+
+layout: false
+class: inverse, middle
+
+# Consequences of serial correlation
+
+
+---
+
+# Consequences of serial correlation
+
+Firstly, autocorrelation .hi[does not] cause .hi[bias] to OLS estimates.
+
+--
+
+However, it affects OLS .hi[standard errors], undermining .hi[inference] from OLS models.
+
+--
+
+  - Since it usually .hi[underestimates] SEs, we end up being .it[more likely] to .it[reject] null hypotheses, increasing the likelihood of .it[Type I error].
+
+--
+
+&lt;br&gt;
+
+This way, OLS is no longer .hi-blue[BLUE].
+
+--
+
+  - Why? Its .hi-blue[B] part is affected.
+  
+  - .hi-blue["Best"] refers to .hi-blue[minimum variance], which is not achieved with serial correlation.
+
+
+---
+
+
+layout: false
+class: inverse, middle
+
+# Dealing with serial correlation
+
+---
+
+# Dealing with serial correlation
+
+&lt;br&gt;&lt;br&gt;
+
+In addition to .hi[visualizing] OLS residuals, there are several .hi[tests] for serial correlation.
+
+--
+
+The most common ones are the .hi[Durbin-Watson] and .hi-orange[Breusch-Godfrey] tests.
+
+--
+
+&lt;br&gt;
+
+Moreover, we can use the .hi-orange[Cochrane-Orcutt] estimator to correct for serial correlation.
+
+--
+
+We will study these procedures through an .hi[applied example].
+
+
+
+
+---
+
+# Okun's law
+
+.hi[Okun's law] illustrates the relationship between .hi-orange[unemployment] and .hi-orange[growth] in an economy over time.
+
+--
+
+In a very .it[basic] form, it can be expressed as follows:
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+u_t - u_{t-1} = -\gamma (g_t - g_n)
+\end{align}`
+$$
+
+&lt;br&gt;
+
+ - where `\(u_t\)` and `\(u_{t-1}\)` are the unemployment rate at time `\(t\)` and `\(t-1\)`, respectively;
+ - `\(g_t\)` is the output growth rate at time `\(t\)`, and `\(g_n\)` is the "normal" output growth rate, which can be assumed as constant.
+ - The `\(\gamma\)` coefficient measures this relationship. If the growth of output is *above* the normal rate, unemployment falls; a growth rate *below* the normal rate leads to an increase in unemployment.
+
+---
+
+# Okun's law
+
+&lt;br&gt;
+
+We can rewrite Okun's law as:
+
+$$
+`\begin{align}
+\Delta u_t = -\gamma \ g_t
+\end{align}`
+$$ 
+where `\(\Delta u_t\)` denotes the .it[change] in unemployment from `\(t-1\)` to `\(t\)`.
+
+--
+
+&lt;br&gt;
+
+As an .it[econometric model], we can write it as follows:
+
+$$
+`\begin{align}
+\Delta u_t = \beta_0 + \beta_1g_t + \varepsilon_i
+\end{align}`
+$$ 
+
+--
+
+Let's throw some .it[data] in!
+
+---
+
+# Okun's law: data for Australia (1978Q2&amp;mdash;2016Q2):
+
+
+
+
+
+
+&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Okun's law
+
+A quick check at the model's .hi[residuals]:
+
+&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+
+--
+
+Does it look .hi-blue[autocorrelated]?
+
+---
+
+# The Durbin-Watson test
+
+The .hi-orange[Durbin-Watson] test for autocorrelation is used to test for .hi[first-degree] serial correlation.
+
+--
+
+Provided that the regression model contains an .it[intercept] term `\((\beta_0)\)` and has .it[no lagged] independent variable `\((e.g., x_{1,\ t-1})\)`, this test can be implemented.
+
+
+$$
+`\begin{align}
+d = \sum_{t=2}^{T}(\varepsilon_t-\varepsilon_{t-1})^2 \bigg/  \sum_{t=1}^{T}(\varepsilon_t)^2
+\end{align}`
+$$ 
+
+with `\(0 \le d \le 4\)`.
+
+--
+
+&lt;br&gt;
+
+It can be .it[approximated] by `\(2(1-\hat{\rho})\)`.
+
+😌
+
+
+---
+
+# The Durbin-Watson test
+
+&lt;br&gt;
+
+The .hi[recipe] 👩‍🍳 👨‍🍳:
+
+&lt;br&gt;
+
+.pseudocode-small[
+
+1. Estimate the regression model via OLS, storing its residuals;
+
+2. Calculate the `\(d\)` test statistic;
+
+3. Based on k, the number of slope coefficients, and on n, the sample size, consult the DW table for critical values.
+
+4. The test’s null hypothesis is of no serial correlation in the residuals. In case we reject *H&lt;sub&gt;0&lt;/sub&gt;*, we
+have evidence of serial correlation.
+
+
+
+
+]
+
+---
+
+# The Durbin-Watson test
+
+
+```r
+okun_model %&gt;% 
+  dwtest()
+```
+
+```
+#&gt; 
+#&gt; 	Durbin-Watson test
+#&gt; 
+#&gt; data:  .
+#&gt; DW = 1.331, p-value = 1.562e-05
+#&gt; alternative hypothesis: true autocorrelation is greater than 0
+```
+
+
+.center[&lt;img src="dw.png" style="width: 40%"&gt;]
+
+
+---
+
+# The Durbin-Watson test
+
+```{}
+. estat dwatson
+
+Durbin–Watson d-statistic(  2,   152) =  1.330972
+
+```
+
+&lt;br&gt;
+
+.center[&lt;img src="dw.png" style="width: 50%"&gt;]
+
+
+---
+
+# The Breusch-Godfrey test
+
+The .hi[Breusch-Godfrey] test follows a similar procedure as the Durbin-Watson test's.
+
+--
+
+Its main .it[difference] involves the .hi[auxiliary regression] estimated to find the autocorrelation coefficient, `\(\rho\)`. It must also include all .hi-orange[independent variables] from the original model.
+
+&lt;br&gt;
+
+--
+
+
+$$
+`\begin{align}
+LM = (n-q)R^2_{\hat{\varepsilon}}
+\end{align}`
+$$
+
+&lt;br&gt;
+
+where `\(n\)` is the sample size from the original regression model; 
+
+`\(q\)` is the order of autocorrelation we wish to test for;
+
+and `\(R^2_{\hat{\varepsilon}}\)` is the coefficient of determination from the auxiliary regression.
+
+---
+
+# The Breusch-Godfrey test
+
+
+
+```r
+okun_model %&gt;% 
+  bgtest(order = 1, fill = NA)
+```
+
+```
+#&gt; 
+#&gt; 	Breusch-Godfrey test for serial correlation of order up to 1
+#&gt; 
+#&gt; data:  .
+#&gt; LM test = 18.154, df = 1, p-value = 2.037e-05
+```
+
+&lt;br&gt;&lt;br&gt;
+
+What is our .it[inference]?
+
+
+---
+
+# The Breusch-Godfrey test
+
+
+```{}
+. estat bgodfrey, lag(1) nomiss0
+
+Breusch–Godfrey LM test for autocorrelation
+---------------------------------------------------------------------------
+    lags(p)  |          chi2               df                 Prob &gt; chi2
+-------------+-------------------------------------------------------------
+       1     |         18.154               1                   0.0000
+---------------------------------------------------------------------------
+                        H0: no serial correlation
+
+```
+
+&lt;br&gt;&lt;br&gt;
+
+What is our .it[inference]?
+
+
+---
+
+# The Cochrane-Orcutt estimator
+
+&lt;br&gt;&lt;br&gt;
+
+From the two previous tests, we can infer that our Okun's law model suffers from .it[serial correlation].
+
+--
+
+So what do we do?
+
+--
+
+The .hi[Cochrane-Orcutt] procedure allows for the estimation of a .it[modified] version of the original regression model, allowing for serially .it[uncorelated] residuals.
+
+
+---
+
+# The Cochrane-Orcutt estimator
+
+&lt;br&gt;
+
+The .hi[recipe] 👩‍🍳 👨‍🍳:
+
+.pseudocode-small[
+
+1. Estimate the regression model via OLS, storing its residuals;
+
+2. Estimate a first-order Markov scheme for `\(\hat{u}_t\)`, storing `\(\hat{\rho}\)`;
+
+3. Transform the variables from the original regression into *quasi-differenced* terms, using `\(\hat{\rho}\)`;
+
+4. Re-estimate the model via OLS using the quasi-differenced variables from step 4.
+
+
+
+
+]
+
+---
+
+# The Cochrane-Orcutt estimator
+
+.pseudocode-small[
+
+Step 3: Transform the variables from the original regression into *quasi-differenced* terms, using `\(\hat{\rho}\)`.
+
+
+]
+
+--
+
+For our Okun's law model, we have:
+
+$$
+`\begin{align}
+\tilde{g}_t = g_t - \hat{\rho}g_{t-1}
+\end{align}`
+$$ 
+
+$$
+`\begin{align}
+\widetilde{\Delta u}_t = \Delta u_t - \hat{\rho}\Delta u_{t-1}
+\end{align}`
+$$ 
+--
+
+&lt;br&gt;
+
+.pseudocode-small[
+
+Step 4: Re-estimate the model via OLS using the quasi-differenced variables from step 4.
+
+
+]
+
+$$
+`\begin{align}
+\widetilde{\Delta u}_t = \tilde{\beta}_0 + \beta_1\tilde{g}_t + e_t
+\end{align}`
+$$ 
+
+where `\(\tilde{\beta}_0 = (1-\hat{\rho})\beta_0\)`.
+
+---
+
+# The Cochrane-Orcutt estimator
+
+
+```r
+library(orcutt)
+
+summary(cochrane.orcutt(okun_model))
+```
+
+```
+#&gt; Call:
+#&gt; lm(formula = du ~ g, data = okun_data)
+#&gt; 
+#&gt;               Estimate Std. Error t value Pr(&gt;|t|)
+#&gt; (Intercept)  0.0035386  0.0510639   0.069   0.9448
+#&gt; g           -0.0107379  0.0245295  -0.438   0.6622
+#&gt; 
+#&gt; Residual standard error: 0.2554 on 149 degrees of freedom
+#&gt; Multiple R-squared:  0.0013 ,  Adjusted R-squared:  -0.0054
+#&gt; F-statistic: 0.2 on 1 and 149 DF,  p-value: &lt; 6.622e-01
+#&gt; 
+#&gt; Durbin-Watson statistic 
+#&gt; (original):    1.33097 , p-value: 1.562e-05
+#&gt; (transformed): 2.27044 , p-value: 9.558e-01
+```
+
+
+--
+
+So what?
+
+
+---
+
+# The Cochrane-Orcutt estimator
+
+```{}
+. prais du g, corc
+
+Cochrane–Orcutt AR(1) regression with iterated estimates
+
+      Source |       SS           df       MS      Number of obs   =       151
+-------------+----------------------------------   F(1, 149)       =      0.19
+       Model |    .0124954         1    .0124954   Prob &gt; F        =    0.6622
+    Residual |  9.71553772       149  .065204951   R-squared       =    0.0013
+-------------+----------------------------------   Adj R-squared   =   -0.0054
+       Total |  9.72803312       150  .064853554   Root MSE        =    .25535
+
+------------------------------------------------------------------------------
+          du | Coefficient  Std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+           g |   -.010738   .0245295    -0.44   0.662    -.0592086    .0377326
+       _cons |   .0035386   .0510639     0.07   0.945    -.0973644    .1044416
+-------------+----------------------------------------------------------------
+         rho |   .5612189
+------------------------------------------------------------------------------
+Durbin–Watson statistic (original)    = 1.330972
+Durbin–Watson statistic (transformed) = 2.270438
+
+
+```
+
+.smaller[So what?]
+---
+
+# The Cochrane-Orcutt estimator
+
+Now, the residuals from the .hi-blue[Cochrane-Orcutt] procedure:
+
+
+&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: Serial correlation in practice
+
+
+---
+exclude: true
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

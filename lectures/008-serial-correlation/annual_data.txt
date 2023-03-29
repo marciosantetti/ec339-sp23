@@ -1,0 +1,17 @@
+annual_data.txt
+
+============================================================
+
+
+Annual time-series data for the US economy, 1955--2016.
+
+
+=== Variables:
+
+ifedfunds: Federal Funds nominal interest rate;
+infrate: inflation rate;
+k: measure of non-financial private fixed assets;
+cp: measure of non-financial corporate profits.
+
+
+=============================================================

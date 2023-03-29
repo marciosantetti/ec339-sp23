@@ -1,0 +1,36 @@
+oecd.def
+
+  csumptn gov hours inc r ln_y_c country cxid year dateid
+
+	obs: a panel of annual data for 37 years and 15 countries, a total of 555 observations
+
+csumptn		growth in real per capita private consumption
+gov		growth in real per capita government consumption
+hours		growth in per capita hours worked
+inc		growth in per capita real disposable labour income
+r		real interest rate
+ln_y_c		log(y/c) where y and c are aggregate disposable labour income and aggregate private consumption, respectively
+country		name of oecd country, Australia, ..., Denmark
+cxid		cross section identifier  1=Australia, ..., 15=Denmark
+year		1971, ..., 2007
+dateid		year identifier, 1971, ..., 2007
+
+Source: These data were constructed and used by Gerdie Everaert and Lorenzo Pozzi, "The Predictability of Aggregate Consumption in OECD Countries: A Panel Data Analysis", Journal of Applied Econometrics, Vol. 29. No. 3, 2014, pp. 431-453.
+
+
+For details of how they were constructed see the file readme.ep.txt at 
+http://qed.econ.queensu.ca/jae/2014-v29.3/everaert-pozzi/readme.ep.txt
+
+
+
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+     csumptn |       555    .0209775    .0218541   -.050653    .178805
+         gov |       555    .0279073    .0299726   -.060544    .195853
+       hours |       555   -.0006672    .0230305   -.073578    .314738
+         inc |       555    .0188512    .0243065   -.059809    .130772
+           r |       555    .0236553    .0322676   -.125458     .10484
+-------------+--------------------------------------------------------
+      ln_y_c |       555   -.0579801    .0838153   -.291543    .200601
+        year |       555        1989    10.68671       1971       2007

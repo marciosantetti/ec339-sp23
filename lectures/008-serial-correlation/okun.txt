@@ -1,0 +1,19 @@
+okun5_aus.def
+
+	g  u
+
+	Obs: 153 quarterly observations on Australian macro variables from 1978Q2 to 2016Q2
+
+	g	growth rate: percentage change in Australian GDP
+	u	Unemployment rate
+	
+
+Source: Australian Bureau of Statistics  
+	Monthly data on the unemployment rate (ABS Series A84423050A) were converted to quarterly data using averages.
+The growth rate in GDP was taken from ABS Series A2304370T.
+
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+           g |       153    .7908497    .7781016       -1.6        3.1
+           u |       153    6.935294    1.766407        4.1       11.1
