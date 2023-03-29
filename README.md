@@ -94,6 +94,11 @@ Handout files created using [Quarto](https://quarto.org/).
 
   - Data files and submission on `theSpring`.
 
+- [`Problem Set 3`](https://raw.githack.com/marciosantetti/ec339-sp23/main/problem-sets/ps3-sp23.pdf) (due 04/12, before class)
+
+  - Data files and submission on `theSpring`.
+
+
 
 ### Quizzes
 
