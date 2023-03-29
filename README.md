@@ -75,6 +75,10 @@ Handout files created using [Quarto](https://quarto.org/).
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/007-multicollinearity.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/007-multicollinearity/007-multicollinearity.pdf)
    - Stata do-file: [`007-multicollinearity.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/007-multicollinearity/007-multicollinearity.do) | To download, see `theSpring` module
      - Data files available for download on `theSpring`.
+
+**Week 9: Vioations of Classical Assumptions III: Serial Correlation**
+
+  - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/008-serial-correlation/serial-correlation.pdf)
      
  
 ## Assignments
