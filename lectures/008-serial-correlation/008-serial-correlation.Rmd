@@ -2,7 +2,7 @@
 title: ".b[Serial Correlation]"
 subtitle: ".b[.green[EC 339]]"
 author: "Marcio Santetti"
-date: "Fall 2022"
+date: "Spring 2023"
 output:
   xaringan::moon_reader:
     css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
@@ -107,7 +107,7 @@ Recall .hi[CLRM Assumption IV]:
   
 $$
 \begin{align}
-\mathbb{E}(r_{u_i,uj}) = 0 \hspace{1cm} \text{with } i \neq j    
+\mathbb{E}(r_{u_i,u_j}) = 0 \hspace{1cm} \text{with } i \neq j    
 \end{align}
 $$
 
@@ -161,7 +161,7 @@ for(i in 2:100){
 
 ```
 
-```{r, echo=FALSE, dev="svg", fig.height=5.5, fig.width = 10}
+```{r, echo=FALSE, dev="svg", fig.height=6, fig.width = 10}
 library(ggfortify)
 
 error <- ts(error, start=c(1990,1), freq=12)
@@ -542,7 +542,7 @@ The .hi[Breusch-Godfrey] test follows a similar procedure as the Durbin-Watson t
 
 --
 
-Its main .it[difference] involves the .hi[auxiliary regression] estimated to find the autocorrelation coefficient, $\rho$. It must also include all .hi-orange[independent variables] from the original model.
+Its main .it[difference] involves the .hi[auxiliary regression] estimated to find the autocorrelation coefficient, *&rho;*. It must also include all .hi-orange[independent variables] from the original model.
 
 <br>
 
@@ -563,19 +563,6 @@ $q$ is the order of autocorrelation we wish to test for;
 
 and $R^2_{\hat{\varepsilon}}$ is the coefficient of determination from the auxiliary regression.
 
----
-
-# The Breusch-Godfrey test
-
-
-```{r}
-okun_model %>% 
-  bgtest(order = 1, fill = NA)
-```
-
-<br><br>
-
-What is our .it[inference]?
 
 
 ---
@@ -688,21 +675,7 @@ where $\tilde{\beta}_0 = (1-\hat{\rho})\beta_0$.
 
 ---
 
-# The Cochrane-Orcutt estimator
 
-```{r}
-library(orcutt)
-
-summary(cochrane.orcutt(okun_model))
-```
-
-
---
-
-So what?
-
-
----
 
 # The Cochrane-Orcutt estimator
 

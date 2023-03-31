@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 ### Marcio Santetti
 ]
 .date[
-### Fall 2022
+### Spring 2023
 ]
 
 ---
@@ -90,7 +90,7 @@ Recall .hi[CLRM Assumption IV]:
   
 $$
 `\begin{align}
-\mathbb{E}(r_{u_i,uj}) = 0 \hspace{1cm} \text{with } i \neq j    
+\mathbb{E}(r_{u_i,u_j}) = 0 \hspace{1cm} \text{with } i \neq j    
 \end{align}`
 $$
 
@@ -437,7 +437,7 @@ The .hi[Breusch-Godfrey] test follows a similar procedure as the Durbin-Watson t
 
 --
 
-Its main .it[difference] involves the .hi[auxiliary regression] estimated to find the autocorrelation coefficient, `\(\rho\)`. It must also include all .hi-orange[independent variables] from the original model.
+Its main .it[difference] involves the .hi[auxiliary regression] estimated to find the autocorrelation coefficient, *&amp;rho;*. It must also include all .hi-orange[independent variables] from the original model.
 
 &lt;br&gt;
 
@@ -458,28 +458,6 @@ where `\(n\)` is the sample size from the original regression model;
 
 and `\(R^2_{\hat{\varepsilon}}\)` is the coefficient of determination from the auxiliary regression.
 
----
-
-# The Breusch-Godfrey test
-
-
-
-```r
-okun_model %&gt;% 
-  bgtest(order = 1, fill = NA)
-```
-
-```
-#&gt; 
-#&gt; 	Breusch-Godfrey test for serial correlation of order up to 1
-#&gt; 
-#&gt; data:  .
-#&gt; LM test = 18.154, df = 1, p-value = 2.037e-05
-```
-
-&lt;br&gt;&lt;br&gt;
-
-What is our .it[inference]?
 
 
 ---
@@ -592,39 +570,7 @@ where `\(\tilde{\beta}_0 = (1-\hat{\rho})\beta_0\)`.
 
 ---
 
-# The Cochrane-Orcutt estimator
 
-
-```r
-library(orcutt)
-
-summary(cochrane.orcutt(okun_model))
-```
-
-```
-#&gt; Call:
-#&gt; lm(formula = du ~ g, data = okun_data)
-#&gt; 
-#&gt;               Estimate Std. Error t value Pr(&gt;|t|)
-#&gt; (Intercept)  0.0035386  0.0510639   0.069   0.9448
-#&gt; g           -0.0107379  0.0245295  -0.438   0.6622
-#&gt; 
-#&gt; Residual standard error: 0.2554 on 149 degrees of freedom
-#&gt; Multiple R-squared:  0.0013 ,  Adjusted R-squared:  -0.0054
-#&gt; F-statistic: 0.2 on 1 and 149 DF,  p-value: &lt; 6.622e-01
-#&gt; 
-#&gt; Durbin-Watson statistic 
-#&gt; (original):    1.33097 , p-value: 1.562e-05
-#&gt; (transformed): 2.27044 , p-value: 9.558e-01
-```
-
-
---
-
-So what?
-
-
----
 
 # The Cochrane-Orcutt estimator
 
@@ -662,7 +608,7 @@ Durbin–Watson statistic (transformed) = 2.270438
 Now, the residuals from the .hi-blue[Cochrane-Orcutt] procedure:
 
 
-&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
