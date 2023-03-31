@@ -79,7 +79,7 @@ Handout files created using [Quarto](https://quarto.org/).
 **Week 9: Vioations of Classical Assumptions III: Serial Correlation**
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/008-serial-correlation/serial-correlation.pdf)
-     
+  - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/008-serial-correlation/008-serial-correlation.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/008-serial-correlation/008-serial-correlation.pdf)
  
 ## Assignments
 
