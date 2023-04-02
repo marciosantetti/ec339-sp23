@@ -390,28 +390,6 @@ have evidence of serial correlation.
 
 ]
 
----
-
-# The Durbin-Watson test
-
-
-```r
-okun_model %&gt;% 
-  dwtest()
-```
-
-```
-#&gt; 
-#&gt; 	Durbin-Watson test
-#&gt; 
-#&gt; data:  .
-#&gt; DW = 1.331, p-value = 1.562e-05
-#&gt; alternative hypothesis: true autocorrelation is greater than 0
-```
-
-
-.center[&lt;img src="dw.png" style="width: 40%"&gt;]
-
 
 ---
 
@@ -608,7 +586,7 @@ Durbin–Watson statistic (transformed) = 2.270438
 Now, the residuals from the .hi-blue[Cochrane-Orcutt] procedure:
 
 
-&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="008-serial-correlation_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---

@@ -505,18 +505,6 @@ have evidence of serial correlation.
 
 ]
 
----
-
-# The Durbin-Watson test
-
-```{r}
-okun_model %>% 
-  dwtest()
-```
-
-
-.center[<img src="dw.png" style="width: 40%">]
-
 
 ---
 
