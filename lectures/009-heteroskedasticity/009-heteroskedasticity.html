@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>.b[Heteroskedasticity]</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcio Santetti" />
+    <script src="009-heteroskedasticity_files/header-attrs/header-attrs.js"></script>
+    <link href="009-heteroskedasticity_files/remark-css/default.css" rel="stylesheet" />
+    <link href="009-heteroskedasticity_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="009-heteroskedasticity_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skid-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# .b[Heteroskedasticity]
+]
+.subtitle[
+## .b[.green[EC 339]]
+]
+.author[
+### Marcio Santetti
+]
+.date[
+### Fall 2022
+]
+
+---
+
+class: inverse, middle
+
+
+
+
+
+
+
+# Motivation
+
+
+
+---
+
+# The road so far
+
+- Over the past three weeks, we have learned:
+
+--
+
+  - That .red[omitting] relevant variables from a model causes .hi[bias];
+  
+  - That deterministic/strong stochastic .red[linear relationships] between two independent variables harm regression .hi[standard errors], and, therefore, OLS .hi[inference];
+  
+  - That if the *error term* shows linear relationships across its own observations, OLS standard errors will be affected, also harming .hi[inference].
+  
+
+--
+
+&lt;br&gt;
+
+- This week, we will study the .red[last] violation of CLRM Assumptions: .hi-blue[Heteroskedasticity].
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Defining heteroskedasticity
+
+
+---
+
+# Defining heteroskedasticity
+
+Recall .hi[CLRM Assumption V]:
+
+&lt;br&gt;
+
+--
+
+&gt; *"The error term has a .red[constant variance]."*
+
+--
+
+&lt;br&gt;
+
+Mathematically...
+
+  
+$$
+`\begin{align}
+Var(u|x) = \sigma^2
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+In words, this assumption implies that the error term has the .hi[same variance] for each value of the independent variable.
+
+---
+
+# Defining heteroskedasticity
+
+- .red[*Homoskedastic*] residuals:
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Defining heteroskedasticity
+
+- .red[*Heteroskedastic*] residuals (1):
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Defining heteroskedasticity
+
+- .red[*Heteroskedastic*] residuals (2):
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Consequences of heteroskedasticity
+
+---
+
+# Consequences of heteroskedasticity
+
+&lt;br&gt;
+
+
+First of all, heteroskedasticity .hi-blue[does not] cause bias to OLS coefficients.
+
+--
+
+&lt;br&gt;
+
+Similar to .red[multicollinearity] and .red[serial correlation], heteroskedasticity affects OLS .hi[standard errors].
+
+--
+
+As a consequence, confidence intervals and hypothesis testing procedures become .hi[unreliable].
+
+--
+
+&lt;br&gt;
+
+Therefore, how can we trust in our models' .hi[inference]?
+
+--
+
+&lt;br&gt;
+
+.right[
+
+We .hi[can't]!
+
+]
+
+---
+
+layout: false
+class: inverse, middle
+
+# Testing for heteroskedasticity
+
+---
+
+
+# Testing for heteroskedasticity
+
+&lt;br&gt;
+
+Here, we will study .hi[two] different statistical tests for heteroskedasticity.
+
+--
+
+  - The .hi-blue[Breusch-Pagan] test;
+  
+  - The .hi-blue[White] test.
+  
+--
+
+&lt;br&gt;
+
+We will study these procedures through an .red[example].
+
+
+---
+
+# The Breusch-Pagan test
+
+As we have been studying for the past few weeks, all statistical tests involve .hi-blue[auxiliary regression models].
+
+--
+
+For the .hi[Breusch-Pagan] test, this is also the case. This time, it involves the regression's .hi[squared residuals].
+
+--
+
+The __recipe__ 👩‍🍳 👨‍🍳:
+
+.pseudocode-small[
+
+1. Estimate the regression model via OLS, storing its residuals;
+
+2. Square the estimated residuals, obtaining `\(\hat{u}_i^2\)`;
+
+3. Estimate an *auxiliary regression*, with `\(\hat{u}_i^2\)` as the dependent variable, on *all* independent variables from the original model;
+
+4. Then, test the following *null hypothesis*:
+
+H.sub[0]: CLRM Assumption V is true  
+H.sub[a]: H.sub[0] is not true
+
+
+]
+
+
+---
+
+
+# The Breusch-Pagan test
+
+The Breusch-Pagan test's .hi[test statistic] is given by 
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+LM = n \cdot R^2_{\hat{u}^2}
+\end{align}`
+$$
+
+&lt;br&gt;
+
+Where `\(n\)` is the sample size, and `\(R^2_{\hat{u}^2}\)` is the coefficient of determination from the .red[auxiliary regression].
+
+--
+
+&lt;br&gt;
+
+This LM test statistic is .red[Chi-squared] distributed, with `\(k\)` degrees-of-freedom.
+
+--
+
+
+In case we .hi[reject] the null hypothesis, CLRM Assumption V is .hi[violated] and we have .hi[evidence] of
+heteroskedasticity in the model's residuals.
+
+---
+
+# The Breusch-Pagan test
+
+
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Breusch-Pagan test
+
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# The Breusch-Pagan test
+
+In .mono[R]...
+
+
+```r
+food_model &lt;- lm(food_exp ~ income, data = food_data)
+food_model %&gt;% tidy()
+```
+
+```
+#&gt; # A tibble: 2 × 5
+#&gt;   term        estimate std.error statistic   p.value
+#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 (Intercept)     83.4     43.4       1.92 0.0622   
+#&gt; 2 income          10.2      2.09      4.88 0.0000195
+```
+
+
+--
+
+
+```r
+food_model %&gt;% breusch_pagan()
+```
+
+```
+#&gt; # A tibble: 1 × 5
+#&gt;   statistic p.value parameter method                alternative
+#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;      
+#&gt; 1      7.38 0.00658         1 Koenker (studentised) greater
+```
+
+--
+
+What is our .hi[inference]?
+
+
+---
+
+# The Breusch-Pagan test
+
+In .mono[Stata]...
+
+```{}
+. reg food_exp income
+
+      Source |       SS           df       MS      Number of obs   =        40
+-------------+----------------------------------   F(1, 38)        =     23.79
+       Model |   190626.98         1   190626.98   Prob &gt; F        =    0.0000
+    Residual |  304505.173        38  8013.29403   R-squared       =    0.3850
+-------------+----------------------------------   Adj R-squared   =    0.3688
+       Total |  495132.153        39  12695.6962   Root MSE        =    89.517
+
+------------------------------------------------------------------------------
+    food_exp | Coefficient  Std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      income |   10.20964   2.093263     4.88   0.000     5.972052    14.44723
+       _cons |   83.41601   43.41016     1.92   0.062    -4.463272    171.2953
+------------------------------------------------------------------------------
+
+```
+
+---
+
+# The Breusch-Pagan test
+
+In .mono[Stata]...
+
+
+```{}
+
+. estat hettest, iid
+
+Breusch–Pagan/Cook–Weisberg test for heteroskedasticity 
+Assumption: i.i.d. error terms
+Variable: Fitted values of food_exp
+
+H0: Constant variance
+
+    chi2(1) =   7.38
+Prob &gt; chi2 = 0.0066
+
+
+
+```
+
+&lt;br&gt;
+
+
+What is our .hi[inference]?
+
+---
+
+# The Breusch-Pagan test
+
+A quick look at this model's .hi[residuals]:
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Breusch-Pagan test
+
+Sometimes, a solution for heteroskedasticity is to .hi-blue[log-transform] the .red[dependent variable].
+
+--
+  
+  - Why?
+
+--
+
+  - It reduces the variable's .hi[variance].
+  
+--
+
+Let's see.
+
+
+```r
+food_model2 &lt;- lm(log(food_exp) ~ income, data = food_data)
+food_model2 %&gt;% breusch_pagan()
+```
+
+```
+#&gt; # A tibble: 1 × 5
+#&gt;   statistic p.value parameter method                alternative
+#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;      
+#&gt; 1      1.71   0.191         1 Koenker (studentised) greater
+```
+
+What happened?
+
+
+---
+
+# The Breusch-Pagan test
+
+Sometimes, a solution for heteroskedasticity is to .hi-blue[log-transform] the .red[dependent variable].
+
+
+```{}
+. quietly reg log_food_exp income
+
+. 
+. 
+. estat hettest, iid
+
+Breusch–Pagan/Cook–Weisberg test for heteroskedasticity 
+Assumption: i.i.d. error terms
+Variable: Fitted values of log_food_exp
+
+H0: Constant variance
+
+    chi2(1) =   1.71
+Prob &gt; chi2 = 0.1909
+
+
+```
+
+&lt;br&gt;
+
+
+What happened?
+
+
+---
+
+# The Breusch-Pagan test
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Breusch-Pagan test
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The White test
+
+The .hi-blue[White test] for heteroskedasticity is a more .hi[general form] of the Breusch-Pagan test.
+
+--
+
+Basically, it allows `\(\hat{u}^2\)` to be .red[correlated] with further .red[functional forms] of the independent variables, such as .red[squares], .red[cubes], .red[interactions], etc.
+
+--
+
+The __recipe__ 👩‍🍳 👨‍🍳:
+
+.pseudocode-small[
+
+1. Run steps 1 and 2 from the Breusch-Pagan test;
+
+2. Estimate an *auxiliary regression*, with `\(\hat{u}^2_i\)` as the dependent variable, on *all* independent variables from the original model and desired functional forms;
+
+3. Then, test the following *null hypothesis*:
+
+H.sub[0]: CLRM Assumption V is true  
+H.sub[a]: H.sub[0] is not true
+
+
+]
+
+---
+
+# The White test
+
+Now, let's .hi[apply] this test to our food expenditure models:
+
+--
+
+  - Original model (with *food expenditures* in levels):
+
+
+```r
+food_model %&gt;% white_lm(interactions = TRUE)
+```
+
+```
+#&gt; # A tibble: 1 × 5
+#&gt;   statistic p.value parameter method       alternative
+#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      
+#&gt; 1      7.56  0.0229         2 White's Test greater
+```
+
+&lt;br&gt;
+
+What is our .hi[inference]?
+
+---
+
+# The White test
+
+Now, let's .hi[apply] this test to our food expenditure models:
+
+  - Original model (with *food expenditures* in levels):
+
+```{}
+. estat imtest, white
+
+White's test
+H0: Homoskedasticity
+Ha: Unrestricted heteroskedasticity
+
+    chi2(2) =   7.56
+Prob &gt; chi2 = 0.0229
+
+
+
+```
+
+&lt;br&gt;
+
+What is our .hi[inference]?
+
+---
+
+# The White test
+
+  - Now, with *food expenditures* in *logs*:
+
+
+```r
+food_model2 %&gt;% white_lm(interactions = TRUE)
+```
+
+```
+#&gt; # A tibble: 1 × 5
+#&gt;   statistic p.value parameter method       alternative
+#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      
+#&gt; 1      1.76   0.416         2 White's Test greater
+```
+
+And .hi[now]?
+
+---
+
+# The White test
+
+  - Now, with *food expenditures* in *logs*:
+
+```{}
+. estat imtest, white
+
+White's test
+H0: Homoskedasticity
+Ha: Unrestricted heteroskedasticity
+
+    chi2(2) =   1.76
+Prob &gt; chi2 = 0.4156
+
+
+```
+
+And .hi[now]?
+
+---
+
+layout: false
+class: inverse, middle
+
+# Robust standard errors
+
+
+---
+
+# Robust standard errors
+
+&lt;br&gt;
+
+Many times, however, log-transforming variables .hi[does not] guarantee that heteroskedasticity will go away.
+
+--
+
+A nice solution is to use .hi-blue[heteroskedasticity-robust standard errors].
+
+--
+
+&lt;br&gt;
+
+By estimating these robust standard errors, we correct the .hi-blue[bias] in a model's standard errors, therefore improving .hi[inference] from our models.
+
+---
+
+# Robust standard errors
+
+
+Consider the following model:
+
+
+
+```r
+data("hprice2")
+
+price_model &lt;- lm(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2)
+price_model %&gt;% tidy()
+```
+
+```
+#&gt; # A tibble: 5 × 5
+#&gt;   term        estimate std.error statistic   p.value
+#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 (Intercept)  11.1      0.318       34.8  5.65e-136
+#&gt; 2 lnox         -0.954    0.117       -8.17 2.57e- 15
+#&gt; 3 log(dist)    -0.134    0.0431      -3.12 1.93e-  3
+#&gt; 4 rooms         0.255    0.0185      13.7  1.15e- 36
+#&gt; 5 stratio      -0.0525   0.00590     -8.89 1.07e- 17
+```
+
+
+---
+
+# Robust standard errors
+
+
+Consider the following model:
+
+
+```{}
+. reg lprice lnox log_dist rooms stratio
+
+      Source |       SS           df       MS      Number of obs   =       506
+-------------+----------------------------------   F(4, 501)       =    175.86
+       Model |  49.3987586         4  12.3496897   Prob &gt; F        =    0.0000
+    Residual |  35.1834663       501   .07022648   R-squared       =    0.5840
+-------------+----------------------------------   Adj R-squared   =    0.5807
+       Total |   84.582225       505  .167489554   Root MSE        =      .265
+
+------------------------------------------------------------------------------
+      lprice | Coefficient  Std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnox |  -.9535388   .1167417    -8.17   0.000    -1.182902   -.7241751
+    log_dist |  -.1343395   .0431032    -3.12   0.002    -.2190247   -.0496542
+       rooms |   .2545271   .0185303    13.74   0.000     .2181203    .2909338
+     stratio |  -.0524511   .0058971    -8.89   0.000    -.0640372    -.040865
+       _cons |   11.08386   .3181113    34.84   0.000     10.45887    11.70886
+------------------------------------------------------------------------------
+
+
+```
+
+
+---
+
+# Robust standard errors
+
+.hi-blue[Breusch-Pagan] test:
+
+
+```r
+price_model %&gt;% breusch_pagan()
+```
+
+```
+#&gt; # A tibble: 1 × 5
+#&gt;   statistic  p.value parameter method                alternative
+#&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;      
+#&gt; 1      69.9 2.42e-14         4 Koenker (studentised) greater
+```
+
+
+
+.hi-blue[White] test:
+
+
+```r
+price_model %&gt;% white_lm(interactions = TRUE)
+```
+
+```
+#&gt; # A tibble: 1 × 5
+#&gt;   statistic  p.value parameter method       alternative
+#&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      
+#&gt; 1      144. 1.15e-23        14 White's Test greater
+```
+
+---
+
+# Robust standard errors
+.small[
+.hi-blue[Breusch-Pagan] test:
+
+```{}
+. estat hettest, iid
+
+Breusch–Pagan/Cook–Weisberg test for heteroskedasticity 
+Assumption: i.i.d. error terms
+Variable: Fitted values of lprice
+
+H0: Constant variance
+
+    chi2(1) =  37.57
+Prob &gt; chi2 = 0.0000
+
+
+
+```
+
+
+
+.hi-blue[White] test:
+
+```{}
+. estat imtest, white
+
+White's test
+H0: Homoskedasticity
+Ha: Unrestricted heteroskedasticity
+
+   chi2(14) = 143.98
+Prob &gt; chi2 = 0.0000
+
+```
+]
+---
+
+
+# Robust standard errors 
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Robust standard errors 
+
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-19-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Robust standard errors 
+
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-20-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Robust standard errors 
+
+
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-21-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+# Robust standard errors
+
+.hi-red[Robust (White)] standard errors:
+
+
+```r
+lm_robust(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2, 
+          se_type="HC1")
+```
+
+&lt;br&gt;
+
+<div id="bkqrovfapj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bkqrovfapj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 65%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bkqrovfapj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bkqrovfapj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bkqrovfapj .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bkqrovfapj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bkqrovfapj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bkqrovfapj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bkqrovfapj .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bkqrovfapj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bkqrovfapj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bkqrovfapj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bkqrovfapj .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bkqrovfapj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bkqrovfapj .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#bkqrovfapj .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#bkqrovfapj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bkqrovfapj .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#bkqrovfapj .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bkqrovfapj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bkqrovfapj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bkqrovfapj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bkqrovfapj .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bkqrovfapj .gt_left {
+  text-align: left;
+}
+
+#bkqrovfapj .gt_center {
+  text-align: center;
+}
+
+#bkqrovfapj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bkqrovfapj .gt_font_normal {
+  font-weight: normal;
+}
+
+#bkqrovfapj .gt_font_bold {
+  font-weight: bold;
+}
+
+#bkqrovfapj .gt_font_italic {
+  font-style: italic;
+}
+
+#bkqrovfapj .gt_super {
+  font-size: 65%;
+}
+
+#bkqrovfapj .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#bkqrovfapj .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#bkqrovfapj .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#bkqrovfapj .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#bkqrovfapj .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#bkqrovfapj .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#bkqrovfapj .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Variable</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Coefficient</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Standard error</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>t-statistic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">(Intercept)</td>
+<td class="gt_row gt_right">11.0838616</td>
+<td class="gt_row gt_right">0.3772949</td>
+<td class="gt_row gt_right">29.3771817</td>
+<td class="gt_row gt_right">0.0000000</td></tr>
+    <tr><td class="gt_row gt_left">lnox</td>
+<td class="gt_row gt_right">−0.9535388</td>
+<td class="gt_row gt_right">0.1268005</td>
+<td class="gt_row gt_right">−7.5199909</td>
+<td class="gt_row gt_right">0.0000000</td></tr>
+    <tr><td class="gt_row gt_left">log(dist)</td>
+<td class="gt_row gt_right">−0.1343395</td>
+<td class="gt_row gt_right">0.0535287</td>
+<td class="gt_row gt_right">−2.5096731</td>
+<td class="gt_row gt_right">0.0123986</td></tr>
+    <tr><td class="gt_row gt_left">rooms</td>
+<td class="gt_row gt_right">0.2545271</td>
+<td class="gt_row gt_right">0.0247205</td>
+<td class="gt_row gt_right">10.2962139</td>
+<td class="gt_row gt_right">0.0000000</td></tr>
+    <tr><td class="gt_row gt_left">stratio</td>
+<td class="gt_row gt_right">−0.0524511</td>
+<td class="gt_row gt_right">0.0046082</td>
+<td class="gt_row gt_right">−11.3821438</td>
+<td class="gt_row gt_right">0.0000000</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+---
+
+# Robust standard errors
+
+.hi-red[Robust (White)] standard errors:
+
+```{}
+. reg lprice lnox log_dist rooms stratio, robust
+
+Linear regression                               Number of obs     =        506
+                                                F(4, 501)         =     146.27
+                                                Prob &gt; F          =     0.0000
+                                                R-squared         =     0.5840
+                                                Root MSE          =       .265
+
+------------------------------------------------------------------------------
+             |               Robust
+      lprice | Coefficient  std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnox |  -.9535388   .1268005    -7.52   0.000    -1.202665   -.7044125
+    log_dist |  -.1343395   .0535287    -2.51   0.012    -.2395078   -.0291711
+       rooms |   .2545271   .0247205    10.30   0.000     .2059585    .3030956
+     stratio |  -.0524511   .0046082   -11.38   0.000    -.0615049   -.0433974
+       _cons |   11.08386   .3772949    29.38   0.000     10.34259    11.82514
+------------------------------------------------------------------------------
+
+```
+
+---
+
+# Robust standard errors
+
+&lt;br&gt;&lt;br&gt;
+
+In .hi[summary], whenever interpreting a model with .hi-blue[heteroskedastic] residuals, use .hi-red[robust standard errors] for inference purposes.
+
+--
+
+&lt;br&gt;
+
+Otherwise, any inferential analysis from our models will not be valid, since violating .hi[CLRM Assumption V] directly affects OLS standard errors.
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: Heteroskedasticity in practice
+
+
+---
+exclude: true
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

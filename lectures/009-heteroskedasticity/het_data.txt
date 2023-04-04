@@ -1,0 +1,51 @@
+
+het_data.csv
+
+===================================================================================================
+
+Variable Description:
+____________________
+
+
+state = State abbreviation
+
+i_urban = Binary indicator for whether home county is 'urban'
+
+age = The individual's age (in years)
+
+i_asian = Binary indicator for whether the individual identifed as Asian
+
+i_black = Binary indicator for whether the individual identifed as Black
+
+i_hispanic = Binary indicator for whether the individual identifed as Hispanic
+
+i_indigenous = Binary indicator for whether the individual identifed with a group indigenous to
+North Am.
+
+i_white = Binary indicator for whether the individual identifed as White
+
+i_female = Binary indicator for whether the individual identifed as Female
+
+i_male = Binary indicator for whether the individual identifed as Male
+
+education = (Approximate) years of education
+
+i_grad_college = Binary indicator for whether the individual graduated college (estimated)
+
+i_married = Binary indicator for whether the individual was married at the time of the sample
+
+personal_income = Total (annual) personal income (tens of thousands of dollars)
+
+i_foodstamps = Binary indicator for whether the individual uses 'foodstamps' (SNAP)
+
+i_health_insurance = Binary indicator for whether the individual has health insurance
+
+i_internet = Binary indicator for whether the individual has access to the internet
+
+time_depart = The time that the individual typically leaves for work (in minutes since midnight)
+
+time_arrive = The time that the individual typically arrives at work (in minutes since midnight)
+
+time_commuting = The length of time that the individual typically travels to work (in minutes)
+
+===============================================================================================================

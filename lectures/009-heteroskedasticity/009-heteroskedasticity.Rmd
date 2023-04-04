@@ -1,0 +1,934 @@
+---
+title: ".b[Heteroskedasticity]"
+subtitle: ".b[.green[EC 339]]"
+author: "Marcio Santetti"
+date: "Fall 2022"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
+    # self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: inverse, middle
+
+```{r Setup, include = F}
+options(htmltools.dir.version = FALSE)
+library(pacman)
+p_load(broom, latex2exp, ggplot2, ggthemes, ggforce, viridis, dplyr, magrittr, knitr, parallel, xaringanExtra, tidyverse, sjPlot, mathjaxr, ggforce, furrr, kableExtra, wooldridge, hrbrthemes, scales, ggeasy, patchwork, MetBrewer, stargazer, gapminder, lmtest, car, skedastic, estimatr, gt, gtExtras)
+
+
+
+
+# Knitr options
+opts_chunk$set(
+  comment = "#>",
+  fig.align = "center",
+  fig.height = 7,
+  fig.width = 8,
+  warning = F,
+  message = F,
+  dpi=300
+)
+
+theme_set(theme_ipsum_rc())
+```
+
+```{R, colors, include = F}
+# Define pink color
+red_pink <- "#e64173"
+turquoise <- "#20B2AA"
+orange <- "#FFA500"
+red <- "#E02C05"
+blue <- "#2b59c3"
+green <- "#0FDA6D"
+grey_light <- "grey70"
+grey_mid <- "grey50"
+grey_dark <- "grey20"
+purple <- "#6A5ACD"
+met_slate <- "#23373b" 
+```
+
+
+
+# Motivation
+
+
+
+---
+
+# The road so far
+
+- Over the past three weeks, we have learned:
+
+--
+
+  - That .red[omitting] relevant variables from a model causes .hi[bias];
+  
+  - That deterministic/strong stochastic .red[linear relationships] between two independent variables harm regression .hi[standard errors], and, therefore, OLS .hi[inference];
+  
+  - That if the *error term* shows linear relationships across its own observations, OLS standard errors will be affected, also harming .hi[inference].
+  
+
+--
+
+<br>
+
+- This week, we will study the .red[last] violation of CLRM Assumptions: .hi-blue[Heteroskedasticity].
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Defining heteroskedasticity
+
+
+---
+
+# Defining heteroskedasticity
+
+Recall .hi[CLRM Assumption V]:
+
+<br>
+
+--
+
+> *"The error term has a .red[constant variance]."*
+
+--
+
+<br>
+
+Mathematically...
+
+  
+$$
+\begin{align}
+Var(u|x) = \sigma^2
+\end{align}
+$$
+--
+
+<br>
+
+In words, this assumption implies that the error term has the .hi[same variance] for each value of the independent variable.
+
+---
+
+# Defining heteroskedasticity
+
+- .red[*Homoskedastic*] residuals:
+
+```{r, dev = "svg", echo = F, fig.height = 5}
+
+set.seed(12345)
+
+ggplot(data = tibble(
+  x = runif(1e3, -3, 3),
+  e = rnorm(1e3, 0, sd = 4)), 
+  aes(x = x, y = e)) +
+geom_point(color = "#1c4769", size = 2.75, alpha = 0.5) +
+labs(x = "Independent variable (x)", y = "Error term (u)") + 
+  geom_hline(yintercept = 0, color = red_pink, size=2) +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+```
+
+
+---
+
+# Defining heteroskedasticity
+
+- .red[*Heteroskedastic*] residuals (1):
+
+```{r, dev = "svg", echo = F, fig.height = 5, message=FALSE, warning=FALSE}
+set.seed(12345)
+ggplot(data = tibble(
+  x = runif(1e3, -3, 3),
+  e = rnorm(1e3, 0, sd = 4 + 1.5 * x)
+), aes(x = x, y = e)) +
+geom_point(color = "#1c4769", size = 2.75, alpha = 0.5) +
+labs(x = "Independent variable (x)", y = "Error term (u)") + geom_hline(yintercept = 0, color = red_pink,
+                                                                        size=2) +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+```
+
+---
+
+# Defining heteroskedasticity
+
+- .red[*Heteroskedastic*] residuals (2):
+
+```{r, dev = "svg", echo = F, fig.height = 5}
+set.seed(12345)
+ggplot(data = tibble(
+  x = runif(1e3, -3, 3),
+  e = rnorm(1e3, 0, sd = 2 + x^2)
+), aes(x = x, y = e)) +
+geom_point(color = "#1c4769", size = 2.75, alpha = 0.5) +
+labs(x = "Independent variable (x)", y = "Error term (u)") + geom_hline(yintercept = 0, color = red_pink,
+                                                                        size=2) +
+  easy_x_axis_title_size(13) +
+  easy_y_axis_title_size(13)
+
+
+```
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Consequences of heteroskedasticity
+
+---
+
+# Consequences of heteroskedasticity
+
+<br>
+
+
+First of all, heteroskedasticity .hi-blue[does not] cause bias to OLS coefficients.
+
+--
+
+<br>
+
+Similar to .red[multicollinearity] and .red[serial correlation], heteroskedasticity affects OLS .hi[standard errors].
+
+--
+
+As a consequence, confidence intervals and hypothesis testing procedures become .hi[unreliable].
+
+--
+
+<br>
+
+Therefore, how can we trust in our models' .hi[inference]?
+
+--
+
+<br>
+
+.right[
+
+We .hi[can't]!
+
+]
+
+---
+
+layout: false
+class: inverse, middle
+
+# Testing for heteroskedasticity
+
+---
+
+
+# Testing for heteroskedasticity
+
+<br>
+
+Here, we will study .hi[two] different statistical tests for heteroskedasticity.
+
+--
+
+  - The .hi-blue[Breusch-Pagan] test;
+  
+  - The .hi-blue[White] test.
+  
+--
+
+<br>
+
+We will study these procedures through an .red[example].
+
+
+---
+
+# The Breusch-Pagan test
+
+As we have been studying for the past few weeks, all statistical tests involve .hi-blue[auxiliary regression models].
+
+--
+
+For the .hi[Breusch-Pagan] test, this is also the case. This time, it involves the regression's .hi[squared residuals].
+
+--
+
+The __recipe__ `r emo::ji("woman_cook")` `r emo::ji("man_cook")`:
+
+.pseudocode-small[
+
+1. Estimate the regression model via OLS, storing its residuals;
+
+2. Square the estimated residuals, obtaining $\hat{u}_i^2$;
+
+3. Estimate an *auxiliary regression*, with $\hat{u}_i^2$ as the dependent variable, on *all* independent variables from the original model;
+
+4. Then, test the following *null hypothesis*:
+
+H.sub[0]: CLRM Assumption V is true  
+H.sub[a]: H.sub[0] is not true
+
+
+]
+
+
+---
+
+
+# The Breusch-Pagan test
+
+The Breusch-Pagan test's .hi[test statistic] is given by 
+
+<br>
+
+$$
+\begin{align}
+LM = n \cdot R^2_{\hat{u}^2}
+\end{align}
+$$
+
+<br>
+
+Where $n$ is the sample size, and $R^2_{\hat{u}^2}$ is the coefficient of determination from the .red[auxiliary regression].
+
+--
+
+<br>
+
+This LM test statistic is .red[Chi-squared] distributed, with $k$ degrees-of-freedom.
+
+--
+
+
+In case we .hi[reject] the null hypothesis, CLRM Assumption V is .hi[violated] and we have .hi[evidence] of
+heteroskedasticity in the model's residuals.
+
+---
+
+# The Breusch-Pagan test
+
+```{r, echo=F, message=F, warning=F}
+food_data <- read_csv("food.csv")
+food_data <- as_tibble(food_data)
+
+```
+
+```{r, dev = "svg", echo = F, fig.height = 5.5, message=FALSE, warning=FALSE}
+
+food_data %>% ggplot(aes(y=food_exp, x=income)) + geom_point(color="tomato3", size=3, alpha=0.7) +
+  labs(title="Food expenditures vs. Income", y="Weekly food expenditures ($)", x="Weekly income ($ 100)") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15))
+
+```
+
+---
+
+# The Breusch-Pagan test
+
+
+```{r, dev = "svg", echo = F, fig.height = 5.5, message=FALSE, warning=FALSE}
+
+food_data %>% ggplot(aes(y=food_exp, x=income)) + geom_point(color="tomato3", size=3, alpha=0.7) +
+  labs(title="Food expenditures vs. Income", y="Weekly food expenditures ($)", x="Weekly income ($ 100)") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15)) +
+  geom_smooth(method="lm", se=FALSE, color = "#1c4769")
+
+```
+
+
+
+---
+
+# The Breusch-Pagan test
+
+In .mono[R]...
+
+```{r}
+food_model <- lm(food_exp ~ income, data = food_data)
+food_model %>% tidy()
+```
+
+
+--
+
+```{r}
+food_model %>% breusch_pagan()
+```
+
+--
+
+What is our .hi[inference]?
+
+
+---
+
+# The Breusch-Pagan test
+
+In .mono[Stata]...
+
+```{}
+. reg food_exp income
+
+      Source |       SS           df       MS      Number of obs   =        40
+-------------+----------------------------------   F(1, 38)        =     23.79
+       Model |   190626.98         1   190626.98   Prob > F        =    0.0000
+    Residual |  304505.173        38  8013.29403   R-squared       =    0.3850
+-------------+----------------------------------   Adj R-squared   =    0.3688
+       Total |  495132.153        39  12695.6962   Root MSE        =    89.517
+
+------------------------------------------------------------------------------
+    food_exp | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      income |   10.20964   2.093263     4.88   0.000     5.972052    14.44723
+       _cons |   83.41601   43.41016     1.92   0.062    -4.463272    171.2953
+------------------------------------------------------------------------------
+
+```
+
+---
+
+# The Breusch-Pagan test
+
+In .mono[Stata]...
+
+
+```{}
+
+. estat hettest, iid
+
+Breusch–Pagan/Cook–Weisberg test for heteroskedasticity 
+Assumption: i.i.d. error terms
+Variable: Fitted values of food_exp
+
+H0: Constant variance
+
+    chi2(1) =   7.38
+Prob > chi2 = 0.0066
+
+
+
+```
+
+<br>
+
+
+What is our .hi[inference]?
+
+---
+
+# The Breusch-Pagan test
+
+A quick look at this model's .hi[residuals]:
+
+```{r, dev = "svg", echo = F, fig.height = 5, message=FALSE, warning=FALSE}
+
+food_resid <- food_model %>% resid()
+food_data <- food_data %>% cbind(food_resid)
+
+food_data %>% ggplot(aes(y=food_exp, x=income)) + geom_point(color="tomato3", size=3, alpha=0.7) +
+  labs(title="Residuals vs. Income", y="Estimated residuals", x="Weekly income ($ 100)") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15))
+
+```
+
+---
+
+# The Breusch-Pagan test
+
+Sometimes, a solution for heteroskedasticity is to .hi-blue[log-transform] the .red[dependent variable].
+
+--
+  
+  - Why?
+
+--
+
+  - It reduces the variable's .hi[variance].
+  
+--
+
+Let's see.
+
+```{r}
+food_model2 <- lm(log(food_exp) ~ income, data = food_data)
+food_model2 %>% breusch_pagan()
+```
+
+What happened?
+
+
+---
+
+# The Breusch-Pagan test
+
+Sometimes, a solution for heteroskedasticity is to .hi-blue[log-transform] the .red[dependent variable].
+
+
+```{}
+. quietly reg log_food_exp income
+
+. 
+. 
+. estat hettest, iid
+
+Breusch–Pagan/Cook–Weisberg test for heteroskedasticity 
+Assumption: i.i.d. error terms
+Variable: Fitted values of log_food_exp
+
+H0: Constant variance
+
+    chi2(1) =   1.71
+Prob > chi2 = 0.1909
+
+
+```
+
+<br>
+
+
+What happened?
+
+
+---
+
+# The Breusch-Pagan test
+
+```{r, dev = "svg", echo = F, fig.height = 5.5, message=FALSE, warning=FALSE}
+
+food_data %>% ggplot(aes(y=log(food_exp), x=income)) + geom_point(color="tomato3", size=3, alpha=0.7) +
+  labs(title="Food expenditures vs. Income", y="Weekly food expenditures ($, logs)", x="Weekly income ($ 100)") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15))
+
+```
+
+---
+
+# The Breusch-Pagan test
+
+```{r, dev = "svg", echo = F, fig.height = 5.5, message=FALSE, warning=FALSE}
+
+food_data %>% ggplot(aes(y=log(food_exp), x=income)) + geom_point(color="tomato3", size=3, alpha=0.7) +
+  labs(title="Food expenditures vs. Income", y="Weekly food expenditures ($, logs)", x="Weekly income ($ 100)") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15)) +
+  geom_smooth(method="lm", se=FALSE, color = "springgreen4")
+
+```
+
+---
+
+# The White test
+
+The .hi-blue[White test] for heteroskedasticity is a more .hi[general form] of the Breusch-Pagan test.
+
+--
+
+Basically, it allows $\hat{u}^2$ to be .red[correlated] with further .red[functional forms] of the independent variables, such as .red[squares], .red[cubes], .red[interactions], etc.
+
+--
+
+The __recipe__ `r emo::ji("woman_cook")` `r emo::ji("man_cook")`:
+
+.pseudocode-small[
+
+1. Run steps 1 and 2 from the Breusch-Pagan test;
+
+2. Estimate an *auxiliary regression*, with $\hat{u}^2_i$ as the dependent variable, on *all* independent variables from the original model and desired functional forms;
+
+3. Then, test the following *null hypothesis*:
+
+H.sub[0]: CLRM Assumption V is true  
+H.sub[a]: H.sub[0] is not true
+
+
+]
+
+---
+
+# The White test
+
+Now, let's .hi[apply] this test to our food expenditure models:
+
+--
+
+  - Original model (with *food expenditures* in levels):
+
+```{r}
+food_model %>% white_lm(interactions = TRUE)
+```
+
+<br>
+
+What is our .hi[inference]?
+
+---
+
+# The White test
+
+Now, let's .hi[apply] this test to our food expenditure models:
+
+  - Original model (with *food expenditures* in levels):
+
+```{}
+. estat imtest, white
+
+White's test
+H0: Homoskedasticity
+Ha: Unrestricted heteroskedasticity
+
+    chi2(2) =   7.56
+Prob > chi2 = 0.0229
+
+
+
+```
+
+<br>
+
+What is our .hi[inference]?
+
+---
+
+# The White test
+
+  - Now, with *food expenditures* in *logs*:
+
+```{r}
+food_model2 %>% white_lm(interactions = TRUE)
+```
+
+And .hi[now]?
+
+---
+
+# The White test
+
+  - Now, with *food expenditures* in *logs*:
+
+```{}
+. estat imtest, white
+
+White's test
+H0: Homoskedasticity
+Ha: Unrestricted heteroskedasticity
+
+    chi2(2) =   1.76
+Prob > chi2 = 0.4156
+
+
+```
+
+And .hi[now]?
+
+---
+
+layout: false
+class: inverse, middle
+
+# Robust standard errors
+
+
+---
+
+# Robust standard errors
+
+<br>
+
+Many times, however, log-transforming variables .hi[does not] guarantee that heteroskedasticity will go away.
+
+--
+
+A nice solution is to use .hi-blue[heteroskedasticity-robust standard errors].
+
+--
+
+<br>
+
+By estimating these robust standard errors, we correct the .hi-blue[bias] in a model's standard errors, therefore improving .hi[inference] from our models.
+
+---
+
+# Robust standard errors
+
+
+Consider the following model:
+
+
+```{r}
+data("hprice2")
+
+price_model <- lm(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2)
+price_model %>% tidy()
+```
+
+
+---
+
+# Robust standard errors
+
+
+Consider the following model:
+
+
+```{}
+. reg lprice lnox log_dist rooms stratio
+
+      Source |       SS           df       MS      Number of obs   =       506
+-------------+----------------------------------   F(4, 501)       =    175.86
+       Model |  49.3987586         4  12.3496897   Prob > F        =    0.0000
+    Residual |  35.1834663       501   .07022648   R-squared       =    0.5840
+-------------+----------------------------------   Adj R-squared   =    0.5807
+       Total |   84.582225       505  .167489554   Root MSE        =      .265
+
+------------------------------------------------------------------------------
+      lprice | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnox |  -.9535388   .1167417    -8.17   0.000    -1.182902   -.7241751
+    log_dist |  -.1343395   .0431032    -3.12   0.002    -.2190247   -.0496542
+       rooms |   .2545271   .0185303    13.74   0.000     .2181203    .2909338
+     stratio |  -.0524511   .0058971    -8.89   0.000    -.0640372    -.040865
+       _cons |   11.08386   .3181113    34.84   0.000     10.45887    11.70886
+------------------------------------------------------------------------------
+
+
+```
+
+
+---
+
+# Robust standard errors
+
+.hi-blue[Breusch-Pagan] test:
+
+```{r}
+price_model %>% breusch_pagan()
+```
+
+
+
+.hi-blue[White] test:
+
+```{r}
+price_model %>% white_lm(interactions = TRUE)
+```
+
+---
+
+# Robust standard errors
+.small[
+.hi-blue[Breusch-Pagan] test:
+
+```{}
+. estat hettest, iid
+
+Breusch–Pagan/Cook–Weisberg test for heteroskedasticity 
+Assumption: i.i.d. error terms
+Variable: Fitted values of lprice
+
+H0: Constant variance
+
+    chi2(1) =  37.57
+Prob > chi2 = 0.0000
+
+
+
+```
+
+
+
+.hi-blue[White] test:
+
+```{}
+. estat imtest, white
+
+White's test
+H0: Homoskedasticity
+Ha: Unrestricted heteroskedasticity
+
+   chi2(14) = 143.98
+Prob > chi2 = 0.0000
+
+```
+]
+---
+
+
+# Robust standard errors 
+
+```{r, echo=FALSE, dev="svg", message=F, warning=F, fig.height=5.5}
+
+data("hprice2")
+
+hprice2 <- as_tibble(hprice2)
+
+price_model <- lm(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2)
+
+p1 <- hprice2 %>% ggplot(aes(y=lprice, x=log(dist))) + geom_point(color="tomato3", size=3, alpha=0.7) + 
+  labs(title="Median housing price vs. distance to employment centers", 
+       y="Median housing price (logs)", x="Distance (logs)") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15))
+
+p2 <- hprice2 %>% ggplot(aes(y=lprice, x=lnox)) + geom_point(color="tomato3", size=3, alpha=0.7) +
+  labs(title="Median housing price vs. nitrous oxide concentration", 
+       y="Median housing price (logs)", x="NO2 concentration (logs)") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15))
+
+p3 <- hprice2 %>% ggplot(aes(y=lprice, x=rooms)) + geom_point(color="tomato3", size=3, alpha=0.7) +
+  labs(title="Median housing price vs. number of rooms", 
+       y="Median housing price (logs)", x="Rooms") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15))
+
+p4 <- hprice2 %>% ggplot(aes(y=lprice, x=stratio)) + geom_point(color="tomato3", size=3, alpha=0.7) + 
+  labs(title="Median housing price vs. average student-to-teacher ratio", 
+       y="Median housing price (logs)", x="Student-to-teacher ratio") +
+  theme(axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15))
+
+p1 
+
+
+
+
+```
+
+---
+
+# Robust standard errors 
+
+
+```{r, echo=FALSE, dev="svg", message=F, warning=F, fig.height=5.5}
+
+p2
+
+
+```
+
+---
+
+# Robust standard errors 
+
+
+```{r, echo=FALSE, dev="svg", message=F, warning=F, fig.height=5.5}
+
+p3
+
+
+```
+
+---
+
+# Robust standard errors 
+
+
+```{r, echo=FALSE, dev="svg", message=F, warning=F, fig.height=5.5}
+
+p4
+
+
+```
+
+
+---
+
+
+# Robust standard errors
+
+.hi-red[Robust (White)] standard errors:
+
+```{r, eval=FALSE}
+lm_robust(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2, 
+          se_type="HC1")
+```
+
+<br>
+
+```{r, echo=FALSE, dev = "svg"}
+lm_robust(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2, 
+          se_type="HC1") %>% 
+  tidy() %>% 
+  select(term, estimate, std.error, statistic, p.value) %>% 
+  gt() %>% 
+  fmt_number(columns = c(estimate, std.error, statistic, p.value), decimals = 7) %>%
+  cols_label(term = md("**Variable**"),
+             estimate = md("**Coefficient**"),
+             std.error = md("**Standard error**"),
+             statistic = md("**t-statistic**"),
+             p.value = md("**p-value**")) %>% 
+  tab_options(table.width = pct(65),
+              table.font.size = 20)
+
+```
+
+---
+
+# Robust standard errors
+
+.hi-red[Robust (White)] standard errors:
+
+```{}
+. reg lprice lnox log_dist rooms stratio, robust
+
+Linear regression                               Number of obs     =        506
+                                                F(4, 501)         =     146.27
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.5840
+                                                Root MSE          =       .265
+
+------------------------------------------------------------------------------
+             |               Robust
+      lprice | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnox |  -.9535388   .1268005    -7.52   0.000    -1.202665   -.7044125
+    log_dist |  -.1343395   .0535287    -2.51   0.012    -.2395078   -.0291711
+       rooms |   .2545271   .0247205    10.30   0.000     .2059585    .3030956
+     stratio |  -.0524511   .0046082   -11.38   0.000    -.0615049   -.0433974
+       _cons |   11.08386   .3772949    29.38   0.000     10.34259    11.82514
+------------------------------------------------------------------------------
+
+```
+
+---
+
+# Robust standard errors
+
+<br><br>
+
+In .hi[summary], whenever interpreting a model with .hi-blue[heteroskedastic] residuals, use .hi-red[robust standard errors] for inference purposes.
+
+--
+
+<br>
+
+Otherwise, any inferential analysis from our models will not be valid, since violating .hi[CLRM Assumption V] directly affects OLS standard errors.
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: Heteroskedasticity in practice
+
+
+---
+exclude: true
+
