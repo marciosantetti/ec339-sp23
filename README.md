@@ -80,6 +80,8 @@ Handout files created using [Quarto](https://quarto.org/).
 
   - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/008-serial-correlation/serial-correlation.pdf)
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/008-serial-correlation/008-serial-correlation.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/008-serial-correlation/008-serial-correlation.pdf)
+  - Stata do-file: [`008-serial-correlation.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/008-serial-correlation/008-serial-correlation.do) | To download, see `theSpring` module
+    - Data files available for download on `theSpring`.
  
 ## Assignments
 
