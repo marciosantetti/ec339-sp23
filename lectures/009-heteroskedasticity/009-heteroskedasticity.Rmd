@@ -2,7 +2,7 @@
 title: ".b[Heteroskedasticity]"
 subtitle: ".b[.green[EC 339]]"
 author: "Marcio Santetti"
-date: "Fall 2022"
+date: "Spring 2023"
 output:
   xaringan::moon_reader:
     css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
@@ -276,7 +276,7 @@ The __recipe__ `r emo::ji("woman_cook")` `r emo::ji("man_cook")`:
 
 4. Then, test the following *null hypothesis*:
 
-H.sub[0]: CLRM Assumption V is true  
+H.sub[0]: CLRM Assumption V is satisfied  
 H.sub[a]: H.sub[0] is not true
 
 
@@ -350,28 +350,6 @@ food_data %>% ggplot(aes(y=food_exp, x=income)) + geom_point(color="tomato3", si
 
 
 
----
-
-# The Breusch-Pagan test
-
-In .mono[R]...
-
-```{r}
-food_model <- lm(food_exp ~ income, data = food_data)
-food_model %>% tidy()
-```
-
-
---
-
-```{r}
-food_model %>% breusch_pagan()
-```
-
---
-
-What is our .hi[inference]?
-
 
 ---
 
@@ -435,6 +413,8 @@ A quick look at this model's .hi[residuals]:
 
 ```{r, dev = "svg", echo = F, fig.height = 5, message=FALSE, warning=FALSE}
 
+food_model <- lm(food_exp ~ income, data = food_data)
+
 food_resid <- food_model %>% resid()
 food_data <- food_data %>% cbind(food_resid)
 
@@ -444,31 +424,6 @@ food_data %>% ggplot(aes(y=food_exp, x=income)) + geom_point(color="tomato3", si
         axis.title.y = element_text(size=15))
 
 ```
-
----
-
-# The Breusch-Pagan test
-
-Sometimes, a solution for heteroskedasticity is to .hi-blue[log-transform] the .red[dependent variable].
-
---
-  
-  - Why?
-
---
-
-  - It reduces the variable's .hi[variance].
-  
---
-
-Let's see.
-
-```{r}
-food_model2 <- lm(log(food_exp) ~ income, data = food_data)
-food_model2 %>% breusch_pagan()
-```
-
-What happened?
 
 
 ---
@@ -552,29 +507,12 @@ The __recipe__ `r emo::ji("woman_cook")` `r emo::ji("man_cook")`:
 
 3. Then, test the following *null hypothesis*:
 
-H.sub[0]: CLRM Assumption V is true  
+H.sub[0]: CLRM Assumption V is satisfied  
 H.sub[a]: H.sub[0] is not true
 
 
 ]
 
----
-
-# The White test
-
-Now, let's .hi[apply] this test to our food expenditure models:
-
---
-
-  - Original model (with *food expenditures* in levels):
-
-```{r}
-food_model %>% white_lm(interactions = TRUE)
-```
-
-<br>
-
-What is our .hi[inference]?
 
 ---
 
@@ -602,17 +540,6 @@ Prob > chi2 = 0.0229
 
 What is our .hi[inference]?
 
----
-
-# The White test
-
-  - Now, with *food expenditures* in *logs*:
-
-```{r}
-food_model2 %>% white_lm(interactions = TRUE)
-```
-
-And .hi[now]?
 
 ---
 
@@ -661,21 +588,6 @@ A nice solution is to use .hi-blue[heteroskedasticity-robust standard errors].
 
 By estimating these robust standard errors, we correct the .hi-blue[bias] in a model's standard errors, therefore improving .hi[inference] from our models.
 
----
-
-# Robust standard errors
-
-
-Consider the following model:
-
-
-```{r}
-data("hprice2")
-
-price_model <- lm(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2)
-price_model %>% tidy()
-```
-
 
 ---
 
@@ -709,23 +621,6 @@ Consider the following model:
 ```
 
 
----
-
-# Robust standard errors
-
-.hi-blue[Breusch-Pagan] test:
-
-```{r}
-price_model %>% breusch_pagan()
-```
-
-
-
-.hi-blue[White] test:
-
-```{r}
-price_model %>% white_lm(interactions = TRUE)
-```
 
 ---
 
@@ -846,36 +741,6 @@ p4
 ```
 
 
----
-
-
-# Robust standard errors
-
-.hi-red[Robust (White)] standard errors:
-
-```{r, eval=FALSE}
-lm_robust(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2, 
-          se_type="HC1")
-```
-
-<br>
-
-```{r, echo=FALSE, dev = "svg"}
-lm_robust(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2, 
-          se_type="HC1") %>% 
-  tidy() %>% 
-  select(term, estimate, std.error, statistic, p.value) %>% 
-  gt() %>% 
-  fmt_number(columns = c(estimate, std.error, statistic, p.value), decimals = 7) %>%
-  cols_label(term = md("**Variable**"),
-             estimate = md("**Coefficient**"),
-             std.error = md("**Standard error**"),
-             statistic = md("**t-statistic**"),
-             p.value = md("**p-value**")) %>% 
-  tab_options(table.width = pct(65),
-              table.font.size = 20)
-
-```
 
 ---
 

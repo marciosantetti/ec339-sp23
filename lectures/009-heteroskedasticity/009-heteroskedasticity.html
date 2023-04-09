@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 ### Marcio Santetti
 ]
 .date[
-### Fall 2022
+### Spring 2023
 ]
 
 ---
@@ -222,7 +222,7 @@ The __recipe__ 👩‍🍳 👨‍🍳:
 
 4. Then, test the following *null hypothesis*:
 
-H.sub[0]: CLRM Assumption V is true  
+H.sub[0]: CLRM Assumption V is satisfied  
 H.sub[a]: H.sub[0] is not true
 
 
@@ -276,45 +276,6 @@ heteroskedasticity in the model's residuals.
 &lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
 
 
-
----
-
-# The Breusch-Pagan test
-
-In .mono[R]...
-
-
-```r
-food_model &lt;- lm(food_exp ~ income, data = food_data)
-food_model %&gt;% tidy()
-```
-
-```
-#&gt; # A tibble: 2 × 5
-#&gt;   term        estimate std.error statistic   p.value
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept)     83.4     43.4       1.92 0.0622   
-#&gt; 2 income          10.2      2.09      4.88 0.0000195
-```
-
-
---
-
-
-```r
-food_model %&gt;% breusch_pagan()
-```
-
-```
-#&gt; # A tibble: 1 × 5
-#&gt;   statistic p.value parameter method                alternative
-#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;      
-#&gt; 1      7.38 0.00658         1 Koenker (studentised) greater
-```
-
---
-
-What is our .hi[inference]?
 
 
 ---
@@ -377,40 +338,7 @@ What is our .hi[inference]?
 
 A quick look at this model's .hi[residuals]:
 
-&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
-
----
-
-# The Breusch-Pagan test
-
-Sometimes, a solution for heteroskedasticity is to .hi-blue[log-transform] the .red[dependent variable].
-
---
-  
-  - Why?
-
---
-
-  - It reduces the variable's .hi[variance].
-  
---
-
-Let's see.
-
-
-```r
-food_model2 &lt;- lm(log(food_exp) ~ income, data = food_data)
-food_model2 %&gt;% breusch_pagan()
-```
-
-```
-#&gt; # A tibble: 1 × 5
-#&gt;   statistic p.value parameter method                alternative
-#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;      
-#&gt; 1      1.71   0.191         1 Koenker (studentised) greater
-```
-
-What happened?
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -449,13 +377,13 @@ What happened?
 
 # The Breusch-Pagan test
 
-&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # The Breusch-Pagan test
 
-&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -479,37 +407,12 @@ The __recipe__ 👩‍🍳 👨‍🍳:
 
 3. Then, test the following *null hypothesis*:
 
-H.sub[0]: CLRM Assumption V is true  
+H.sub[0]: CLRM Assumption V is satisfied  
 H.sub[a]: H.sub[0] is not true
 
 
 ]
 
----
-
-# The White test
-
-Now, let's .hi[apply] this test to our food expenditure models:
-
---
-
-  - Original model (with *food expenditures* in levels):
-
-
-```r
-food_model %&gt;% white_lm(interactions = TRUE)
-```
-
-```
-#&gt; # A tibble: 1 × 5
-#&gt;   statistic p.value parameter method       alternative
-#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      
-#&gt; 1      7.56  0.0229         2 White's Test greater
-```
-
-&lt;br&gt;
-
-What is our .hi[inference]?
 
 ---
 
@@ -537,25 +440,6 @@ Prob &gt; chi2 = 0.0229
 
 What is our .hi[inference]?
 
----
-
-# The White test
-
-  - Now, with *food expenditures* in *logs*:
-
-
-```r
-food_model2 %&gt;% white_lm(interactions = TRUE)
-```
-
-```
-#&gt; # A tibble: 1 × 5
-#&gt;   statistic p.value parameter method       alternative
-#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      
-#&gt; 1      1.76   0.416         2 White's Test greater
-```
-
-And .hi[now]?
 
 ---
 
@@ -604,33 +488,6 @@ A nice solution is to use .hi-blue[heteroskedasticity-robust standard errors].
 
 By estimating these robust standard errors, we correct the .hi-blue[bias] in a model's standard errors, therefore improving .hi[inference] from our models.
 
----
-
-# Robust standard errors
-
-
-Consider the following model:
-
-
-
-```r
-data("hprice2")
-
-price_model &lt;- lm(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2)
-price_model %&gt;% tidy()
-```
-
-```
-#&gt; # A tibble: 5 × 5
-#&gt;   term        estimate std.error statistic   p.value
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept)  11.1      0.318       34.8  5.65e-136
-#&gt; 2 lnox         -0.954    0.117       -8.17 2.57e- 15
-#&gt; 3 log(dist)    -0.134    0.0431      -3.12 1.93e-  3
-#&gt; 4 rooms         0.255    0.0185      13.7  1.15e- 36
-#&gt; 5 stratio      -0.0525   0.00590     -8.89 1.07e- 17
-```
-
 
 ---
 
@@ -664,39 +521,6 @@ Consider the following model:
 ```
 
 
----
-
-# Robust standard errors
-
-.hi-blue[Breusch-Pagan] test:
-
-
-```r
-price_model %&gt;% breusch_pagan()
-```
-
-```
-#&gt; # A tibble: 1 × 5
-#&gt;   statistic  p.value parameter method                alternative
-#&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;      
-#&gt; 1      69.9 2.42e-14         4 Koenker (studentised) greater
-```
-
-
-
-.hi-blue[White] test:
-
-
-```r
-price_model %&gt;% white_lm(interactions = TRUE)
-```
-
-```
-#&gt; # A tibble: 1 × 5
-#&gt;   statistic  p.value parameter method       alternative
-#&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      
-#&gt; 1      144. 1.15e-23        14 White's Test greater
-```
 
 ---
 
@@ -741,492 +565,30 @@ Prob &gt; chi2 = 0.0000
 
 # Robust standard errors 
 
-&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Robust standard errors 
 
 
-&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-19-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Robust standard errors 
 
 
-&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-20-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Robust standard errors 
 
 
-&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-21-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="009-heteroskedasticity_files/figure-html/unnamed-chunk-13-1.svg" style="display: block; margin: auto;" /&gt;
 
 
----
-
-
-# Robust standard errors
-
-.hi-red[Robust (White)] standard errors:
-
-
-```r
-lm_robust(lprice ~ lnox + log(dist) + rooms + stratio, data = hprice2, 
-          se_type="HC1")
-```
-
-&lt;br&gt;
-
-<div id="bkqrovfapj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
-}
-
-#bkqrovfapj .gt_table {
-  display: table;
-  border-collapse: collapse;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 20px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: 65%;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#bkqrovfapj .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#bkqrovfapj .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#bkqrovfapj .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#bkqrovfapj .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#bkqrovfapj .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#bkqrovfapj .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#bkqrovfapj .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#bkqrovfapj .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#bkqrovfapj .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#bkqrovfapj .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#bkqrovfapj .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#bkqrovfapj .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bkqrovfapj .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#bkqrovfapj .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#bkqrovfapj .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bkqrovfapj .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#bkqrovfapj .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bkqrovfapj .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#bkqrovfapj .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bkqrovfapj .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#bkqrovfapj .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bkqrovfapj .gt_left {
-  text-align: left;
-}
-
-#bkqrovfapj .gt_center {
-  text-align: center;
-}
-
-#bkqrovfapj .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#bkqrovfapj .gt_font_normal {
-  font-weight: normal;
-}
-
-#bkqrovfapj .gt_font_bold {
-  font-weight: bold;
-}
-
-#bkqrovfapj .gt_font_italic {
-  font-style: italic;
-}
-
-#bkqrovfapj .gt_super {
-  font-size: 65%;
-}
-
-#bkqrovfapj .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
-  font-size: 75%;
-  vertical-align: 0.4em;
-}
-
-#bkqrovfapj .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#bkqrovfapj .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#bkqrovfapj .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#bkqrovfapj .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#bkqrovfapj .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#bkqrovfapj .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-<table class="gt_table">
-  
-  <thead class="gt_col_headings">
-    <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Variable</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Coefficient</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Standard error</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>t-statistic</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>p-value</strong></th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_left">(Intercept)</td>
-<td class="gt_row gt_right">11.0838616</td>
-<td class="gt_row gt_right">0.3772949</td>
-<td class="gt_row gt_right">29.3771817</td>
-<td class="gt_row gt_right">0.0000000</td></tr>
-    <tr><td class="gt_row gt_left">lnox</td>
-<td class="gt_row gt_right">−0.9535388</td>
-<td class="gt_row gt_right">0.1268005</td>
-<td class="gt_row gt_right">−7.5199909</td>
-<td class="gt_row gt_right">0.0000000</td></tr>
-    <tr><td class="gt_row gt_left">log(dist)</td>
-<td class="gt_row gt_right">−0.1343395</td>
-<td class="gt_row gt_right">0.0535287</td>
-<td class="gt_row gt_right">−2.5096731</td>
-<td class="gt_row gt_right">0.0123986</td></tr>
-    <tr><td class="gt_row gt_left">rooms</td>
-<td class="gt_row gt_right">0.2545271</td>
-<td class="gt_row gt_right">0.0247205</td>
-<td class="gt_row gt_right">10.2962139</td>
-<td class="gt_row gt_right">0.0000000</td></tr>
-    <tr><td class="gt_row gt_left">stratio</td>
-<td class="gt_row gt_right">−0.0524511</td>
-<td class="gt_row gt_right">0.0046082</td>
-<td class="gt_row gt_right">−11.3821438</td>
-<td class="gt_row gt_right">0.0000000</td></tr>
-  </tbody>
-  
-  
-</table>
-</div>
 
 ---
 
