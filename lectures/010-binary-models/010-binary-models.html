@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>.b[Binary dependent variable models]</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcio Santetti" />
+    <script src="010-binary-models_files/header-attrs/header-attrs.js"></script>
+    <link href="010-binary-models_files/remark-css/default.css" rel="stylesheet" />
+    <link href="010-binary-models_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="010-binary-models_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skid-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# .b[Binary dependent variable models]
+]
+.subtitle[
+## .b[.green[EC 339]]
+]
+.author[
+### Marcio Santetti
+]
+.date[
+### Fall 2022
+]
+
+---
+
+class: inverse, middle
+
+
+
+
+
+
+
+# Motivation
+
+---
+
+# The road so far
+
+&lt;br&gt;
+
+So far, we have studied models with .hi[binary] variables on the regression's right-hand-side, as an .it[explanatory] factor.
+
+--
+
+But what if we want to have a .hi[qualitative] indicator as the model's .it[dependent variable]?
+
+--
+
+Several decisions made by individuals and firms are _either-or_ in nature.
+
+--
+
+&lt;br&gt;
+
+For instance, what are the factors that determine an individual's decision to .hi-blue[join the labor force], .hi-blue[enroll in a course], or .hi-blue[drink Coke over Pepsi]?
+
+--
+
+To do that, we turn to .hi-red[binary dependent variable models].
+
+
+---
+
+# The road so far
+
+&lt;br&gt;
+
+The problem now becomes setting up a statistical model of .hi[binary] choices.
+
+--
+
+We represent these choices by an .hi-blue[indicator] variable that equals __1__ if the outcome is chosen, and __0__ otherwise.
+
+--
+
+&lt;br&gt;
+
+Unlike flipping a .it[coin] or rolling a .it[die], the probability of an individual choosing an outcome depends on .hi[many factors].
+
+--
+
+&lt;br&gt;
+
+  - Let these factors be denoted by `\(\mathbf{x}_i = (x_{1i}, x_{2i}, ... , x_{ik})\)`.
+
+---
+
+# The road so far
+
+
+Then, the .hi-blue[conditional probability] that the `\(i^{th}\)` individual __chooses__ a given outcome is given by 
+
+$$
+`\begin{align}
+P(y_i = 1 \ | \ \mathbf{x}_i) = p(\mathbf{x}_i)
+\end{align}`
+$$
+
+--
+
+&lt;br&gt;
+
+And the .hi-blue[conditional probability] that the `\(i^{th}\)` individual __does not__ choose a given outcome is given by
+
+$$
+`\begin{align}
+P(y_i = 0 \ | \ \mathbf{x}_i) = 1 - p(\mathbf{x}_i)
+\end{align}`
+$$
+
+--
+
+where `\(0 \le p(\mathbf{x}_i) \le 1\)`.
+
+--
+
+&lt;br&gt;
+
+In _general_, we can write a .hi[conditional probability function]:
+
+$$
+`\begin{align}
+f(y_i\ | \ \mathbf{x}_i) = p(\mathbf{x}_i)^{y_i}\big[ 1 - p(\mathbf{x}_i) \big]^{1-y_i} \ \ \ \ \ \ \ \ \ \ \ \ \ y_i =0,1
+\end{align}`
+$$
+
+---
+
+layout: false
+class: inverse, middle
+
+# The Linear Probability Model
+
+---
+
+# The Linear Probability Model
+
+The .hi[Linear Probability Model] (LPM) is the first alternative to estimate binary choice models.
+
+--
+
+It simply consists in estimating a model with `\(p(y_i \ | \ \mathbf{x}_i)\)` as the dependent variable via __OLS__.
+
+--
+
+&lt;br&gt;
+
+And since the left-hand side of the regression now has a .hi-blue[probability function], we have
+
+$$
+`\begin{align}
+\mathbb{E}(y_i \ | \ \mathbf{x}_i) = \sum_{y_i = 0}^{1}y_if(y_i|\mathbf{x}_i) = 0 \times f(0|\mathbf{x}_i) + 1 \times f(1|\mathbf{x}_i) = p(\mathbf{x}_i)
+\end{align}`
+$$
+
+--
+
+$$
+`\begin{align}
+p(\mathbf{x}_i) = \mathbb{E}(y_i \ | \ \mathbf{x}_i) = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \cdot \cdot \cdot + \beta_kx_{ki}
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+and `\(u_i = y_i - \mathbb{E}(y_i \ | \ \mathbf{x}_i)\)`.
+
+---
+
+# The Linear Probability Model
+
+Therefore, the .hi[full] Linear Probability Model is:
+
+
+$$
+`\begin{align}
+y_i = \mathbb{E}(y_i \ | \ \mathbf{x}_i) + u_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \cdot \cdot \cdot + \beta_kx_{ki} + u_i
+\end{align}`
+$$
+
+--
+
+&lt;br&gt;
+
+And the __marginal effect__ of a one-unit change in a variable *j* changes the _probability of success_, `\(p(y_i=1 \ | \ x_j)\)`, by
+
+$$
+`\begin{align}
+\dfrac{\partial \ \mathbb{E}(y_i \ | \ \mathbf{x}_i)}{\partial \ x_j} = \beta_j 
+\end{align}`
+$$
+--
+
+.b[Problem!]: Suppose `\(\beta_j &gt; 0\)`. Its interpretation implies that increasing `\(x_{ji}\)` by one unit will increase the probability of `\(y_i\)` being equal to 1 by a .red[constant] amount `\(\beta_j\)`.
+
+--
+
+  - What is .hi[wrong] with this?
+
+---
+
+# The Linear Probability Model
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+Moreover, the residuals from an .hi-blue[LPM] model will likely be .hi[heteroskedastic]:
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+Var(u_i \ | \ \mathbf{x}_i) \neq \sigma^2
+\end{align}`
+$$
+
+--
+
+&lt;br&gt;
+
+Therefore, LPM models should always be estimated with .it[robust standard errors].
+
+---
+
+# The Linear Probability Model
+
+An example:
+
+
+
+
+
+```r
+lpm_model &lt;- lm(inlf ~ nwifeinc + educ  + exper + 
+                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz)
+lpm_model %&gt;% tidy()
+```
+
+```
+#&gt; # A tibble: 8 × 5
+#&gt;   term         estimate std.error statistic  p.value
+#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 (Intercept)  0.586     0.154        3.80  1.58e- 4
+#&gt; 2 nwifeinc    -0.00341   0.00145     -2.35  1.90e- 2
+#&gt; 3 educ         0.0380    0.00738      5.15  3.32e- 7
+#&gt; 4 exper        0.0395    0.00567      6.96  7.38e-12
+#&gt; 5 I(exper^2)  -0.000596  0.000185    -3.23  1.31e- 3
+#&gt; 6 age         -0.0161    0.00248     -6.48  1.71e-10
+#&gt; 7 kidslt6     -0.262     0.0335      -7.81  1.89e-14
+#&gt; 8 kidsge6      0.0130    0.0132       0.986 3.24e- 1
+```
+
+--
+
+When interpreting this model's .it[estimates], recall that a change in the independent variable changes the probability that `inlf == 1`.
+
+---
+
+# The Linear Probability Model
+
+.smaller[
+An example:
+
+
+
+```{}
+. reg inlf nwifeinc educ exper expersq age kidslt6 kidsge6
+
+      Source |       SS           df       MS      Number of obs   =       753
+-------------+----------------------------------   F(7, 745)       =     38.22
+       Model |  48.8080578         7  6.97257969   Prob &gt; F        =    0.0000
+    Residual |  135.919698       745  .182442547   R-squared       =    0.2642
+-------------+----------------------------------   Adj R-squared   =    0.2573
+       Total |  184.727756       752  .245648611   Root MSE        =    .42713
+
+------------------------------------------------------------------------------
+        inlf | Coefficient  Std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    nwifeinc |  -.0034052   .0014485    -2.35   0.019    -.0062488   -.0005616
+        educ |   .0379953    .007376     5.15   0.000      .023515    .0524756
+       exper |   .0394924   .0056727     6.96   0.000     .0283561    .0506287
+     expersq |  -.0005963   .0001848    -3.23   0.001    -.0009591   -.0002335
+         age |  -.0160908   .0024847    -6.48   0.000    -.0209686    -.011213
+     kidslt6 |  -.2618105   .0335058    -7.81   0.000    -.3275875   -.1960335
+     kidsge6 |   .0130122    .013196     0.99   0.324    -.0128935    .0389179
+       _cons |   .5855192    .154178     3.80   0.000     .2828442    .8881943
+------------------------------------------------------------------------------
+
+
+```
+
+
+When interpreting this model's .it[estimates], recall that a change in the independent variable changes the probability that `inlf == 1`.
+]
+
+---
+
+# The Linear Probability Model
+.smallest[
+Visually (assuming simple regression models):
+
+]
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# .mono[Logit] Models
+
+---
+
+# .mono[Logit] Models
+
+The .hi[main] issue with the Linear Probability Model is its incapacity to .hi[constrain] the predicted probability between __0__ and __1__.
+
+--
+
+The .hi-red[.mono[Logit]] and .hi-red[.mono[Probit]] models are examples of .hi[nonlinear] models that address the above issue.
+
+--
+
+These models .hi[ensure] that `\(p(y_i \ | \ \mathbf{x}_i)\)` remains between 0 and 1.
+
+--
+
+This is made possible due to these models' ability to generate .hi-blue[S-shaped] (_sigmoid_) curves, which __.blue[do not]__ go beyond the [0,1] interval.
+
+--
+
+Think of a single-variable model with `\(y\)` as a binary outcome variable. If `\(\hat{\beta}_1 &gt; 0\)`, as `\(x\)` increases, the probability of success .red[increases rapidly] at first, then begins to increase at a .red[decreasing rate], keeping this probability .red[below] 1 no matter how large `\(x\)` becomes.
+
+--
+
+Moreover, .hi[slope] coefficients are not .it[constant] anymore.
+
+---
+
+# .mono[Logit] Models
+
+.mono[.hi-red[Logit]] models are based on a .hi-orange[logistic] random variable's .it[Cumulative Distribution Function] (CDF).
+
+--
+
+Consider a random variable `\(L\)` that follows a logistic distribution. 
+
+--
+
+&lt;br&gt;
+
+Then, its .hi[Probability Density Function] (PDF) is given by 
+
+$$
+`\begin{align}
+\lambda(l) = \dfrac{e^{-l}}{(1+e^{-l})^2}  \ \ \ \ \ \ \ \  \ \ \ \ \ \ - \infty &lt; l &lt; \infty
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+
+And its .hi[Cumulative Density Function] (CDF) is given by 
+
+$$
+`\begin{align}
+\Lambda(l) = p \big[L \leq l \big] = \dfrac{1}{1+e^{-l}}
+\end{align}`
+$$
+
+
+---
+
+# .mono[Logit] Models
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .mono[Logit] Models
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+layout: false
+class: inverse, middle
+
+# Interpreting .mono[Logit] Models
+
+
+---
+
+# Interpreting .mono[Logit] Models
+
+.mono[Logit] and .mono[Probit] models use .hi[maximum likelihood] to estimate model coefficients.
+
+--
+
+This implies a .hi[completely different] coefficient interpretation from these models.
+
+--
+
+In case `\(x_k\)` is a .hi[continuous] explanatory variable, its marginal effect on `\(p(y_i=1 \ | \ \mathbf{x}_i)\)` is given by
+
+$$
+`\begin{align}
+\dfrac{\partial \ p(\mathbf{x}_i)}{\partial \ x_{ik}} = \dfrac{\partial \ \Lambda(\beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki})}{\partial \ \beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki}} \cdot \dfrac{\partial \ \beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki}}{\partial \ x_{ik}} = 
+\end{align}`
+$$
+
+&lt;br&gt; 
+
+$$
+`\begin{align}
+\dfrac{\partial \ p(\mathbf{x}_i)}{\partial \ x_{ik}} =  \lambda(\beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki})\beta_k
+\end{align}`
+$$
+---
+
+# Interpreting .mono[Logit] Models
+
+In case `\(x_k\)` is a .hi[discrete explanatory variable] (such as a *dummy* variable), its interpretation is a bit different:
+
+--
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+\Delta p(\mathbf{x}_i) =p(\mathbf{x}_i \ | \ x_k = 1) -  p(\mathbf{x}_i \ | \ x_k = 0)=  
+\end{align}`
+$$
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+\Delta p(\mathbf{x}_i) =  \Lambda(\beta_0 + \beta_1x_{1i} + \beta_k) - \Lambda(\beta_0 + \beta_1x_{1i})
+\end{align}`
+$$
+
+---
+
+# Interpreting .mono[Logit] Models
+
+So far, we have talked about model .red[estimation].
+
+--
+
+But what about .hi[coefficient interpretation]?
+
+--
+
+.mono[Logit] coefficients are .hi[not] directly interpretable.
+
+--
+
+Therefore, in order to do that, we have a few .red[strategies].
+
+--
+
+The one we will focus on here is the .hi-blue[Average Marginal Effect] (AME).
+
+--
+
+&lt;br&gt;
+
+$$
+`\begin{align}
+\dfrac{\partial P(y_i=1 \ | \ \mathbf{x}_i)}{\partial x_{ij}} = \dfrac{\partial \Lambda(\cdot)}{\partial x_{ij}} = \dfrac{\sum_{i=1}^{n} \lambda(\hat{\beta}_0 + \hat{\beta}_1x_1 + \hat{\beta}_2x_2 + ... + \hat{\beta}_kx_k) }{n} \cdot \hat{\beta}_j  
+\end{align}`
+$$
+--
+
+The .hi-blue[AME] is the .red[sample average] of the ML estimation evaluated at each sample observation.
+
+---
+
+# Interpreting .mono[Logit] Models
+
+For .hi[discrete] explanatory variables, the .hi-blue[AME] is given by
+
+$$
+`\begin{align}
+\dfrac{\partial P(y_i=1 \ | \ \mathbf{x}_i)}{\partial x_{ij}} =  \dfrac{\sum_{i=1}^{n} \Lambda(\hat{\beta}_0 + \hat{\beta}_1x_1 + \hat{\beta}_j) }{n} - \dfrac{\sum_{i=1}^{n} \Lambda(\hat{\beta}_0 + \hat{\beta}_1x_1 ) }{n}
+\end{align}`
+$$
+
+---
+
+# A .mono[Logit] example
+
+
+```r
+logit_model &lt;- glm(inlf ~ nwifeinc + educ  + exper + 
+                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz,
+             family = binomial(link='logit'))
+logit_model %&gt;% tidy()
+```
+
+```
+#&gt; # A tibble: 8 × 5
+#&gt;   term        estimate std.error statistic  p.value
+#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 (Intercept)  0.425     0.860       0.495 6.21e- 1
+#&gt; 2 nwifeinc    -0.0213    0.00842    -2.53  1.13e- 2
+#&gt; 3 educ         0.221     0.0434      5.09  3.55e- 7
+#&gt; 4 exper        0.206     0.0321      6.42  1.34e-10
+#&gt; 5 I(exper^2)  -0.00315   0.00102    -3.10  1.91e- 3
+#&gt; 6 age         -0.0880    0.0146     -6.04  1.54e- 9
+#&gt; 7 kidslt6     -1.44      0.204      -7.09  1.34e-12
+#&gt; 8 kidsge6      0.0601    0.0748      0.804 4.22e- 1
+```
+
+--
+
+From this output, we cannot directly interpret the model's .hi[coefficients].
+
+--
+
+However, we can interpret the coefficient's .hi[signs].
+
+
+---
+
+# A .mono[Logit] example
+.smallest[
+```{}
+. logit inlf nwifeinc educ exper expersq age kidslt6 kidsge6
+
+Iteration 0:   log likelihood =  -514.8732  
+Iteration 1:   log likelihood = -402.38502  
+Iteration 2:   log likelihood = -401.76569  
+Iteration 3:   log likelihood = -401.76515  
+Iteration 4:   log likelihood = -401.76515  
+
+Logistic regression                                     Number of obs =    753
+                                                        LR chi2(7)    = 226.22
+                                                        Prob &gt; chi2   = 0.0000
+Log likelihood = -401.76515                             Pseudo R2     = 0.2197
+
+------------------------------------------------------------------------------
+        inlf | Coefficient  Std. err.      z    P&gt;|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    nwifeinc |  -.0213452   .0084214    -2.53   0.011    -.0378509   -.0048394
+        educ |   .2211704   .0434396     5.09   0.000     .1360303    .3063105
+       exper |   .2058695   .0320569     6.42   0.000     .1430391    .2686999
+     expersq |  -.0031541   .0010161    -3.10   0.002    -.0051456   -.0011626
+         age |  -.0880244    .014573    -6.04   0.000     -.116587   -.0594618
+     kidslt6 |  -1.443354   .2035849    -7.09   0.000    -1.842373   -1.044335
+     kidsge6 |   .0601122   .0747897     0.80   0.422     -.086473    .2066974
+       _cons |   .4254524   .8603697     0.49   0.621    -1.260841    2.111746
+------------------------------------------------------------------------------
+
+```
+]
+
+--
+
+.smaller[From this output, we cannot directly interpret the model's .hi[coefficients].]
+
+--
+
+.smaller[However, we can interpret the coefficient's .hi[signs].]
+
+
+---
+
+# A .mono[Logit] example
+
+The .hi[PDF] for this estimated model looks like this:
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A .mono[Logit] example
+
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A .mono[Logit] example
+
+.hi-blue[Average Marginal Effects]:
+
+&lt;br&gt;
+
+
+```
+#&gt;    Variable           AME
+#&gt; 1 intercept  0.0759771297
+#&gt; 2  nwifeinc -0.0038118135
+#&gt; 3      educ  0.0394965238
+#&gt; 4     exper  0.0367641056
+#&gt; 5   exper^2 -0.0005632587
+#&gt; 6       age -0.0157193606
+#&gt; 7   kidslt6 -0.2577536551
+#&gt; 8   kidsge6  0.0107348186
+```
+
+--
+
+&lt;br&gt;
+
+How to .hi[interpret] these coefficients?
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# .mono[Probit] Models
+
+---
+
+
+# .mono[Probit] Models
+
+.mono[.hi-red[Probit]] models are based on the .hi[standard normal] distribution's .hi[Cumulative Distribution Function] (CDF).
+
+--
+
+Consider a random variable `\(Z\)` that follows a standard normal distribution. 
+
+--
+
+&lt;br&gt;
+
+Then, its .hi[Probability Density Function] (PDF) is given by 
+
+$$
+`\begin{align}
+\phi(z) = \dfrac{1}{\sqrt{2\pi}} \ e^{-s^2/2 \ z^2}  \ \ \ \ \ \ \ \ \ \ \  - \infty &lt; z &lt; \infty
+\end{align}`
+$$
+--
+
+&lt;br&gt;
+
+And its .hi[Cumulative Density Function] (CDF) is given by 
+
+$$
+`\begin{align}
+\Phi(z) = P \big[Z \leq z \big] = \int_{-\infty}^{z} \dfrac{1}{\sqrt{2\pi}}  e^{-s^2/2 \ u^2} \ du
+\end{align}`
+$$
+
+---
+
+# .mono[Probit] Models
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .mono[Probit] Models
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Interpreting .mono[Probit] Models
+
+
+---
+
+# Interpreting .mono[Probit] Models
+
+In case `\(x_k\)` is a .hi[continuous] explanatory variable, its marginal effect on `\(p(y_i=1 \ | \ \mathbf{x}_i)\)` is given by
+
+&lt;br&gt;
+
+
+$$
+`\begin{align}
+\dfrac{\partial \ p(\mathbf{x}_i)}{\partial \ x_{ik}} = \dfrac{\partial \ \Phi(\beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki})}{\partial \ \beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki}} \cdot \dfrac{\partial \ \beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki}}{\partial \ x_{ik}} 
+\end{align}`
+$$
+
+$$
+`\begin{align}
+\dfrac{\partial \ p(\mathbf{x}_i)}{\partial \ x_{ik}} = \phi(\beta_0 + \beta_1x_{1i} + \cdot \cdot \cdot + \beta_kx_{ki})\beta_k
+\end{align}`
+$$
+
+--
+
+&lt;br&gt;
+
+In case `\(x_k\)` is a .hi[discrete explanatory variable] (such as a *dummy* variable):
+
+&lt;br&gt;
+
+--
+
+$$
+`\begin{align}
+\Delta p(\mathbf{x}_i) =p(\mathbf{x}_i \ | \ x_k = 1) -  p(\mathbf{x}_i \ | \ x_k = 0)=  
+\end{align}`
+$$
+
+
+
+$$
+`\begin{align}
+\Delta p(\mathbf{x}_i) =  \Phi(\beta_0 + \beta_1x_{1i} + \beta_k) - \Phi(\beta_0 + \beta_1x_{1i})
+\end{align}`
+$$
+
+---
+
+# Interpreting .mono[Probit] Models
+
+For .hi-blue[Average Marginal Effects] (AME), the procedure is the same as with .mono[Logit] coefficients.
+
+--
+
+The only .hi[change] is in the .red[CDF/PDF] portions.
+
+--
+
+&lt;br&gt;
+
+
+$$
+`\begin{align}
+\dfrac{\partial P(y_i=1 \ | \ \mathbf{x}_i)}{\partial x_{ij}} = \dfrac{\partial \Phi (\cdot)}{\partial x_{ij}} = \dfrac{\sum_{i=1}^{n} \phi(\hat{\beta}_0 + \hat{\beta}_1x_1 + \hat{\beta}_2x_2 + ... + \hat{\beta}_kx_k) }{n} \cdot \hat{\beta}_j  
+\end{align}`
+$$
+
+
+---
+
+# A .mono[Probit] example
+
+
+```r
+probit_model &lt;- glm(inlf ~ nwifeinc + educ  + exper + 
+                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz,
+             family = binomial(link='probit'))
+probit_model %&gt;% tidy()
+```
+
+```
+#&gt; # A tibble: 8 × 5
+#&gt;   term        estimate std.error statistic  p.value
+#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 (Intercept)  0.270    0.508        0.532 5.95e- 1
+#&gt; 2 nwifeinc    -0.0120   0.00494     -2.43  1.49e- 2
+#&gt; 3 educ         0.131    0.0254       5.15  2.55e- 7
+#&gt; 4 exper        0.123    0.0188       6.58  4.85e-11
+#&gt; 5 I(exper^2)  -0.00189  0.000600    -3.15  1.66e- 3
+#&gt; 6 age         -0.0529   0.00846     -6.25  4.22e-10
+#&gt; 7 kidslt6     -0.868    0.118       -7.34  2.21e-13
+#&gt; 8 kidsge6      0.0360   0.0440       0.818 4.14e- 1
+```
+
+--
+
+&lt;br&gt;
+
+As with the .mono[Logit] case, these coefficients are .hi[not] directly interpretable. Only their .hi[signs].
+
+---
+
+# A .mono[Probit] example
+
+.smallest[
+```{}
+. probit inlf nwifeinc educ exper expersq age kidslt6 kidsge6
+
+Iteration 0:   log likelihood =  -514.8732  
+Iteration 1:   log likelihood = -402.06651  
+Iteration 2:   log likelihood = -401.30273  
+Iteration 3:   log likelihood = -401.30219  
+Iteration 4:   log likelihood = -401.30219  
+
+Probit regression                                       Number of obs =    753
+                                                        LR chi2(7)    = 227.14
+                                                        Prob &gt; chi2   = 0.0000
+Log likelihood = -401.30219                             Pseudo R2     = 0.2206
+
+------------------------------------------------------------------------------
+        inlf | Coefficient  Std. err.      z    P&gt;|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    nwifeinc |  -.0120237   .0048398    -2.48   0.013    -.0215096   -.0025378
+        educ |   .1309047   .0252542     5.18   0.000     .0814074     .180402
+       exper |   .1233476   .0187164     6.59   0.000     .0866641    .1600311
+     expersq |  -.0018871      .0006    -3.15   0.002     -.003063   -.0007111
+         age |  -.0528527   .0084772    -6.23   0.000    -.0694678   -.0362376
+     kidslt6 |  -.8683285   .1185223    -7.33   0.000    -1.100628    -.636029
+     kidsge6 |    .036005   .0434768     0.83   0.408     -.049208    .1212179
+       _cons |   .2700768    .508593     0.53   0.595    -.7267473    1.266901
+------------------------------------------------------------------------------
+
+```
+]
+
+
+.small[As with the .mono[Logit] case, these coefficients are .hi[not] directly interpretable. Only their .hi[signs].]
+
+---
+
+# A .mono[Probit] example
+
+The .hi[PDF] for this estimated model looks like this:
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-13-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A .mono[Probit] example
+
+
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-14-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A .mono[Probit] example
+
+.hi-blue[Average Marginal Effects]:
+
+&lt;br&gt;
+
+
+```
+#&gt;    Variable          AME
+#&gt; 1 intercept  0.081226125
+#&gt; 2  nwifeinc -0.003616176
+#&gt; 3      educ  0.039370095
+#&gt; 4     exper  0.037097345
+#&gt; 5   exper^2 -0.000567546
+#&gt; 6       age -0.015895665
+#&gt; 7   kidslt6 -0.261153464
+#&gt; 8   kidsge6  0.010828887
+```
+
+--
+
+&lt;br&gt;
+
+How to .hi[interpret] these coefficients?
+
+---
+
+# Model comparison
+
+In terms of .hi[coefficients]:
+
+
+```
+#&gt;   Coefficient           LPM        Logit       Probit
+#&gt; 1 (Intercept)  0.5855192249  0.425452376  0.270073573
+#&gt; 2    nwifeinc -0.0034051689 -0.021345174 -0.012023637
+#&gt; 3        educ  0.0379953030  0.221170370  0.130903969
+#&gt; 4       exper  0.0394923895  0.205869531  0.123347168
+#&gt; 5  I(exper^2) -0.0005963119 -0.003154104 -0.001887067
+#&gt; 6         age -0.0160908061 -0.088024375 -0.052852442
+#&gt; 7     kidslt6 -0.2618104667 -1.443354143 -0.868324680
+#&gt; 8     kidsge6  0.0130122346  0.060112222  0.036005611
+```
+
+---
+
+# Model comparison
+
+In terms of .hi[Average Marginal Effects]:
+
+
+```
+#&gt;    Variable         Logit       Probit
+#&gt; 1 intercept  0.0759771297  0.081226125
+#&gt; 2  nwifeinc -0.0038118135 -0.003616176
+#&gt; 3      educ  0.0394965238  0.039370095
+#&gt; 4     exper  0.0367641056  0.037097345
+#&gt; 5   exper^2 -0.0005632587 -0.000567546
+#&gt; 6       age -0.0157193606 -0.015895665
+#&gt; 7   kidslt6 -0.2577536551 -0.261153464
+#&gt; 8   kidsge6  0.0107348186  0.010828887
+```
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Goodness-of-fit
+
+---
+
+# Goodness-of-fit
+
+The usual R&lt;sup&gt;2&lt;/sup&gt; and adjusted R&lt;sup&gt;2&lt;/sup&gt; measures are not .hi[satisfactory] for binary dependent variable models.
+
+--
+
+However, in case .hi[goodness-of-fit] is of interest, we can use the .hi-blue[McFadden's pseudo R&lt;sup&gt;2&lt;/sup&gt;] measure.
+
+--
+
+$$
+`\begin{align}
+R^2 = 1 - \dfrac{\ell (\hat{\beta})}{\ell (\bar{y})}
+\end{align}`
+$$
+where `\(\ell (\hat{\beta})\)` is the log-likelihood of the fitted model, and `\(\ell (\bar{y})\)` is the log-likelihood of a restricted model, only containing an intercept term.
+
+--
+
+&lt;br&gt;
+
+For our estimated .mono[Logit] and .mono[Probit] models, the pseudo-R&lt;sup&gt;2&lt;/sup&gt; measures are .hi[0.219] and .hi[0.2205], respectively.
+
+--
+
+We will calculate these next time.
+
+
+
+---
+
+layout: false
+class: inverse, middle
+
+# Next time: Binary models in practice
+
+
+---
+exclude: true
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
