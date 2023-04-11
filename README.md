@@ -89,6 +89,7 @@ Handout files created using [Quarto](https://quarto.org/).
   - Slides: [`html`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/009-heteroskedasticity/009-heteroskedasticity.html) | [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/009-heteroskedasticity/009-heteroskedasticity.pdf)
   - Stata do-file: [`009-heteroskedasticity.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/009-heteroskedasticity/009-heteroskedasticity.do) | To download, see `theSpring` module
     - Data files available for download on `theSpring`.
+  - [`estout: Making regression tables in Stata`](http://repec.sowi.unibe.ch/stata/estout/index.html)
  
 ## Assignments
 
