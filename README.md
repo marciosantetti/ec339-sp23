@@ -90,6 +90,10 @@ Handout files created using [Quarto](https://quarto.org/).
   - Stata do-file: [`009-heteroskedasticity.do`](https://github.com/marciosantetti/ec339-sp23/blob/main/lectures/009-heteroskedasticity/009-heteroskedasticity.do) | To download, see `theSpring` module
     - Data files available for download on `theSpring`.
   - [`estout: Making regression tables in Stata`](http://repec.sowi.unibe.ch/stata/estout/index.html)
+  
+**Week 11: Binary Dependent-Variable Models**
+
+  - Handout: [`pdf`](https://raw.githack.com/marciosantetti/ec339-sp23/main/lectures/010-binary-models/binary-models.pdf)
  
 ## Assignments
 
