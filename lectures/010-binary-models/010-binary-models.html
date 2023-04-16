@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 ### Marcio Santetti
 ]
 .date[
-### Fall 2022
+### Spring 2023
 ]
 
 ---
@@ -227,39 +227,13 @@ $$
 
 Therefore, LPM models should always be estimated with .it[robust standard errors].
 
----
-
-# The Linear Probability Model
-
-An example:
 
 
 
 
 
-```r
-lpm_model &lt;- lm(inlf ~ nwifeinc + educ  + exper + 
-                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz)
-lpm_model %&gt;% tidy()
-```
 
-```
-#&gt; # A tibble: 8 × 5
-#&gt;   term         estimate std.error statistic  p.value
-#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 (Intercept)  0.586     0.154        3.80  1.58e- 4
-#&gt; 2 nwifeinc    -0.00341   0.00145     -2.35  1.90e- 2
-#&gt; 3 educ         0.0380    0.00738      5.15  3.32e- 7
-#&gt; 4 exper        0.0395    0.00567      6.96  7.38e-12
-#&gt; 5 I(exper^2)  -0.000596  0.000185    -3.23  1.31e- 3
-#&gt; 6 age         -0.0161    0.00248     -6.48  1.71e-10
-#&gt; 7 kidslt6     -0.262     0.0335      -7.81  1.89e-14
-#&gt; 8 kidsge6      0.0130    0.0132       0.986 3.24e- 1
-```
 
---
-
-When interpreting this model's .it[estimates], recall that a change in the independent variable changes the probability that `inlf == 1`.
 
 ---
 
@@ -307,7 +281,7 @@ When interpreting this model's .it[estimates], recall that a change in the indep
 Visually (assuming simple regression models):
 
 ]
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -382,13 +356,13 @@ $$
 
 # .mono[Logit] Models
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # .mono[Logit] Models
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -496,40 +470,6 @@ $$
 \end{align}`
 $$
 
----
-
-# A .mono[Logit] example
-
-
-```r
-logit_model &lt;- glm(inlf ~ nwifeinc + educ  + exper + 
-                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz,
-             family = binomial(link='logit'))
-logit_model %&gt;% tidy()
-```
-
-```
-#&gt; # A tibble: 8 × 5
-#&gt;   term        estimate std.error statistic  p.value
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 (Intercept)  0.425     0.860       0.495 6.21e- 1
-#&gt; 2 nwifeinc    -0.0213    0.00842    -2.53  1.13e- 2
-#&gt; 3 educ         0.221     0.0434      5.09  3.55e- 7
-#&gt; 4 exper        0.206     0.0321      6.42  1.34e-10
-#&gt; 5 I(exper^2)  -0.00315   0.00102    -3.10  1.91e- 3
-#&gt; 6 age         -0.0880    0.0146     -6.04  1.54e- 9
-#&gt; 7 kidslt6     -1.44      0.204      -7.09  1.34e-12
-#&gt; 8 kidsge6      0.0601    0.0748      0.804 4.22e- 1
-```
-
---
-
-From this output, we cannot directly interpret the model's .hi[coefficients].
-
---
-
-However, we can interpret the coefficient's .hi[signs].
-
 
 ---
 
@@ -580,14 +520,14 @@ Log likelihood = -401.76515                             Pseudo R2     = 0.2197
 
 The .hi[PDF] for this estimated model looks like this:
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # A .mono[Logit] example
 
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -662,13 +602,13 @@ $$
 
 # .mono[Probit] Models
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # .mono[Probit] Models
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -748,37 +688,6 @@ $$
 
 ---
 
-# A .mono[Probit] example
-
-
-```r
-probit_model &lt;- glm(inlf ~ nwifeinc + educ  + exper + 
-                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz,
-             family = binomial(link='probit'))
-probit_model %&gt;% tidy()
-```
-
-```
-#&gt; # A tibble: 8 × 5
-#&gt;   term        estimate std.error statistic  p.value
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 (Intercept)  0.270    0.508        0.532 5.95e- 1
-#&gt; 2 nwifeinc    -0.0120   0.00494     -2.43  1.49e- 2
-#&gt; 3 educ         0.131    0.0254       5.15  2.55e- 7
-#&gt; 4 exper        0.123    0.0188       6.58  4.85e-11
-#&gt; 5 I(exper^2)  -0.00189  0.000600    -3.15  1.66e- 3
-#&gt; 6 age         -0.0529   0.00846     -6.25  4.22e-10
-#&gt; 7 kidslt6     -0.868    0.118       -7.34  2.21e-13
-#&gt; 8 kidsge6      0.0360   0.0440       0.818 4.14e- 1
-```
-
---
-
-&lt;br&gt;
-
-As with the .mono[Logit] case, these coefficients are .hi[not] directly interpretable. Only their .hi[signs].
-
----
 
 # A .mono[Probit] example
 
@@ -822,14 +731,14 @@ Log likelihood = -401.30219                             Pseudo R2     = 0.2206
 
 The .hi[PDF] for this estimated model looks like this:
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-13-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # A .mono[Probit] example
 
 
-&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-14-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="010-binary-models_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 

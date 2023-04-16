@@ -2,7 +2,7 @@
 title: ".b[Binary dependent variable models]"
 subtitle: ".b[.green[EC 339]]"
 author: "Marcio Santetti"
-date: "Fall 2022"
+date: "Spring 2023"
 output:
   xaringan::moon_reader:
     css: ['default', 'metropolis', 'metropolis-fonts', 'skid-css.css']
@@ -244,11 +244,9 @@ $$
 
 Therefore, LPM models should always be estimated with .it[robust standard errors].
 
----
 
-# The Linear Probability Model
 
-An example:
+
 
 
 ```{r, echo=F, message=F, warning=F}
@@ -260,15 +258,6 @@ mroz <- as_tibble(mroz)
 
 ```
 
-```{r}
-lpm_model <- lm(inlf ~ nwifeinc + educ  + exper + 
-                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz)
-lpm_model %>% tidy()
-```
-
---
-
-When interpreting this model's .it[estimates], recall that a change in the independent variable changes the probability that `inlf == 1`.
 
 ---
 
@@ -540,25 +529,6 @@ $$
 \end{align}
 $$
 
----
-
-# A .mono[Logit] example
-
-```{r}
-logit_model <- glm(inlf ~ nwifeinc + educ  + exper + 
-                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz,
-             family = binomial(link='logit'))
-logit_model %>% tidy()
-```
-
---
-
-From this output, we cannot directly interpret the model's .hi[coefficients].
-
---
-
-However, we can interpret the coefficient's .hi[signs].
-
 
 ---
 
@@ -813,22 +783,6 @@ $$
 
 ---
 
-# A .mono[Probit] example
-
-```{r}
-probit_model <- glm(inlf ~ nwifeinc + educ  + exper + 
-                  I(exper^2) + age + kidslt6 + kidsge6, data = mroz,
-             family = binomial(link='probit'))
-probit_model %>% tidy()
-```
-
---
-
-<br>
-
-As with the .mono[Logit] case, these coefficients are .hi[not] directly interpretable. Only their .hi[signs].
-
----
 
 # A .mono[Probit] example
 
